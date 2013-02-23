@@ -17,5 +17,11 @@ It should
 * find tracks that have a text format other than UTF-8
 * group by artist and find differing genres
 
+## Requirements
+
+`gem install taglib-ruby mimemagic`
+or
+`bundle`
+
 ## TODO
 * Support all audio formats (ogg, mp4, aac, flac, ...)
