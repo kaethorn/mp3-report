@@ -25,3 +25,4 @@ or
 
 ## TODO
 * Support all audio formats (ogg, mp4, aac, flac, ...)
+* Generate an HTML report file
