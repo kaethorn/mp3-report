@@ -5,7 +5,7 @@
 require 'taglib'
 require 'find'
 require 'mimemagic'
-require 'pp'
+require 'haml'
 
 # Creates the following structure
 #
@@ -65,10 +65,18 @@ def iterate_directory(directory, report)
   end
 end
 
+def generate_report(report)
+  template = File.read('report.haml')
+  haml_engine = Haml::Engine.new(template)
+  output = File.new 'report.html', 'w'
+  output.write haml_engine.render(Object.new, :report => report)
+  output.close
+end
+
 def main(directory)
   report = {}
   iterate_directory(directory, report)
-  pp report
+  generate_report report
 end
 
 dir = ARGV[0]

@@ -19,10 +19,17 @@ It should
 
 ## Requirements
 
+Ruby 1.9 is required.
+
 `gem install taglib-ruby mimemagic`
+
 or
+
 `bundle`
+
+## Usage
+
+`ruby report.rb <directory>`
 
 ## TODO
 * Support all audio formats (ogg, mp4, aac, flac, ...)
-* Generate an HTML report file
