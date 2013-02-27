@@ -6,7 +6,7 @@ Auio file ID3 tag consistency reporter
 ## About
 Finds out if there's something wrong with albums in your music collection.
 
-Features
+### Features
 * group results by album
 * find albums without album art
 * find albums with id3v1 tags
@@ -32,12 +32,14 @@ The following report types are available:
 * Collapsible (bootstrap accordion)
 
 ## TODO
-Features
+
+### Features
 * find albums with more than one album art
 * find albums with id3v2 version < id3v2.4 tags
 * find albums with inconsistent album artist
 * find tracks that have a text format other than UTF-8
 * group by artist and find differing genres
-Misc
+
+### Misc
 * Support all audio formats (ogg, mp4, aac, flac, ...)
 * Collapsible Report: allow expanding multiple elements
