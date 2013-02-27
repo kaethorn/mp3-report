@@ -11,9 +11,9 @@ require 'ostruct'
 
 # Creates the following structure
 #
-# { :artist
-#   { :album
-#     { :directory
+# { :artist =>
+#   { :album =>
+#     { :directory =>
 #       [ :<error>, ... ]
 #     }
 #   }
@@ -42,6 +42,13 @@ def report_missing_art(store, file_tag, file)
   end
 end
 
+def report_multiple_art(store, file_tag, file)
+  id3v2_tag = file_tag.id3v2_tag
+  if id3v2_tag.frame_list('APIC').length > 1
+    report store, id3v2_tag.artist, id3v2_tag.album, File.dirname(file), :multiple_art
+  end
+end
+
 # Generates a report for the given directory
 def iterate_directory(directory, report)
   Find.find(directory) do |file|
@@ -61,6 +68,9 @@ def iterate_directory(directory, report)
 
           # Find tracks with missing album art
           report_missing_art report, file_tag, file
+
+          # Find tracks with more than one album art
+          report_multiple_art report, file_tag, file
         end
       end
     end
