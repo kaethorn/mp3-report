@@ -23,7 +23,7 @@ or
 
 ## Usage
 
-`ruby report.rb <directory> <report-type>`
+`ruby report.rb -h`
 
 ## Report type
 

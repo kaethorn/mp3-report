@@ -6,6 +6,8 @@ require 'taglib'
 require 'find'
 require 'mimemagic'
 require 'haml'
+require 'optparse'
+require 'ostruct'
 
 # Creates the following structure
 #
@@ -79,20 +81,26 @@ def main(directory, report_type)
   generate_report report, report_type
 end
 
-def parseCommandLine(argv)
-  dir = argv[0]
-  report_type = argv[1]
-  report_type = 'list' unless report_type
+def parseCommandLine
+  options = OpenStruct.new
+  options.report_type = 'list'
+  opts = OptionParser.new do |opts|
+    opts.banner = "Usage: report.rb [options] [directory]"
+    opts.on("-r", "--report-type [REPORT_TYPE]", [:list, :collapsible], "Report type to use (list*, collapsible)") do |report_type|
+      options.report_type = report_type
+    end
+  end
+  opts.parse!
 
-  unless dir
-    puts 'Usage: report.rb DIRECTORY [REPORT-TYPE]'
-    puts '  REPORT-TYPE: HTML report type'
-    puts '               * Supported report types: list, collapsable'
-    puts '               * Default: list'
+  dir = ARGV[0]
+
+  if ARGV.length != 1
+    puts opts
     exit
   end
-  [dir,report_type]
+
+  [dir,options]
 end
 
-dir,report_type = parseCommandLine ARGV
-main dir, report_type
+dir,options = parseCommandLine
+main dir, options.report_type
