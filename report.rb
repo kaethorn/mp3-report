@@ -65,24 +65,34 @@ def iterate_directory(directory, report)
   end
 end
 
-def generate_report(report)
-  template = File.read('report.haml')
+def generate_report(report, report_type)
+  template = File.read("report.#{report_type}.haml")
   haml_engine = Haml::Engine.new(template)
   output = File.new 'report.html', 'w'
   output.write haml_engine.render(Object.new, :report => report)
   output.close
 end
 
-def main(directory)
+def main(directory, report_type)
   report = {}
   iterate_directory(directory, report)
-  generate_report report
+  generate_report report, report_type
 end
 
-dir = ARGV[0]
-unless dir
-  puts 'Usage: report.rb DIRECTORY'
-  exit
+def parseCommandLine(argv)
+  dir = argv[0]
+  report_type = argv[1]
+  report_type = 'list' unless report_type
+
+  unless dir
+    puts 'Usage: report.rb DIRECTORY [REPORT-TYPE]'
+    puts '  REPORT-TYPE: HTML report type'
+    puts '               * Supported report types: list, collapsable'
+    puts '               * Default: list'
+    exit
+  end
+  [dir,report_type]
 end
 
-main dir
+dir,report_type = parseCommandLine ARGV
+main dir, report_type

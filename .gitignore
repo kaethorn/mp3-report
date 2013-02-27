@@ -1,5 +1,5 @@
 test
-report.html
+report.*html
 
 *.gem
 *.rbc
