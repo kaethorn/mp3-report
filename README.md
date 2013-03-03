@@ -11,7 +11,8 @@ Finds out if there's something wrong with albums in your music collection.
 * find albums without album art
 * find albums with id3v1 tags
 * find albums with more than one album art
-* find albums with id3v2 version < id3v2.4 tags
+* find albums with id3v2 version < id3v2.4 tags (requires patched taglib-ruby)
+* supports MP3, FLAC and Ogg Vorbis
 
 ## Requirements
 
@@ -41,5 +42,5 @@ The following report types are available:
 * group by artist and find differing genres
 
 ### Misc
-* Support all audio formats (ogg, mp4, aac, flac, ...)
+* Support MP4 audio format
 * Collapsible Report: allow expanding multiple elements
