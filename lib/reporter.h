@@ -15,4 +15,5 @@ class Reporter {
   private:
   void generate();
   void iterate_directory();
+  const string get_file_type(const string);
 };

@@ -1,5 +1,6 @@
 #include "reporter.h"
 #include "boost/filesystem.hpp"
+#include <magic.h>
 
 namespace fs = boost::filesystem;
 
@@ -24,32 +25,46 @@ void Reporter::generate() {
   */
 }
 
+const string Reporter::get_file_type(const string file) {
+  const char *contentType; 
+  string type;
+
+  magic_t magic = magic_open(MAGIC_MIME_TYPE|MAGIC_ERROR); 
+  if (magic == NULL) { 
+    cerr << file << ": Error initializing libmagic" << endl;
+    return "unknown";
+  } 
+  if (magic_load(magic, NULL) != 0) {
+    cerr << file << ": Error loading libmagic database" << endl;
+    magic_close(magic);
+    return "unknown";
+  }
+  contentType = magic_file(magic, file.c_str()); 
+  if (contentType == NULL) { 
+    cerr << file << ": Unknown content type" << endl; 
+    magic_close(magic);
+    return "unknown";
+  } 
+  type = string(contentType);
+  magic_close(magic);
+  return type;
+}
+
 void Reporter::iterate_directory() {
   for (fs::recursive_directory_iterator end, file(directory); 
       file != end; ++file) {
     if (is_directory(file->status())) {
       continue;
     }
-    //cout << *file << std::endl;
-    /*
-    raw_file = File.open file
-    fileType = MimeMagic.by_path(file)
-    magicType = MimeMagic.by_magic(raw_file)
-    raw_file.close
-
-    # Only consider audio files
-    if fileType == 'audio/mpeg' and magicType == 'audio/mpeg'
-      mp3_scanner = MP3Scanner.new file, @report
-      mp3_scanner.scan
-    elsif fileType == 'audio/ogg' and magicType == 'audio/x-vorbis+ogg'
-      ogg_vorbis_scanner = OggVorbisScanner.new file, @report
-      ogg_vorbis_scanner.scan
-    elsif fileType == 'audio/flac' and magicType == 'audio/flac'
-      flac_scanner = FLACScanner.new file, @report
-      flac_scanner.scan
-    elsif fileType == 'audio/mp4' and magicType == 'audio/mp4'
-      # MP4 files are not yet supported in taglib-ruby
-    end
-    */
+    string file_type = get_file_type(file->path().string());
+    cout << file_type << endl;
+    // Only consider audio files
+    if (file_type == "audio/mpeg") {
+      //MP3Scanner mp3_scanner(file,report);
+      //mp3_scanner.scan();
+    } else if (file_type == "application/ogg") {
+    } else if (file_type == "audio/x-flac") {
+    } else if (file_type == "audio/mp4") {
+    }
   }
 }
