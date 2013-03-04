@@ -24,14 +24,6 @@ class Reporter
 
   private
 
-  def scan_ogg_vorbis_files file_tag, file
-    # Find tracks with missing album art
-    report_missing_art file_tag, file
-
-    # Find tracks with more than one album art
-    report_multiple_art file_tag, file
-  end
-
   # Generates a report for the specified directory
   def iterate_directory
     Find.find(@directory) do |file|

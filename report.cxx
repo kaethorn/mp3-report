@@ -14,6 +14,7 @@ namespace po = boost::program_options;
 using namespace std;
 
 #include "report_config.h"
+#include "lib/reporter.h"
 
 int main (int argc, char *argv[]) {
 
@@ -57,7 +58,7 @@ int main (int argc, char *argv[]) {
   cout << "Using report type "
     << vm["report-type"].as<string>() << ".\n";
 
-  //reporter = new Reporter(vm["directory"].as<string>(), vm["report-type"].as<string>());
-  //reporter.run();
+  Reporter reporter(vm["directory"].as<string>(), vm["report-type"].as<string>());
+  reporter.run();
   return 0;
 }

@@ -16,6 +16,10 @@ configure_file (
 # so that we will find TutorialConfig.h
 include_directories("${PROJECT_BINARY_DIR}")
 
+include_directories("${PROJECT_SOURCE_DIR}/lib")
+add_subdirectory(lib)
+
 add_executable(MP3Report report.cxx)
+target_link_libraries(MP3Report reporter)
 
 include(ConfigureChecks.cmake)

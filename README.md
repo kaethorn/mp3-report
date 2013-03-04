@@ -16,17 +16,17 @@ Finds out if there's something wrong with albums in your music collection.
 
 ## Requirements
 
-Ruby 1.9 is required.
+Make sure cmake is installed.
 
-`gem install taglib-ruby mimemagic`
+`cmake .`
 
-or
+`make`
 
-`bundle`
+`make install`
 
 ## Usage
 
-`ruby report.rb -h`
+`./MP3Report -h`
 
 ## Report type
 
