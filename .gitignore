@@ -7,7 +7,8 @@ cmake_install.cmake
 CMakeCache.txt
 Makefile
 MP3Report
-lib/libreporter.a
+lib/*.a
+tags
 
 *.gem
 *.rbc

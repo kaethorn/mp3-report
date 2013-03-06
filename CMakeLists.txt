@@ -21,5 +21,6 @@ add_subdirectory(lib)
 
 add_executable(MP3Report report.cxx)
 target_link_libraries(MP3Report reporter)
+target_link_libraries(MP3Report scanner)
 
 include(ConfigureChecks.cmake)
