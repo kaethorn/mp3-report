@@ -20,6 +20,7 @@ add_subdirectory(lib)
 target_link_libraries(MP3Report reporter)
 target_link_libraries(MP3Report scanner)
 target_link_libraries(MP3Report scanner_mp3)
+target_link_libraries(MP3Report scanner_ogg_vorbis)
 
 include_directories("${PROJECT_BINARY_DIR}")
 include_directories("${PROJECT_SOURCE_DIR}/lib")

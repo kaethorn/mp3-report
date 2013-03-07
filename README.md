@@ -45,3 +45,4 @@ The following report types are available:
 * Support MP4 audio format
 * Collapsible Report: allow expanding multiple elements
 * Pass pointers where possible
+* Fix project file structure (src, ...)

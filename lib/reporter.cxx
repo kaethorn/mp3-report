@@ -2,6 +2,7 @@
 #include "boost/filesystem.hpp"
 #include <magic.h>
 #include "scanner_mp3.h"
+#include "scanner_ogg_vorbis.h"
 
 namespace fs = boost::filesystem;
 
@@ -102,6 +103,8 @@ void Reporter::iterate_directory() {
       MP3Scanner mp3_scanner(file->path().string(),&report);
       mp3_scanner.scan();
     } else if (file_type == "application/ogg") {
+      OggVorbisScanner ogg_vorbis_scanner(file->path().string(),&report);
+      ogg_vorbis_scanner.scan();
     } else if (file_type == "audio/x-flac") {
     } else if (file_type == "audio/mp4") {
     }

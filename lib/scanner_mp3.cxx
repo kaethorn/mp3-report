@@ -1,5 +1,4 @@
 #include "scanner_mp3.h"
-#include <mpegfile.h>
 #include <id3v2tag.h>
 #include <id3v1tag.h>
 #include <id3v2frame.h>

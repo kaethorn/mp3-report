@@ -1,3 +1,6 @@
+#ifndef SCANNER_H
+#define SCANNER_H
+
 #include "reporter.h"
 
 class Scanner {
@@ -11,3 +14,5 @@ class Scanner {
       const string directory, const string error);
   const string dirname(const string);
 };
+
+#endif
