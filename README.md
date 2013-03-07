@@ -12,27 +12,28 @@ Finds out if there's something wrong with albums in your music collection.
 * find albums with id3v1 tags
 * find albums with more than one album art
 * find albums with id3v2 version < id3v2.4 tags (requires patched taglib-ruby)
-* supports MP3, FLAC and Ogg Vorbis
+* supports MP3, MP4, FLAC and Ogg Vorbis
 
-## Requirements
+## Setup
 
-Make sure cmake is installed.
+On Debian/Ubuntu:
+
+`apt-get install cmake libtag1-dev libmagic-dev libboost-filesystem-dev libboost-program-options-dev libboost-system-dev`
+
+## Compilation
 
 `cmake .`
 
 `make`
 
-`make install`
-
 ## Usage
 
-`./MP3Report -h`
+`./src/MP3Report -h`
 
 ## Report type
 
 The following report types are available:
-* List (plain, non-interactive) (default)
-* Collapsible (bootstrap accordion)
+* plain (default)
 
 ## TODO
 
@@ -42,7 +43,5 @@ The following report types are available:
 * group by artist and find differing genres
 
 ### Misc
-* Support MP4 audio format
-* Collapsible Report: allow expanding multiple elements
-* Pass pointers where possible
-* Fix project file structure (src, ...)
+* HTML reports (simple, collapsible)
+* add more tests (e.g. one per reporter per file format)
