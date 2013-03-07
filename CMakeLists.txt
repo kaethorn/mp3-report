@@ -12,15 +12,18 @@ configure_file (
   "${PROJECT_BINARY_DIR}/report_config.h"
   )
  
-# add the binary tree to the search path for include files
-# so that we will find TutorialConfig.h
-include_directories("${PROJECT_BINARY_DIR}")
-
-include_directories("${PROJECT_SOURCE_DIR}/lib")
-add_subdirectory(lib)
-
 add_executable(MP3Report report.cxx)
-target_link_libraries(MP3Report reporter)
-target_link_libraries(MP3Report scanner)
 
 include(ConfigureChecks.cmake)
+
+add_subdirectory(lib)
+target_link_libraries(MP3Report reporter)
+target_link_libraries(MP3Report scanner)
+target_link_libraries(MP3Report scanner_mp3)
+
+include_directories("${PROJECT_BINARY_DIR}")
+include_directories("${PROJECT_SOURCE_DIR}/lib")
+
+target_link_libraries(MP3Report ${TAGLIB_LIBRARIES})
+target_link_libraries(MP3Report ${Boost_LIBRARIES})
+target_link_libraries(MP3Report ${LibMagic_LIBRARY})

@@ -1,6 +1,7 @@
 #include "reporter.h"
 #include "boost/filesystem.hpp"
 #include <magic.h>
+#include "scanner_mp3.h"
 
 namespace fs = boost::filesystem;
 
@@ -57,11 +58,10 @@ void Reporter::iterate_directory() {
       continue;
     }
     string file_type = get_file_type(file->path().string());
-    cout << file_type << endl;
     // Only consider audio files
     if (file_type == "audio/mpeg") {
-      //MP3Scanner mp3_scanner(file,report);
-      //mp3_scanner.scan();
+      MP3Scanner mp3_scanner(file->path().string(),&report);
+      mp3_scanner.scan();
     } else if (file_type == "application/ogg") {
     } else if (file_type == "audio/x-flac") {
     } else if (file_type == "audio/mp4") {

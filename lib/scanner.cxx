@@ -1,36 +1,17 @@
 #include "scanner.h"
+#include <boost/filesystem.hpp>
+#include <iostream>
+using namespace std;
 
-Scanner::Scanner(string f,report_type* r) {
+Scanner::Scanner(string f, report_type* r) {
   file = f;
-  report = report;
+  report = r;
 }
 
-//require 'taglib'
-//
-//class Scanner
-//  def initialize(file, report)
-//    @file = file
-//    @report = report
-//  end
-//  
-//  protected
-//
-//  # Creates the following structure if it doesn't already exist
-//  #
-//  # { :artist =>
-//  #   { :album =>
-//  #     { :directory =>
-//  #       [ :<error>, ... ]
-//  #     }
-//  #   }
-//  # }
-//  #
-//  # where <error> is a symbol describing the error such as 
-//  # :missing_art or :id3v1
-//  def add_to_report(artist, album, directory, error)
-//    @report[artist] ||= {}
-//    @report[artist][album] ||= {}
-//    @report[artist][album][directory] ||= []
-//    @report[artist][album][directory] |= [error]
-//  end
-//end
+void Scanner::add_to_report(const string artist, const string album,
+    const string directory, const string error) {
+  (*report)[artist][album][directory].push_back(error);
+}
+const string Scanner::dirname(const string path) {
+  return boost::filesystem::path(path).parent_path().string();
+}
