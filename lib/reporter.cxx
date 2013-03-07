@@ -17,6 +17,11 @@ void Reporter::run() {
 }
 
 void Reporter::generate() {
+  if (report_type == "plain") {
+    print();
+  } else {
+    cout << "Report type '" << report_type << "' is not supported yet." << endl;
+  }
   /*
     template = File.read("report.#{@report_type}.haml")
     haml_engine = Haml::Engine.new(template)
@@ -24,6 +29,31 @@ void Reporter::generate() {
     output.write haml_engine.render(Object.new, :report => @report)
     output.close
   */
+}
+
+void Reporter::print() {
+  for (report_map_type::iterator artist=report.begin();
+      artist!=report.end(); ++artist) {
+    cout << "Artist: " << artist->first << endl;
+    albums_type albums(artist->second);
+
+    for (albums_type::iterator album=albums.begin();
+        album!=albums.end(); ++album) {
+      cout << "  Albums: " << album->first << endl;
+      directories_type directories(album->second);
+
+      for (directories_type::iterator directory=directories.begin();
+          directory!=directories.end(); ++directory) {
+        cout << "    Directory '" << directory->first << "': " << endl;
+        errors_type errors(directory->second);
+
+        for (errors_type::iterator error=errors.begin();
+            error!=errors.end(); ++error) {
+          cout << "      * " << *error << endl;
+        }
+      }
+    }
+  }
 }
 
 const string Reporter::get_file_type(const string file) {

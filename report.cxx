@@ -50,8 +50,16 @@ int main (int argc, char *argv[]) {
     cout << argv[0] << " version " << MP3Report_VERSION_MAJOR << "." << MP3Report_VERSION_MINOR;
     return 0;
   }
+
+  // FIXME this validtors should be handled by custom validators
   if (!vm.count("directory")) {
     cerr << "missing required option directory" << endl;
+    return 1;
+  }
+  if (vm["report-type"].as<string>() != "list" && 
+      vm["report-type"].as<string>() != "collapsible" &&
+      vm["report-type"].as<string>() != "plain") {
+    cerr << "invalid report type (should be one of list, collapsible or plain)" << endl;
     return 1;
   }
 
