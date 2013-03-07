@@ -4,6 +4,7 @@
 #include "scanner_mp3.h"
 #include "scanner_ogg_vorbis.h"
 #include "scanner_flac.h"
+#include "scanner_mp4.h"
 
 namespace fs = boost::filesystem;
 
@@ -110,6 +111,8 @@ void Reporter::iterate_directory() {
       FLACScanner flac_scanner(file->path().string(),&report);
       flac_scanner.scan();
     } else if (file_type == "audio/mp4") {
+      MP4Scanner mp4_scanner(file->path().string(),&report);
+      mp4_scanner.scan();
     }
   }
 }
