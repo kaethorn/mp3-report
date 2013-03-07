@@ -1,12 +1,17 @@
+#ifndef REPORTER_H
+#define REPORTER_H
+
 #include <iostream>
 #include <map>
-#include <vector>
+#include <set>
 using namespace std;
+
+typedef map< string, map< string, map< string, set<string> > > > report_map_type;
 
 class Reporter {
   string directory;
   string report_type;
-  map< string, map< string, map< string, vector<string> > > > report;
+  report_map_type report;
 
   public:
   Reporter(string, string);
@@ -17,3 +22,5 @@ class Reporter {
   void iterate_directory();
   const string get_file_type(const string);
 };
+
+#endif

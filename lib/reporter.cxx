@@ -8,7 +8,7 @@ namespace fs = boost::filesystem;
 Reporter::Reporter(string dir, string r_type) {
   directory = dir;
   report_type = r_type;
-  report = map< string, map< string, map< string, vector<string> > > >();
+  report = report_map_type();
 }
 
 void Reporter::run() {

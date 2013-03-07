@@ -44,3 +44,4 @@ The following report types are available:
 ### Misc
 * Support MP4 audio format
 * Collapsible Report: allow expanding multiple elements
+* Pass pointers where possible

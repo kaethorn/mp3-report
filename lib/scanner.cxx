@@ -3,15 +3,16 @@
 #include <iostream>
 using namespace std;
 
-Scanner::Scanner(string f, report_type* r) {
+Scanner::Scanner(string f, report_map_type* r) {
   file = f;
   report = r;
 }
 
 void Scanner::add_to_report(const string artist, const string album,
     const string directory, const string error) {
-  (*report)[artist][album][directory].push_back(error);
+  (*report)[artist][album][directory].insert(error);
 }
+
 const string Scanner::dirname(const string path) {
   return boost::filesystem::path(path).parent_path().string();
 }

@@ -4,7 +4,7 @@
 class MP3Scanner: public Scanner {
 
   public:
-  MP3Scanner(string f, report_type* r) : Scanner(f, r) {};
+  MP3Scanner(string f, report_map_type* r) : Scanner(f, r) {};
   void scan();
 
   private:

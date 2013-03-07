@@ -1,15 +1,10 @@
-#include <iostream>
-#include <map>
-#include <vector>
-using namespace std;
-
-typedef map< string, map< string, map< string, vector<string> > > > report_type;
+#include "reporter.h"
 
 class Scanner {
   public:
-  Scanner(string,report_type*);
+  Scanner(string, report_map_type*);
   string file;
-  report_type* report;
+  report_map_type* report;
 
   protected:
   void add_to_report(const string artist, const string album,
