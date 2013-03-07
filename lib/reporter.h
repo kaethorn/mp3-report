@@ -24,7 +24,10 @@ class Reporter {
   void generate();
   void iterate_directory();
   const string get_file_type(const string);
-  void print();
+  void generate_plain();
+  void generate_csv();
+  void generate_html_list();
+  void generate_html_collapsible();
 };
 
 #endif

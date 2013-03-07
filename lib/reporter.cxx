@@ -18,20 +18,17 @@ void Reporter::run() {
 
 void Reporter::generate() {
   if (report_type == "plain") {
-    print();
-  } else {
-    cout << "Report type '" << report_type << "' is not supported yet." << endl;
+    generate_plain();
+  } else if (report_type == "csv") {
+    generate_csv();
+  } else if (report_type == "html_list") {
+    generate_html_list();
+  } else if (report_type == "html_collapsible") {
+    generate_html_collapsible();
   }
-  /*
-    template = File.read("report.#{@report_type}.haml")
-    haml_engine = Haml::Engine.new(template)
-    output = File.new 'report.html', 'w'
-    output.write haml_engine.render(Object.new, :report => @report)
-    output.close
-  */
 }
 
-void Reporter::print() {
+void Reporter::generate_plain() {
   for (report_map_type::iterator artist=report.begin();
       artist!=report.end(); ++artist) {
     cout << "Artist: " << artist->first << endl;
@@ -54,6 +51,18 @@ void Reporter::print() {
       }
     }
   }
+}
+
+void Reporter::generate_csv() {
+  cout << "Report type '" << report_type << "' is not supported yet." << endl;
+}
+
+void Reporter::generate_html_list() {
+  cout << "Report type '" << report_type << "' is not supported yet." << endl;
+}
+
+void Reporter::generate_html_collapsible() {
+  cout << "Report type '" << report_type << "' is not supported yet." << endl;
 }
 
 const string Reporter::get_file_type(const string file) {

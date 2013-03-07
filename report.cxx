@@ -24,7 +24,7 @@ int main (int argc, char *argv[]) {
   desc.add_options()
     ("help,h", "produce help message")
     ("version,v", "print version string")
-    ("report-type,r", po::value<string>(&report_type)->default_value("list"),
+    ("report-type,r", po::value<string>(&report_type)->default_value("plain"),
      "set report type")
     ("directory", po::value<string>(&directory), "working directory")
   ;
@@ -56,15 +56,13 @@ int main (int argc, char *argv[]) {
     cerr << "missing required option directory" << endl;
     return 1;
   }
-  if (vm["report-type"].as<string>() != "list" && 
-      vm["report-type"].as<string>() != "collapsible" &&
+  if (vm["report-type"].as<string>() != "html_list" && 
+      vm["report-type"].as<string>() != "html_collapsible" &&
+      vm["report-type"].as<string>() != "csv" &&
       vm["report-type"].as<string>() != "plain") {
-    cerr << "invalid report type (should be one of list, collapsible or plain)" << endl;
+    cerr << "invalid report type (should be one of html_list, html_collapsible, csv or plain)" << endl;
     return 1;
   }
-
-  cout << "Using report type "
-    << vm["report-type"].as<string>() << ".\n";
 
   Reporter reporter(vm["directory"].as<string>(), vm["report-type"].as<string>());
   reporter.run();
