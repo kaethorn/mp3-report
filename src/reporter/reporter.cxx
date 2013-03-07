@@ -1,6 +1,7 @@
-#include "reporter.h"
-#include "boost/filesystem.hpp"
+#include <boost/filesystem.hpp>
 #include <magic.h>
+
+#include "reporter.h"
 #include "scanner_mp3.h"
 #include "scanner_ogg_vorbis.h"
 #include "scanner_flac.h"

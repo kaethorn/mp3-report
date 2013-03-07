@@ -14,7 +14,7 @@ namespace po = boost::program_options;
 using namespace std;
 
 #include "report_config.h"
-#include "lib/reporter.h"
+#include "reporter.h"
 
 int main (int argc, char *argv[]) {
 
@@ -47,7 +47,7 @@ int main (int argc, char *argv[]) {
     return 0;
   }
   if (vm.count("version")) {
-    cout << argv[0] << " version " << MP3Report_VERSION_MAJOR << "." << MP3Report_VERSION_MINOR;
+    cout << argv[0] << " version " << MP3Report_VERSION_MAJOR << "." << MP3Report_VERSION_MINOR << endl;
     return 0;
   }
 

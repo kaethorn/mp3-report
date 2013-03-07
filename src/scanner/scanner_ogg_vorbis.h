@@ -1,5 +1,6 @@
-#include "scanner.h"
 #include <vorbisfile.h>
+
+#include "scanner.h"
 
 class OggVorbisScanner: public Scanner {
 

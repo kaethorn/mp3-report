@@ -1,5 +1,6 @@
-#include "scanner.h"
 #include <mp4file.h>
+
+#include "scanner.h"
 
 class MP4Scanner: public Scanner {
 

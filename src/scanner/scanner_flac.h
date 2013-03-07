@@ -1,5 +1,6 @@
-#include "scanner.h"
 #include <flacfile.h>
+
+#include "scanner.h"
 
 class FLACScanner: public Scanner {
 

@@ -1,7 +1,8 @@
-#include "scanner.h"
 #include <boost/filesystem.hpp>
 #include <iostream>
 using namespace std;
+
+#include "scanner.h"
 
 Scanner::Scanner(string f, report_map_type* r) {
   file = f;
