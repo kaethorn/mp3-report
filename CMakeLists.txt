@@ -27,3 +27,7 @@ include_directories("${PROJECT_SOURCE_DIR}/lib")
 target_link_libraries(MP3Report ${TAGLIB_LIBRARIES})
 target_link_libraries(MP3Report ${Boost_LIBRARIES})
 target_link_libraries(MP3Report ${LibMagic_LIBRARY})
+
+# Include tests
+enable_testing ()
+add_subdirectory(test)
