@@ -26,7 +26,7 @@ int main (int argc, char *argv[]) {
     ("version,v", "print version string")
     ("report-type,r", po::value<string>(&report_type)->default_value("plain"),
      "set report type")
-    ("directory", po::value<string>(&directory), "working directory")
+    ("directory", po::value<string>(&directory)->required(), "working directory")
   ;
 
   po::positional_options_description p;
@@ -34,16 +34,10 @@ int main (int argc, char *argv[]) {
 
   po::variables_map vm;
 
-  try {
-    po::store(po::command_line_parser(argc, argv).options(desc).positional(p).run(), vm);
-    po::notify(vm);
-  } catch ( const boost::program_options::error& e ) {
-    cerr << e.what() << endl;
-    return 1;
-  }
+  po::store(po::command_line_parser(argc, argv).options(desc).positional(p).run(), vm);
 
   if (vm.count("help")) {
-    cout << desc << "\n";
+    cout << desc << endl;
     return 0;
   }
   if (vm.count("version")) {
@@ -51,11 +45,13 @@ int main (int argc, char *argv[]) {
     return 0;
   }
 
-  // FIXME this validtors should be handled by custom validators
-  if (!vm.count("directory")) {
-    cerr << "missing required option directory" << endl;
+  try {
+    po::notify(vm);
+  } catch ( const boost::program_options::error& e ) {
+    cerr << e.what() << endl;
     return 1;
   }
+
   if (vm["report-type"].as<string>() != "html_list" && 
       vm["report-type"].as<string>() != "html_collapsible" &&
       vm["report-type"].as<string>() != "csv" &&
