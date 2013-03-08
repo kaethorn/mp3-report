@@ -20,6 +20,9 @@ void MP3Scanner::scan() {
   // Find tracks containing id3v2 tags with versions lower than
   // id3v2.4
   report_obsolete_id3v2_version(&file_tag);
+
+  // Find track containing album artist tags
+  report_album_artist(&file_tag);
 }
 
 void MP3Scanner::report_id3v1_tag(TagLib::MPEG::File *file_tag) {
@@ -47,5 +50,12 @@ void MP3Scanner::report_obsolete_id3v2_version(TagLib::MPEG::File *file_tag) {
   TagLib::ID3v2::Tag *id3v2_tag = file_tag->ID3v2Tag();
   if (id3v2_tag->header()->majorVersion() < 4) {
     add_to_report(id3v2_tag->artist().to8Bit(true), id3v2_tag->album().to8Bit(true), dirname(file), "obsolete_id3v2_version");
+  }
+}
+
+void MP3Scanner::report_album_artist(TagLib::MPEG::File *file_tag) {
+  TagLib::ID3v2::Tag *id3v2_tag = file_tag->ID3v2Tag();
+  if (!id3v2_tag->frameListMap()["TPE2"].isEmpty()) {
+    add_to_report(id3v2_tag->artist().to8Bit(true), id3v2_tag->album().to8Bit(true), dirname(file), "album_artist");
   }
 }

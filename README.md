@@ -7,12 +7,12 @@ Auio file ID3 tag consistency reporter
 Finds out if there's something wrong with albums in your music collection.
 
 ### Features
-* group results by album
-* find albums without album art
-* find albums with id3v1 tags
-* find albums with more than one album art
-* find albums with id3v2 version < id3v2.4 tags (requires patched taglib-ruby)
-* supports MP3, MP4, FLAC and Ogg Vorbis
+* groups results by artist, album and directory
+* finds albums without album art
+* finds albums with id3v1 tags
+* finds albums with more than one album art
+* finds albums with id3v2 version < id3v2.4 tags (requires patched taglib-ruby)
+* supports MP3, MP4, FLAC and Ogg Vorbis audio formats
 
 ## Setup
 
