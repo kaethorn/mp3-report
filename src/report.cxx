@@ -18,15 +18,17 @@ using namespace std;
 
 int main (int argc, char *argv[]) {
 
-  string report_type, directory;
+  string report_type, directory, output_path;
 
   po::options_description desc("Allowed options");
   desc.add_options()
-    ("help,h", "produce help message")
-    ("version,v", "print version string")
+    ("help,h", "Produce this help message")
+    ("version,v", "Print version string")
     ("report-type,r", po::value<string>(&report_type)->default_value("plain"),
-     "report type (html_list, html_collapsible, csv, plain)")
-    ("directory", po::value<string>(&directory)->required(), "working directory")
+     "Report type (html_list, html_collapsible, csv, plain)")
+    ("output-path,o", po::value<string>(&output_path),
+     "File to write the report to (fallback: stdout)")
+    ("directory", po::value<string>(&directory)->required(), "Working directory")
   ;
 
   po::positional_options_description p;
@@ -60,7 +62,7 @@ int main (int argc, char *argv[]) {
     return 1;
   }
 
-  Reporter reporter(&directory, &report_type);
+  Reporter reporter(&directory, &report_type, &output_path);
   reporter.run();
   return 0;
 }

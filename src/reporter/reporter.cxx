@@ -1,4 +1,5 @@
 #include <sstream>
+#include <fstream>
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string/join.hpp>
 #include <magic.h>
@@ -11,10 +12,24 @@
 
 namespace fs = boost::filesystem;
 
-Reporter::Reporter(string* dir, string* r_type) {
+Reporter::Reporter(const string* dir, const string* r_type, const string* o_path) {
+  // Assign private attributes
   directory = dir;
   report_type = r_type;
+  output_path = o_path;
   report = report_map_type();
+
+  // Determine where the output will be written (file or stdout).
+  if (o_path->size() == 0) {
+    output = &std::cout;
+  } else {
+    output_file.open(o_path->c_str(), ios::out);
+    output = &output_file;
+  }
+}
+
+Reporter::~Reporter() {
+  output_file.close();
 }
 
 void Reporter::run() {
@@ -37,22 +52,22 @@ void Reporter::generate() {
 void Reporter::generate_plain() {
   for (report_map_type::iterator artist=report.begin();
       artist!=report.end(); ++artist) {
-    cout << "Artist: " << artist->first << endl;
+    *output << "Artist: " << artist->first << endl;
     albums_type albums(artist->second);
 
     for (albums_type::iterator album=albums.begin();
         album!=albums.end(); ++album) {
-      cout << "  Albums: " << album->first << endl;
+      *output << "  Albums: " << album->first << endl;
       directories_type directories(album->second);
 
       for (directories_type::iterator directory=directories.begin();
           directory!=directories.end(); ++directory) {
-        cout << "    Directory '" << directory->first << "': " << endl;
+        *output << "    Directory '" << directory->first << "': " << endl;
         errors_type errors(directory->second);
 
         for (errors_type::iterator error=errors.begin();
             error!=errors.end(); ++error) {
-          cout << "      * " << *error << endl;
+          *output << "      * " << *error << endl;
         }
       }
     }
@@ -79,7 +94,7 @@ void Reporter::generate_csv() {
       }
     }
   }
-  std::cout << ss.str() << endl;
+  *output << ss.str() << endl;
 }
 
 void Reporter::generate_html_list() {
