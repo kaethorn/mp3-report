@@ -1,4 +1,4 @@
-#include "scanner_flac.h"
+#include "scanner_flac.hxx"
 
 void FLACScanner::scan() {
   TagLib::FLAC::File file_tag(file.c_str());

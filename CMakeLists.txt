@@ -8,8 +8,8 @@ set (MP3Report_VERSION_MINOR 0)
 # configure a header file to pass some of the CMake settings
 # to the source code
 configure_file (
-  "${PROJECT_SOURCE_DIR}/src/report_config.h.in"
-  "${PROJECT_BINARY_DIR}/src/report_config.h"
+  "${PROJECT_SOURCE_DIR}/src/report_config.hxx.in"
+  "${PROJECT_BINARY_DIR}/src/report_config.hxx"
   )
  
 include(ConfigureChecks.cmake)

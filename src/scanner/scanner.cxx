@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-#include "scanner.h"
+#include "scanner.hxx"
 
 Scanner::Scanner(string f, report_map_type* r) {
   file = f;

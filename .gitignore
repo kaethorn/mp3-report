@@ -1,6 +1,6 @@
 report.*html
 *.o
-report_config.h
+src/report_config.hxx
 CMakeFiles
 cmake_install.cmake
 CMakeCache.txt

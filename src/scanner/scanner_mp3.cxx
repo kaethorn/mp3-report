@@ -3,7 +3,7 @@
 #include <id3v2frame.h>
 #include <id3v2header.h>
 
-#include "scanner_mp3.h"
+#include "scanner_mp3.hxx"
 
 void MP3Scanner::scan() {
   TagLib::MPEG::File file_tag(file.c_str());

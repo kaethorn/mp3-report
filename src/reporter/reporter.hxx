@@ -1,8 +1,9 @@
 #ifndef REPORTER_H
 #define REPORTER_H
 
-#include "scanner.h"
 #include <fstream>
+
+#include "scanner.hxx"
 
 class Reporter {
   public:

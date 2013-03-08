@@ -1,4 +1,4 @@
-#include "scanner_mp4.h"
+#include "scanner_mp4.hxx"
 
 void MP4Scanner::scan() {
   TagLib::MP4::File file_tag(file.c_str());

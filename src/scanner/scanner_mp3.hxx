@@ -1,6 +1,6 @@
 #include <mpegfile.h>
 
-#include "scanner.h"
+#include "scanner.hxx"
 
 class MP3Scanner: public Scanner {
 

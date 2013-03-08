@@ -13,8 +13,8 @@ namespace po = boost::program_options;
 #include <map>
 using namespace std;
 
-#include "report_config.h"
-#include "reporter.h"
+#include "report_config.hxx"
+#include "reporter.hxx"
 
 int main (int argc, char *argv[]) {
 

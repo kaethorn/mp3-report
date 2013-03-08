@@ -1,4 +1,4 @@
-#include "scanner_ogg_vorbis.h"
+#include "scanner_ogg_vorbis.hxx"
 
 void OggVorbisScanner::scan() {
   TagLib::Ogg::Vorbis::File file_tag(file.c_str());

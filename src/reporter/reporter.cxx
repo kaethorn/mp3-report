@@ -4,11 +4,11 @@
 #include <boost/algorithm/string/join.hpp>
 #include <magic.h>
 
-#include "reporter.h"
-#include "scanner_mp3.h"
-#include "scanner_ogg_vorbis.h"
-#include "scanner_flac.h"
-#include "scanner_mp4.h"
+#include "reporter.hxx"
+#include "scanner_mp3.hxx"
+#include "scanner_ogg_vorbis.hxx"
+#include "scanner_flac.hxx"
+#include "scanner_mp4.hxx"
 
 namespace fs = boost::filesystem;
 
