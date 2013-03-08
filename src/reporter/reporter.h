@@ -4,12 +4,12 @@
 #include "scanner.h"
 
 class Reporter {
-  string directory;
-  string report_type;
+  string* directory;
+  string* report_type;
   report_map_type report;
 
   public:
-  Reporter(string, string);
+  Reporter(string*, string*);
   void run();
 
   private:

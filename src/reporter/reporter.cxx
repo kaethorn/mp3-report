@@ -9,7 +9,7 @@
 
 namespace fs = boost::filesystem;
 
-Reporter::Reporter(string dir, string r_type) {
+Reporter::Reporter(string* dir, string* r_type) {
   directory = dir;
   report_type = r_type;
   report = report_map_type();
@@ -21,13 +21,13 @@ void Reporter::run() {
 }
 
 void Reporter::generate() {
-  if (report_type == "plain") {
+  if (*report_type == "plain") {
     generate_plain();
-  } else if (report_type == "csv") {
+  } else if (*report_type == "csv") {
     generate_csv();
-  } else if (report_type == "html_list") {
+  } else if (*report_type == "html_list") {
     generate_html_list();
-  } else if (report_type == "html_collapsible") {
+  } else if (*report_type == "html_collapsible") {
     generate_html_collapsible();
   }
 }
@@ -58,15 +58,15 @@ void Reporter::generate_plain() {
 }
 
 void Reporter::generate_csv() {
-  cout << "Report type '" << report_type << "' is not supported yet." << endl;
+  cout << "Report type '" << *report_type << "' is not supported yet." << endl;
 }
 
 void Reporter::generate_html_list() {
-  cout << "Report type '" << report_type << "' is not supported yet." << endl;
+  cout << "Report type '" << *report_type << "' is not supported yet." << endl;
 }
 
 void Reporter::generate_html_collapsible() {
-  cout << "Report type '" << report_type << "' is not supported yet." << endl;
+  cout << "Report type '" << *report_type << "' is not supported yet." << endl;
 }
 
 const string Reporter::get_file_type(const string file) {
@@ -95,7 +95,7 @@ const string Reporter::get_file_type(const string file) {
 }
 
 void Reporter::iterate_directory() {
-  for (fs::recursive_directory_iterator end, file(directory); 
+  for (fs::recursive_directory_iterator end, file(*directory);
       file != end; ++file) {
     if (is_directory(file->status())) {
       continue;

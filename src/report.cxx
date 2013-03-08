@@ -25,7 +25,7 @@ int main (int argc, char *argv[]) {
     ("help,h", "produce help message")
     ("version,v", "print version string")
     ("report-type,r", po::value<string>(&report_type)->default_value("plain"),
-     "set report type")
+     "report type (html_list, html_collapsible, csv, plain)")
     ("directory", po::value<string>(&directory)->required(), "working directory")
   ;
 
@@ -60,7 +60,7 @@ int main (int argc, char *argv[]) {
     return 1;
   }
 
-  Reporter reporter(vm["directory"].as<string>(), vm["report-type"].as<string>());
+  Reporter reporter(&directory, &report_type);
   reporter.run();
   return 0;
 }
