@@ -1,4 +1,6 @@
+#include <sstream>
 #include <boost/filesystem.hpp>
+#include <boost/algorithm/string/join.hpp>
 #include <magic.h>
 
 #include "reporter.h"
@@ -58,7 +60,26 @@ void Reporter::generate_plain() {
 }
 
 void Reporter::generate_csv() {
-  cout << "Report type '" << *report_type << "' is not supported yet." << endl;
+  std::ostringstream ss;
+  ss << "Artist,Album,Directory,Error(s)" << endl;
+  for (report_map_type::iterator artist=report.begin();
+      artist!=report.end(); ++artist) {
+    albums_type albums(artist->second);
+    for (albums_type::iterator album=albums.begin();
+        album!=albums.end(); ++album) {
+      directories_type directories(album->second);
+      for (directories_type::iterator directory=directories.begin();
+          directory!=directories.end(); ++directory) {
+        ss << "\"" << artist->first << "\",";
+        ss << "\"" << album->first << "\",";
+        ss << "\"" << directory->first << "\",";
+        errors_type errors(directory->second);
+        ss << boost::algorithm::join(errors, "|");
+        ss << endl;
+      }
+    }
+  }
+  std::cout << ss.str() << endl;
 }
 
 void Reporter::generate_html_list() {
