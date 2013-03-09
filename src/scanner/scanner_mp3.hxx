@@ -14,4 +14,5 @@ class MP3Scanner: public Scanner {
   void report_multiple_art(TagLib::MPEG::File *file_tag);
   void report_obsolete_id3v2_version(TagLib::MPEG::File *file_tag);
   void report_album_artist(TagLib::MPEG::File *file_tag);
+  void report_invalid_encoding(TagLib::MPEG::File *file_tag);
 };

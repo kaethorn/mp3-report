@@ -2,6 +2,7 @@
 #include <id3v1tag.h>
 #include <id3v2frame.h>
 #include <id3v2header.h>
+#include <textidentificationframe.h>
 
 #include "scanner_mp3.hxx"
 
@@ -23,6 +24,9 @@ void MP3Scanner::scan() {
 
   // Find track containing album artist tags
   report_album_artist(&file_tag);
+
+  // Find tags with file encoding other than UTF-8
+  report_invalid_encoding(&file_tag);
 }
 
 void MP3Scanner::report_id3v1_tag(TagLib::MPEG::File *file_tag) {
@@ -57,5 +61,18 @@ void MP3Scanner::report_album_artist(TagLib::MPEG::File *file_tag) {
   TagLib::ID3v2::Tag *id3v2_tag = file_tag->ID3v2Tag();
   if (!id3v2_tag->frameListMap()["TPE2"].isEmpty()) {
     add_to_report(id3v2_tag->artist().to8Bit(true), id3v2_tag->album().to8Bit(true), dirname(file), "album_artist");
+  }
+}
+
+void MP3Scanner::report_invalid_encoding(TagLib::MPEG::File *file_tag) {
+  TagLib::ID3v2::Tag *id3v2_tag = file_tag->ID3v2Tag();
+  // Example for album tag (is this enough, or shall we test every tag, just in case?)
+  TagLib::ID3v2::FrameList album_tag = id3v2_tag->frameListMap()["TALB"];
+  if (!album_tag.isEmpty()) {
+    TagLib::ID3v2::TextIdentificationFrame *frame = static_cast<TagLib::ID3v2::TextIdentificationFrame *>(album_tag.front());
+    TagLib::String::Type encoding = frame->textEncoding();
+    if(encoding != TagLib::String::UTF8) {
+      add_to_report(id3v2_tag->artist().to8Bit(true), id3v2_tag->album().to8Bit(true), dirname(file), "invalid_encoding");
+    }
   }
 }

@@ -38,7 +38,8 @@ The following report types are available:
 ## TODO
 
 ### Features
-* find albums with inconsistent album artist
+* find track with missing tags: album, artist, genre, title or track number
+* find albums with inconsistent tags: album artist, artist or album
 * find tracks that have a text format other than UTF-8
 * group by artist and find differing genres
 
