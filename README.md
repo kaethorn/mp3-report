@@ -8,10 +8,11 @@ Finds out if there's something wrong with albums in your music collection.
 
 ### Features
 * groups results by artist, album and directory
-* finds albums without album art
-* finds albums with id3v1 tags
-* finds albums with more than one album art
-* finds albums with id3v2 version < id3v2.4 tags (requires patched taglib-ruby)
+* finds tracks with missing tags: album, artist, genre, title or track number
+* finds tracks without album art
+* finds tracks with id3v1 tags
+* finds tracks with more than one album art
+* finds tracks with id3v2 version < id3v2.4 tags (requires patched taglib-ruby)
 * supports MP3, MP4, FLAC and Ogg Vorbis audio formats
 
 ## Setup
@@ -38,7 +39,6 @@ The following report types are available:
 ## TODO
 
 ### Features
-* find track with missing tags: album, artist, genre, title or track number
 * find albums with inconsistent tags: album artist, artist or album
 * find tracks that have a text format other than UTF-8
 * group by artist and find differing genres

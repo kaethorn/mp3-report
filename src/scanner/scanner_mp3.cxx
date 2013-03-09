@@ -15,6 +15,8 @@ void MP3Scanner::scan() {
 
 void MP3Scanner::check_id3v1_tags(TagLib::MPEG::File *file_tag) {
   TagLib::ID3v1::Tag *id3v1_tag = file_tag->ID3v1Tag();
+
+  // Find tracks with id3v1 tags
   if (!id3v1_tag->isEmpty()) {
     add_to_report(id3v1_tag->artist().to8Bit(true), id3v1_tag->album().to8Bit(true), dirname(file), "id3v1");
   }
@@ -25,6 +27,36 @@ void MP3Scanner::check_id3v2_tags(TagLib::MPEG::File *file_tag) {
   string artist(id3v2_tag->artist().to8Bit(true));
   string album(id3v2_tag->album().to8Bit(true));
   string directory(dirname(file));
+
+  // Find tracks without an artist tag
+  if (artist.size() == 0) {
+    add_to_report(artist, album, directory, "missing_artist");
+  }
+
+  // Find tracks without an album tag
+  if (album.size() == 0) {
+    add_to_report(artist, album, directory, "missing_album");
+  }
+
+  // Find tracks without a title tag
+  if (id3v2_tag->title().to8Bit(true).size() == 0) {
+    add_to_report(artist, album, directory, "missing_title");
+  }
+
+  // Find tracks without a year tag
+  if (id3v2_tag->year() == 0) {
+    add_to_report(artist, album, directory, "missing_year");
+  }
+
+  // Find tracks without a track number tag
+  if (id3v2_tag->track() == 0) {
+    add_to_report(artist, album, directory, "missing_track");
+  }
+
+  // Find tracks without a genre tag
+  if (artist.size() == 0) {
+    add_to_report(artist, album, directory, "missing_artist");
+  }
 
   // Find tracks with missing album art
   if (id3v2_tag->frameListMap()["APIC"].isEmpty()) {
@@ -45,7 +77,7 @@ void MP3Scanner::check_id3v2_tags(TagLib::MPEG::File *file_tag) {
   // Find track containing album artist tags
   // FIXME album artists aren't bad per se, but check for albums with differing tags
   if (!id3v2_tag->frameListMap()["TPE2"].isEmpty()) {
-    add_to_report(id3v2_tag->artist().to8Bit(true), id3v2_tag->album().to8Bit(true), dirname(file), "album_artist");
+    add_to_report(artist, album, directory, "album_artist");
   }
 
   // Example for artist tag (is this enough, or shall we test every tag, just in case?)
