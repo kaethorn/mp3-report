@@ -150,6 +150,8 @@ void Reporter::iterate_directory() {
     } else if (file_type == "audio/mp4") {
       MP4Scanner mp4_scanner(file->path().string(),&report);
       mp4_scanner.scan();
+    } else if (file_type.find("audio/") != string::npos) {
+      cout << "Missing support for type " << file_type << endl;
     }
   }
 }
