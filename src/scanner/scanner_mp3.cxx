@@ -6,6 +6,13 @@
 
 #include "scanner_mp3.hxx"
 
+MP3Scanner::MP3Scanner(string f, report_map_type* r) : Scanner(f, r) {
+  tags_to_check.push_back("TIT2"); // artist
+  tags_to_check.push_back("TPE1"); // title
+  tags_to_check.push_back("TALB"); // album
+  tags_to_check.push_back("TCON"); // genre
+};
+
 void MP3Scanner::scan() {
   TagLib::MPEG::File file_tag(file.c_str());
 
@@ -80,13 +87,19 @@ void MP3Scanner::check_id3v2_tags(TagLib::MPEG::File *file_tag) {
     add_to_report(artist, album, directory, "album_artist");
   }
 
-  // Example for artist tag (is this enough, or shall we test every tag, just in case?)
-  TagLib::ID3v2::FrameList artist_tag = id3v2_tag->frameListMap()["TPE1"];
-  if (!artist_tag.isEmpty()) {
-    TagLib::ID3v2::TextIdentificationFrame *frame = static_cast<TagLib::ID3v2::TextIdentificationFrame *>(artist_tag.front());
-    TagLib::String::Type encoding = frame->textEncoding();
-    if(encoding != TagLib::String::UTF8) {
-      add_to_report(artist, album, directory, "invalid_encoding");
+  // Make sure the title, artist, album and genre tags are UTF-8 encoded
+  for (vector<string>::iterator it = tags_to_check.begin();
+      it != tags_to_check.end(); ++it) {
+    TagLib::ID3v2::FrameList artist_tag = id3v2_tag->frameListMap()[it->c_str()];
+    if (!artist_tag.isEmpty()) {
+      TagLib::ID3v2::TextIdentificationFrame *frame =
+        dynamic_cast<TagLib::ID3v2::TextIdentificationFrame *>(artist_tag.front());
+      if (frame) {
+        TagLib::String::Type encoding = frame->textEncoding();
+        if(encoding != TagLib::String::UTF8) {
+          add_to_report(artist, album, directory, "invalid_encoding");
+        }
+      }
     }
   }
 }
