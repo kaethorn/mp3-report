@@ -10,6 +10,6 @@ void OggVorbisScanner::scan() {
 void OggVorbisScanner::report_missing_art(TagLib::Ogg::Vorbis::File *file_tag) {
   TagLib::Ogg::XiphComment *ogg_vorbis_tag = file_tag->tag();
   if (ogg_vorbis_tag->fieldListMap()["METADATA_BLOCK_PICTURE"].isEmpty()) {
-    add_to_report(ogg_vorbis_tag->artist().to8Bit(true), ogg_vorbis_tag->album().to8Bit(true), dirname(file), "missing_art");
+    add_to_report(ogg_vorbis_tag->artist().to8Bit(true), ogg_vorbis_tag->genre().to8Bit(true), ogg_vorbis_tag->album().to8Bit(true), dirname(file), "missing_art");
   }
 }

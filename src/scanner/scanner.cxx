@@ -9,9 +9,13 @@ Scanner::Scanner(string f, report_map_type* r) {
   report = r;
 }
 
-void Scanner::add_to_report(const string artist, const string album,
-    const string directory, const string error) {
-  (*report)[artist][album][directory].insert(error);
+Scanner::Scanner(report_map_type* r) {
+  report = r;
+}
+
+void Scanner::add_to_report(const string artist, const string genre,
+    const string album, const string directory, const string error) {
+  (*report)[artist][genre][album][directory].insert(error);
 }
 
 const string Scanner::dirname(const string path) {

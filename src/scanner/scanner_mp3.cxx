@@ -25,66 +25,71 @@ void MP3Scanner::check_id3v1_tags(TagLib::MPEG::File *file_tag) {
 
   // Find tracks with id3v1 tags
   if (!id3v1_tag->isEmpty()) {
-    add_to_report(id3v1_tag->artist().to8Bit(true), id3v1_tag->album().to8Bit(true), dirname(file), "id3v1");
+    add_to_report(
+        id3v1_tag->artist().to8Bit(true),
+        id3v1_tag->genre().to8Bit(true),
+        id3v1_tag->album().to8Bit(true),
+        dirname(file), "id3v1");
   }
 }
 
 void MP3Scanner::check_id3v2_tags(TagLib::MPEG::File *file_tag) {
   TagLib::ID3v2::Tag *id3v2_tag = file_tag->ID3v2Tag();
   string artist(id3v2_tag->artist().to8Bit(true));
+  string genre(id3v2_tag->genre().to8Bit(true));
   string album(id3v2_tag->album().to8Bit(true));
   string directory(dirname(file));
 
   // Find tracks without an artist tag
   if (artist.size() == 0) {
-    add_to_report(artist, album, directory, "missing_artist");
+    add_to_report(artist, genre, album, directory, "missing_artist");
   }
 
   // Find tracks without an album tag
   if (album.size() == 0) {
-    add_to_report(artist, album, directory, "missing_album");
+    add_to_report(artist, genre, album, directory, "missing_album");
   }
 
   // Find tracks without a title tag
   if (id3v2_tag->title().to8Bit(true).size() == 0) {
-    add_to_report(artist, album, directory, "missing_title");
+    add_to_report(artist, genre, album, directory, "missing_title");
   }
 
   // Find tracks without a year tag
   if (id3v2_tag->year() == 0) {
-    add_to_report(artist, album, directory, "missing_year");
+    add_to_report(artist, genre, album, directory, "missing_year");
   }
 
   // Find tracks without a track number tag
   if (id3v2_tag->track() == 0) {
-    add_to_report(artist, album, directory, "missing_track");
+    add_to_report(artist, genre, album, directory, "missing_track");
   }
 
   // Find tracks without a genre tag
   if (artist.size() == 0) {
-    add_to_report(artist, album, directory, "missing_artist");
+    add_to_report(artist, genre, album, directory, "missing_artist");
   }
 
   // Find tracks with missing album art
   if (id3v2_tag->frameListMap()["APIC"].isEmpty()) {
-    add_to_report(artist, album, directory, "missing_art");
+    add_to_report(artist, genre, album, directory, "missing_art");
   }
 
   // Find tracks with more than one album art
   if (id3v2_tag->frameListMap()["APIC"].size() > 1) {
-    add_to_report(artist, album, directory, "multiple_art");
+    add_to_report(artist, genre, album, directory, "multiple_art");
   }
 
   // Find tracks containing id3v2 tags with versions lower than
   // id3v2.4
   if (id3v2_tag->header()->majorVersion() < 4) {
-    add_to_report(artist, album, directory, "obsolete_id3v2_version");
+    add_to_report(artist, genre, album, directory, "obsolete_id3v2_version");
   }
 
   // Find track containing album artist tags
   // FIXME album artists aren't bad per se, but check for albums with differing tags
   if (!id3v2_tag->frameListMap()["TPE2"].isEmpty()) {
-    add_to_report(artist, album, directory, "album_artist");
+    add_to_report(artist, genre, album, directory, "album_artist");
   }
 
   // Make sure the title, artist, album and genre tags are UTF-8 encoded
@@ -97,7 +102,7 @@ void MP3Scanner::check_id3v2_tags(TagLib::MPEG::File *file_tag) {
       if (frame) {
         TagLib::String::Type encoding = frame->textEncoding();
         if(encoding != TagLib::String::UTF8) {
-          add_to_report(artist, album, directory, "invalid_encoding");
+          add_to_report(artist, genre, album, directory, "invalid_encoding");
         }
       }
     }

@@ -14,6 +14,7 @@ Finds out if there's something wrong with albums in your music collection.
 * finds tracks with more than one album art
 * finds tracks with id3v2 version < id3v2.4 tags (requires patched taglib-ruby)
 * finds tracks that have a text format other than UTF-8
+* finds artists with multiple genres
 * supports MP3, MP4, FLAC and Ogg Vorbis audio formats
 
 ## Setup
@@ -38,5 +39,4 @@ The following report types are available:
 * plain (default)
 
 ## TODO
-* group by artist and find differing genres
 * add more tests and comments (e.g. one per reporter per file format)

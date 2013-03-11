@@ -13,13 +13,13 @@ void FLACScanner::scan() {
 void FLACScanner::report_missing_art(TagLib::FLAC::File *file_tag) {
   TagLib::Tag *flac_tag = file_tag->tag();
   if (file_tag->pictureList().size() < 1) {
-    add_to_report(flac_tag->artist().to8Bit(true), flac_tag->album().to8Bit(true), dirname(file), "missing_art");
+    add_to_report(flac_tag->artist().to8Bit(true), flac_tag->genre().to8Bit(true), flac_tag->album().to8Bit(true), dirname(file), "missing_art");
   }
 }
 
 void FLACScanner::report_multiple_art(TagLib::FLAC::File *file_tag) {
   TagLib::Tag *flac_tag = file_tag->tag();
   if (file_tag->pictureList().size() > 1) {
-    add_to_report(flac_tag->artist().to8Bit(true), flac_tag->album().to8Bit(true), dirname(file), "multiple_art");
+    add_to_report(flac_tag->artist().to8Bit(true), flac_tag->genre().to8Bit(true), flac_tag->album().to8Bit(true), dirname(file), "multiple_art");
   }
 }

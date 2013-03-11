@@ -9,11 +9,11 @@
 #include "scanner_ogg_vorbis.hxx"
 #include "scanner_flac.hxx"
 #include "scanner_mp4.hxx"
+#include "scanner_meta.hxx"
 
 namespace fs = boost::filesystem;
 
-Reporter::Reporter(const string* dir, const string* r_type, const string* o_path) {
-  // Assign private attributes
+Reporter::Reporter(const string* dir, const string* r_type, const string* o_path) { // Assign private attributes
   directory = dir;
   report_type = r_type;
   output_path = o_path;
@@ -52,22 +52,27 @@ void Reporter::generate() {
 void Reporter::generate_plain() {
   for (report_map_type::iterator artist=report.begin();
       artist!=report.end(); ++artist) {
+    genres_type genres(artist->second);
     *output << "Artist: " << artist->first << endl;
-    albums_type albums(artist->second);
 
-    for (albums_type::iterator album=albums.begin();
-        album!=albums.end(); ++album) {
-      *output << "  Albums: " << album->first << endl;
-      directories_type directories(album->second);
+    for (genres_type::iterator genre=genres.begin();
+        genre!=genres.end(); ++genre) {
+      albums_type albums(genre->second);
 
-      for (directories_type::iterator directory=directories.begin();
-          directory!=directories.end(); ++directory) {
-        *output << "    Directory '" << directory->first << "': " << endl;
-        errors_type errors(directory->second);
+      for (albums_type::iterator album=albums.begin();
+          album!=albums.end(); ++album) {
+        *output << "  Album: " << album->first << endl;
+        directories_type directories(album->second);
 
-        for (errors_type::iterator error=errors.begin();
-            error!=errors.end(); ++error) {
-          *output << "      * " << *error << endl;
+        for (directories_type::iterator directory=directories.begin();
+            directory!=directories.end(); ++directory) {
+          *output << "    Directory '" << directory->first << "': " << endl;
+          errors_type errors(directory->second);
+
+          for (errors_type::iterator error=errors.begin();
+              error!=errors.end(); ++error) {
+            *output << "      * " << *error << endl;
+          }
         }
       }
     }
@@ -79,18 +84,22 @@ void Reporter::generate_csv() {
   ss << "Artist,Album,Directory,Error(s)" << endl;
   for (report_map_type::iterator artist=report.begin();
       artist!=report.end(); ++artist) {
-    albums_type albums(artist->second);
-    for (albums_type::iterator album=albums.begin();
-        album!=albums.end(); ++album) {
-      directories_type directories(album->second);
-      for (directories_type::iterator directory=directories.begin();
-          directory!=directories.end(); ++directory) {
-        ss << "\"" << artist->first << "\",";
-        ss << "\"" << album->first << "\",";
-        ss << "\"" << directory->first << "\",";
-        errors_type errors(directory->second);
-        ss << boost::algorithm::join(errors, "|");
-        ss << endl;
+    genres_type genres(artist->second);
+    for (genres_type::iterator genre=genres.begin();
+        genre!=genres.end(); ++genre) {
+      albums_type albums(genre->second);
+      for (albums_type::iterator album=albums.begin();
+          album!=albums.end(); ++album) {
+        directories_type directories(album->second);
+        for (directories_type::iterator directory=directories.begin();
+            directory!=directories.end(); ++directory) {
+          ss << "\"" << artist->first << "\",";
+          ss << "\"" << album->first << "\",";
+          ss << "\"" << directory->first << "\",";
+          errors_type errors(directory->second);
+          ss << boost::algorithm::join(errors, "|");
+          ss << endl;
+        }
       }
     }
   }
@@ -137,7 +146,6 @@ void Reporter::iterate_directory() {
       continue;
     }
     string file_type = get_file_type(file->path().string());
-    // Only consider audio files
     if (file_type == "audio/mpeg") {
       MP3Scanner mp3_scanner(file->path().string(),&report);
       mp3_scanner.scan();
@@ -154,4 +162,6 @@ void Reporter::iterate_directory() {
       cerr << "Missing support for type " << file_type << endl;
     }
   }
+  MetaScanner meta_scanner(&report);
+  meta_scanner.scan();
 }
