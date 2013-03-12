@@ -4,6 +4,7 @@ MP3Report
 *.a
 *.o
 tags
+doc/
 
 Makefile
 CMakeFiles

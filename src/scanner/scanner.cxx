@@ -5,9 +5,9 @@ using namespace std;
 #include "scanner.hxx"
 
 Scanner::Scanner(string file, report_map_type* report) {
-  file = file;
-  report = report;
-  directory = dirname(file);
+  this->file = file;
+  this->report = report;
+  this->directory = dirname(file);
 }
 
 Scanner::Scanner(report_map_type* report) {
