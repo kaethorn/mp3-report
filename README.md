@@ -1,7 +1,7 @@
 mp3-report
 ==========
 
-Auio file ID3 tag consistency reporter
+Audio file tag consistency reporter
 
 ## About
 Finds out if there's something wrong with albums in your music collection.
