@@ -43,7 +43,7 @@ int main (int argc, char *argv[]) {
     return 0;
   }
   if (vm.count("version")) {
-    cout << argv[0] << " version " << MP3Report_VERSION_MAJOR << "." << MP3Report_VERSION_MINOR << endl;
+    cout << argv[0] << " version " << MP3REPORT_VERSION_MAJOR << "." << MP3REPORT_VERSION_MINOR << endl;
     return 0;
   }
 
