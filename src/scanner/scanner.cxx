@@ -4,16 +4,17 @@ using namespace std;
 
 #include "scanner.hxx"
 
-Scanner::Scanner(string f, report_map_type* r) {
-  file = f;
-  report = r;
+Scanner::Scanner(string file, report_map_type* report) {
+  file = file;
+  report = report;
+  directory = dirname(file);
 }
 
-Scanner::Scanner(report_map_type* r) {
-  report = r;
+Scanner::Scanner(report_map_type* report) {
+  report = report;
 }
 
-void Scanner::add_to_report(const string artist, const string genre,
+void Scanner::addToReport(const string artist, const string genre,
     const string album, const string directory, const string error) {
   (*report)[artist][genre][album][directory].insert(error);
 }

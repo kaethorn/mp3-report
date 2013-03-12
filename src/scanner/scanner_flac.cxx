@@ -1,25 +1,27 @@
 #include "scanner_flac.hxx"
 
 void FLACScanner::scan() {
-  TagLib::FLAC::File file_tag(file.c_str());
+  TagLib::FLAC::File fileTag(file.c_str());
+
+  checkFLACTags(&fileTag);
+}
+
+void FLACScanner::checkFLACTags(TagLib::FLAC::File *fileTag) {
+  // Retrieve the FLAC tag
+  TagLib::Tag *FLACTag = fileTag->tag();
+
+  // Get common frames
+  string artist(FLACTag->artist().to8Bit(true));
+  string genre(FLACTag->genre().to8Bit(true));
+  string album(FLACTag->album().to8Bit(true));
 
   // Find tracks with missing album art
-  report_missing_art(&file_tag);
+  if (fileTag->pictureList().size() < 1) {
+    addToReport(artist, genre, album, directory, "missing_art");
+  }
 
   // Find tracks with more than one album art
-  report_multiple_art(&file_tag);
-}
-
-void FLACScanner::report_missing_art(TagLib::FLAC::File *file_tag) {
-  TagLib::Tag *flac_tag = file_tag->tag();
-  if (file_tag->pictureList().size() < 1) {
-    add_to_report(flac_tag->artist().to8Bit(true), flac_tag->genre().to8Bit(true), flac_tag->album().to8Bit(true), dirname(file), "missing_art");
-  }
-}
-
-void FLACScanner::report_multiple_art(TagLib::FLAC::File *file_tag) {
-  TagLib::Tag *flac_tag = file_tag->tag();
-  if (file_tag->pictureList().size() > 1) {
-    add_to_report(flac_tag->artist().to8Bit(true), flac_tag->genre().to8Bit(true), flac_tag->album().to8Bit(true), dirname(file), "multiple_art");
+  if (fileTag->pictureList().size() > 1) {
+    addToReport(artist, genre, album, directory, "multiple_art");
   }
 }

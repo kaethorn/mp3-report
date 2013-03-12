@@ -2,12 +2,38 @@
 
 #include "scanner.hxx"
 
+/*! \class OggVorbisScanner
+ * Ogg Vorbis file scanner
+ */
 class OggVorbisScanner: public Scanner {
 
   public:
-  OggVorbisScanner(string f, report_map_type* r) : Scanner(f, r) {};
-  void scan();
+
+    /*!
+     * Constructs a scanner for \a file in ogg format. It will
+     * populate \a report with scan results.
+     *
+     * \see Scanner::Scanner
+     *
+     * \param [in]     file   The input file path.
+     * \param [in,out] report A pointer to the report for scan results.
+     */
+    OggVorbisScanner(string file, report_map_type* report)
+      : Scanner(file, report) {};
+
+    /*!
+     * Invokes private method scanner on the tags of the file defined in the
+     * instance's file attribute.
+     */
+    void scan();
+
 
   private:
-  void report_missing_art(TagLib::Ogg::Vorbis::File *file_tag);
+
+    /*!
+     * Scans \a fileTag for tag inconsistencies.
+     *
+     * \param [in] fileTag A pointer to the ogg file tag object
+     */
+    void checkOggVorbisTags(TagLib::Ogg::Vorbis::File *fileTag);
 };

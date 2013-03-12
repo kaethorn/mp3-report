@@ -1,28 +1,27 @@
 #include "scanner_mp4.hxx"
 
 void MP4Scanner::scan() {
-  TagLib::MP4::File file_tag(file.c_str());
+  TagLib::MP4::File fileTag(file.c_str());
+
+  checkMP4Tags(&fileTag);
+}
+
+void MP4Scanner::checkMP4Tags(TagLib::MP4::File *fileTag) {
+  // Retrieve the MP4 tag
+  TagLib::MP4::Tag *MP4Tag = fileTag->tag();
+
+  // Get common frames
+  string artist(MP4Tag->artist().to8Bit(true));
+  string genre(MP4Tag->genre().to8Bit(true));
+  string album(MP4Tag->album().to8Bit(true));
 
   // Find tracks with missing album art
-  report_missing_art(&file_tag);
-
+  if (!MP4Tag->itemListMap().contains("covr")) {
+    addToReport(artist, genre, album, directory, "missing_art");
+  } else {
   // Find tracks with more than one album art
-  report_multiple_art(&file_tag);
-}
-
-void MP4Scanner::report_missing_art(TagLib::MP4::File *file_tag) {
-  TagLib::MP4::Tag *mp4_tag = file_tag->tag();
-  if (!mp4_tag->itemListMap().contains("covr")) {
-    add_to_report(mp4_tag->artist().to8Bit(true), mp4_tag->genre().to8Bit(true), mp4_tag->album().to8Bit(true), dirname(file), "missing_art");
-  }
-}
-
-void MP4Scanner::report_multiple_art(TagLib::MP4::File *file_tag) {
-  TagLib::MP4::Tag *mp4_tag = file_tag->tag();
-  if (mp4_tag->itemListMap().contains("covr")) {
-    TagLib::MP4::CoverArtList cover_art_list(mp4_tag->itemListMap()["covr"].toCoverArtList());
-    if (cover_art_list.size() > 1) {
-      add_to_report(mp4_tag->artist().to8Bit(true), mp4_tag->genre().to8Bit(true), mp4_tag->album().to8Bit(true), dirname(file), "multiple_art");
+    if (MP4Tag->itemListMap()["covr"].toCoverArtList().size() > 1) {
+      addToReport(artist, genre, album, directory, "multiple_art");
     }
   }
 }
