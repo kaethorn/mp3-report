@@ -1,3 +1,4 @@
+#include <boost/regex.hpp>
 #include <id3v2tag.h>
 #include <id3v1tag.h>
 #include <id3v2frame.h>
@@ -91,10 +92,19 @@ void MP3Scanner::checkID3v2Tags(TagLib::MPEG::File *fileTag) {
     addToReport(artist, genre, album, directory, "obsolete_id3v2_version");
   }
 
-  // Find track containing album artist tags
+  // Find tracks containing album artist tags
   // FIXME album artists aren't bad per se, but check for albums with differing tags
   if (!ID3v2Tag->frameListMap()["TPE2"].isEmpty()) {
     addToReport(artist, genre, album, directory, "album_artist");
+  }
+
+  // Find tracks containing track numbers that are not formatted as <num>/<total>
+  if (!ID3v2Tag->frameListMap()["TRCK"].isEmpty()) {
+    static const boost::regex e("\\d{2}/\\d{2}");
+    string track = ID3v2Tag->frameListMap()["TRCK"].front()->toString().to8Bit(true);
+    if (!boost::regex_match(track, e)) {
+      addToReport(artist, genre, album, directory, "invalid_track");
+    }
   }
 
   // Make sure the title, artist, album and genre tags are UTF-8 encoded

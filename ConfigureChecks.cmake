@@ -17,7 +17,7 @@ else()
 endif()
 
 # Detect Boost and its components
-find_package(Boost 1.49.0 COMPONENTS program_options system filesystem REQUIRED)
+find_package(Boost 1.49.0 COMPONENTS program_options system filesystem regex REQUIRED)
 if (Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
 else()
