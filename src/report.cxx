@@ -9,6 +9,7 @@
  */
 
 #include <boost/program_options.hpp>
+#include <boost/filesystem.hpp>
 namespace po = boost::program_options;
 
 #include <iostream>
@@ -46,7 +47,8 @@ int main (int argc, char *argv[]) {
     return 0;
   }
   if (vm.count("version")) {
-    cout << argv[0] << " version " << MP3REPORT_VERSION_MAJOR << "." << MP3REPORT_VERSION_MINOR << endl;
+    cout << boost::filesystem::basename(argv[0]) << " version " << 
+      MP3REPORT_VERSION_MAJOR << "." << MP3REPORT_VERSION_MINOR << endl;
     return 0;
   }
 
