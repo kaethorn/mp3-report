@@ -28,7 +28,7 @@ class MP4Scanner: public Scanner {
      * \param [in]     file   The input file path.
      * \param [in,out] report A pointer to the report for scan results.
      */
-    MP4Scanner(string file, report_map_type* report)
+    MP4Scanner(string file, ReportMap* report)
       : Scanner(file, report) {};
 
     /*!

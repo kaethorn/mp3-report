@@ -4,13 +4,13 @@ using namespace std;
 
 #include "scanner.hxx"
 
-Scanner::Scanner(string file, report_map_type* report) {
+Scanner::Scanner(string file, ReportMap* report) {
   this->file = file;
   this->report = report;
   this->directory = dirname(file);
 }
 
-Scanner::Scanner(report_map_type* report) {
+Scanner::Scanner(ReportMap* report) {
   report = report;
 }
 

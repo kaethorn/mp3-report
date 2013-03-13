@@ -40,3 +40,5 @@ The following report types are available:
 
 ## TODO
 * add more tests and comments (e.g. one per reporter per file format)
+* escape reserved characters in CSV strings
+* HTML reports

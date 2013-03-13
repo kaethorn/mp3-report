@@ -18,7 +18,7 @@ Reporter::Reporter(const string* directory, const string* reportType,
   this->directory = directory;
   this->reportType = reportType;
   this->outputPath = outputPath;
-  report = report_map_type();
+  report = Scanner::ReportMap();
 
   // Determine where the output will be written (file or stdout).
   if (outputPath->size() == 0) {
@@ -51,26 +51,26 @@ void Reporter::generate() {
 }
 
 void Reporter::generatePlain() {
-  for (report_map_type::iterator artist=report.begin();
+  for (Scanner::ReportMap::iterator artist=report.begin();
       artist!=report.end(); ++artist) {
-    genres_type genres(artist->second);
+    Scanner::Genres genres(artist->second);
     *output << "Artist: " << artist->first << endl;
 
-    for (genres_type::iterator genre=genres.begin();
+    for (Scanner::Genres::iterator genre=genres.begin();
         genre!=genres.end(); ++genre) {
-      albums_type albums(genre->second);
+      Scanner::Albums albums(genre->second);
 
-      for (albums_type::iterator album=albums.begin();
+      for (Scanner::Albums::iterator album=albums.begin();
           album!=albums.end(); ++album) {
         *output << "  Album: " << album->first << endl;
-        directories_type directories(album->second);
+        Scanner::Directories directories(album->second);
 
-        for (directories_type::iterator directory=directories.begin();
+        for (Scanner::Directories::iterator directory=directories.begin();
             directory!=directories.end(); ++directory) {
           *output << "    Directory '" << directory->first << "': " << endl;
-          errors_type errors(directory->second);
+          Scanner::Errors errors(directory->second);
 
-          for (errors_type::iterator error=errors.begin();
+          for (Scanner::Errors::iterator error=errors.begin();
               error!=errors.end(); ++error) {
             *output << "      * " << *error << endl;
           }
@@ -84,21 +84,21 @@ void Reporter::generatePlain() {
 void Reporter::generateCSV() {
   std::ostringstream ss;
   ss << "Artist,Album,Directory,Error(s)" << endl;
-  for (report_map_type::iterator artist=report.begin();
+  for (Scanner::ReportMap::iterator artist=report.begin();
       artist!=report.end(); ++artist) {
-    genres_type genres(artist->second);
-    for (genres_type::iterator genre=genres.begin();
+    Scanner::Genres genres(artist->second);
+    for (Scanner::Genres::iterator genre=genres.begin();
         genre!=genres.end(); ++genre) {
-      albums_type albums(genre->second);
-      for (albums_type::iterator album=albums.begin();
+      Scanner::Albums albums(genre->second);
+      for (Scanner::Albums::iterator album=albums.begin();
           album!=albums.end(); ++album) {
-        directories_type directories(album->second);
-        for (directories_type::iterator directory=directories.begin();
+        Scanner::Directories directories(album->second);
+        for (Scanner::Directories::iterator directory=directories.begin();
             directory!=directories.end(); ++directory) {
           ss << "\"" << artist->first << "\",";
           ss << "\"" << album->first << "\",";
           ss << "\"" << directory->first << "\",";
-          errors_type errors(directory->second);
+          Scanner::Errors errors(directory->second);
           ss << boost::algorithm::join(errors, "|");
           ss << endl;
         }
@@ -147,23 +147,23 @@ void Reporter::iterateDirectory() {
     if (is_directory(file->status())) {
       continue;
     }
-    string file_type = getFileType(file->path().string());
-    if (file_type == "audio/mpeg") {
-      MP3Scanner mp3_scanner(file->path().string(),&report);
-      mp3_scanner.scan();
-    } else if (file_type == "application/ogg") {
-      OggVorbisScanner ogg_vorbis_scanner(file->path().string(),&report);
-      ogg_vorbis_scanner.scan();
-    } else if (file_type == "audio/x-flac") {
-      FLACScanner flac_scanner(file->path().string(),&report);
-      flac_scanner.scan();
-    } else if (file_type == "audio/mp4") {
-      MP4Scanner mp4_scanner(file->path().string(),&report);
-      mp4_scanner.scan();
-    } else if (file_type.find("audio/") != string::npos) {
-      cerr << "Missing support for type " << file_type << endl;
+    string fileType = getFileType(file->path().string());
+    if (fileType == "audio/mpeg") {
+      MP3Scanner MP3Scanner(file->path().string(),&report);
+      MP3Scanner.scan();
+    } else if (fileType == "application/ogg") {
+      OggVorbisScanner oggVorbisScanner(file->path().string(),&report);
+      oggVorbisScanner.scan();
+    } else if (fileType == "audio/x-flac") {
+      FLACScanner flacScanner(file->path().string(),&report);
+      flacScanner.scan();
+    } else if (fileType == "audio/mp4") {
+      MP4Scanner MP4Scanner(file->path().string(),&report);
+      MP4Scanner.scan();
+    } else if (fileType.find("audio/") != string::npos) {
+      cerr << "Missing support for type " << fileType << endl;
     }
   }
-  MetaScanner meta_scanner(&report);
-  meta_scanner.scan();
+  MetaScanner metaScanner(&report);
+  metaScanner.scan();
 }

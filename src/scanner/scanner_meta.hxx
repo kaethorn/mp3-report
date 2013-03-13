@@ -13,7 +13,7 @@
 /*! \class MetaScanner
  * Scanner for \a report structure
  *
- * \see Report::report
+ * \see Scanner::ReportMap
  */
 class MetaScanner: public Scanner {
 
@@ -24,11 +24,11 @@ class MetaScanner: public Scanner {
      * populate \a report with scan results.
      *
      * \see Scanner::Scanner
-     * \see Report::report
+     * \see Scanner::ReportMap
      *
      * \param [in,out] report A pointer to the report to scan and report to.
      */
-    MetaScanner(report_map_type* report)
+    MetaScanner(ReportMap* report)
       : Scanner(report) {};
 
     /*!

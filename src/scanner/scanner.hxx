@@ -16,12 +16,6 @@
 #include <set>
 using namespace std;
 
-typedef set<string> errors_type;
-typedef map<string, errors_type> directories_type;
-typedef map<string, directories_type> albums_type;
-typedef map<string, albums_type> genres_type;
-typedef map<string, genres_type> report_map_type;
-
 /*! \class Scanner
  * Scanner base class
  */
@@ -30,13 +24,38 @@ class Scanner {
   public:
 
     /*!
+     * A set of error strings.
+     */
+    typedef set<string> Errors;
+
+    /*!
+     * A map between directory names and an error set.
+     */
+    typedef map<string, Errors> Directories;
+
+    /*!
+     * A map between album names and directory maps.
+     */
+    typedef map<string, Directories> Albums;
+
+    /*!
+     * A map between genre names and album maps.
+     */
+    typedef map<string, Albums> Genres;
+
+    /*!
+     * A map between artist names and genre maps.
+     */
+    typedef map<string, Genres> ReportMap;
+
+    /*!
      * Construct a scanner for \a file. It will populate \a report
      * with scan results.
      *
      * \param [in]     file   The input file path.
      * \param [in,out] report A pointer to the report for scan results.
      */
-    Scanner(const string file, report_map_type* report);
+    Scanner(const string file, ReportMap* report);
 
     /*!
      * Construct a scanner for \a report. It will add scan results to
@@ -47,7 +66,7 @@ class Scanner {
      *
      * \param [in,out] report A pointer to the report for scan results.
      */
-    Scanner(report_map_type* report);
+    Scanner(ReportMap* report);
 
 
   protected:
@@ -56,7 +75,7 @@ class Scanner {
      * Adds \a error to the error list in this report if it doesn't exist
      * yet.
      *
-     * \see Reporter::report
+     * \see Scanner::ReportMap
      *
      * \param [in] artist    The artist for which to report.
      * \param [in] genre     The genre for which to report.
@@ -83,9 +102,9 @@ class Scanner {
     /*!
      * A pointer to the report structure.
      *
-     * \see Reporter::report
+     * \see Scanner::ReportMap
      */
-    report_map_type* report;
+    ReportMap* report;
 
     /*!
      * A string that holds the directory name of this file.

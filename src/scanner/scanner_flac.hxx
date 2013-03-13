@@ -28,7 +28,7 @@ class FLACScanner: public Scanner {
      * \param [in]     file   The input file path.
      * \param [in,out] report A pointer to the report for scan results.
      */
-    FLACScanner(string file, report_map_type* report)
+    FLACScanner(string file, ReportMap* report)
       : Scanner(file, report) {};
 
     /*!

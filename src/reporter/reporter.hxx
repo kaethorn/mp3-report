@@ -64,7 +64,7 @@ class Reporter {
     /*!
      * The report structure to populate with scan results.
      */
-    report_map_type report;
+    Scanner::ReportMap report;
 
     /*!
      * The output stream associated with either a file or \a cout.

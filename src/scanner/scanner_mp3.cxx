@@ -6,7 +6,7 @@
 
 #include "scanner_mp3.hxx"
 
-MP3Scanner::MP3Scanner(const string file, report_map_type* report)
+MP3Scanner::MP3Scanner(const string file, ReportMap* report)
   : Scanner(file, report) {
   framesToCheck.push_back("TIT2"); // artist
   framesToCheck.push_back("TPE1"); // title

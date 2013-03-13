@@ -28,7 +28,7 @@ class MP3Scanner: public Scanner {
      * \param [in]     file   The input file path.
      * \param [in,out] report A pointer to the report for scan results.
      */
-    MP3Scanner(const string file, report_map_type* report);
+    MP3Scanner(const string file, ReportMap* report);
 
     /*!
      * Invokes private method scanner on the tags of the file defined in the
