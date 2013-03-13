@@ -2,7 +2,7 @@
  * \file scanner_mp3.hxx
  * \brief MP3 scanner class
  *
- * Copyright (c) 2013 Falko Schmidt <kaethorn@gmail.com>
+ * Copyright (c) 2013 Falko Schmidt (kaethorn@gmail.com)
  *
  * Distributed under the MIT License (MIT) (See accompanying file LICENSE.txt
  * or copy at http://opensource.org/licenses/MIT)
