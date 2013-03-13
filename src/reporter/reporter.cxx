@@ -13,43 +13,44 @@
 
 namespace fs = boost::filesystem;
 
-Reporter::Reporter(const string* dir, const string* r_type, const string* o_path) { // Assign private attributes
-  directory = dir;
-  report_type = r_type;
-  output_path = o_path;
+Reporter::Reporter(const string* directory, const string* reportType,
+    const string* outputPath) {
+  this->directory = directory;
+  this->reportType = reportType;
+  this->outputPath = outputPath;
   report = report_map_type();
 
   // Determine where the output will be written (file or stdout).
-  if (o_path->size() == 0) {
+  if (outputPath->size() == 0) {
     output = &std::cout;
   } else {
-    output_file.open(o_path->c_str(), ios::out);
-    output = &output_file;
+    outputFile.open(outputPath->c_str(), ios::out);
+    output = &outputFile;
   }
 }
 
 Reporter::~Reporter() {
-  output_file.close();
+  outputFile.close();
 }
 
 void Reporter::run() {
-  iterate_directory();
+  iterateDirectory();
   generate();
 }
 
 void Reporter::generate() {
-  if (*report_type == "plain") {
-    generate_plain();
-  } else if (*report_type == "csv") {
-    generate_csv();
-  } else if (*report_type == "html_list") {
-    generate_html_list();
-  } else if (*report_type == "html_collapsible") {
-    generate_html_collapsible();
+  if (*reportType == "plain") {
+    generatePlain();
+  } else if (*reportType == "csv") {
+    generateCSV();
+  } else if (*reportType == "html_list") {
+    generateHTMLList();
+  } else if (*reportType == "html_collapsible") {
+    generateHTMLCollapsible();
   }
 }
 
-void Reporter::generate_plain() {
+void Reporter::generatePlain() {
   for (report_map_type::iterator artist=report.begin();
       artist!=report.end(); ++artist) {
     genres_type genres(artist->second);
@@ -79,7 +80,8 @@ void Reporter::generate_plain() {
   }
 }
 
-void Reporter::generate_csv() {
+// FIXME escape "
+void Reporter::generateCSV() {
   std::ostringstream ss;
   ss << "Artist,Album,Directory,Error(s)" << endl;
   for (report_map_type::iterator artist=report.begin();
@@ -106,15 +108,15 @@ void Reporter::generate_csv() {
   *output << ss.str() << endl;
 }
 
-void Reporter::generate_html_list() {
-  cout << "Report type '" << *report_type << "' is not supported yet." << endl;
+void Reporter::generateHTMLList() {
+  cout << "Report type '" << *reportType << "' is not supported yet." << endl;
 }
 
-void Reporter::generate_html_collapsible() {
-  cout << "Report type '" << *report_type << "' is not supported yet." << endl;
+void Reporter::generateHTMLCollapsible() {
+  cout << "Report type '" << *reportType << "' is not supported yet." << endl;
 }
 
-const string Reporter::get_file_type(const string file) {
+const string Reporter::getFileType(const string file) {
   const char *contentType; 
   string type;
 
@@ -139,13 +141,13 @@ const string Reporter::get_file_type(const string file) {
   return type;
 }
 
-void Reporter::iterate_directory() {
+void Reporter::iterateDirectory() {
   for (fs::recursive_directory_iterator end, file(*directory);
       file != end; ++file) {
     if (is_directory(file->status())) {
       continue;
     }
-    string file_type = get_file_type(file->path().string());
+    string file_type = getFileType(file->path().string());
     if (file_type == "audio/mpeg") {
       MP3Scanner mp3_scanner(file->path().string(),&report);
       mp3_scanner.scan();

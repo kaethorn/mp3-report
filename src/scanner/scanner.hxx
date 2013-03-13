@@ -1,3 +1,13 @@
+/*!
+ * \file scanner.hxx
+ * \brief Scanner base class
+ *
+ * Copyright (c) 2013 Falko Schmidt <kaethorn@gmail.com>
+ *
+ * Distributed under the MIT License (MIT) (See accompanying file LICENSE.txt
+ * or copy at http://opensource.org/licenses/MIT)
+ */
+
 #ifndef SCANNER_H
 #define SCANNER_H
 
@@ -13,7 +23,7 @@ typedef map<string, albums_type> genres_type;
 typedef map<string, genres_type> report_map_type;
 
 /*! \class Scanner
- * Scanner meta class
+ * Scanner base class
  */
 class Scanner {
 

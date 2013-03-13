@@ -1,3 +1,13 @@
+/*!
+ * \file scanner_ogg_vorbis.hxx
+ * \brief Ogg Vorbis scanner class
+ *
+ * Copyright (c) 2013 Falko Schmidt <kaethorn@gmail.com>
+ *
+ * Distributed under the MIT License (MIT) (See accompanying file LICENSE.txt
+ * or copy at http://opensource.org/licenses/MIT)
+ */
+
 #include <vorbisfile.h>
 
 #include "scanner.hxx"

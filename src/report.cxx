@@ -1,9 +1,12 @@
-// MP3 consistency reporter
-//
-// Author: Falko Schmidt <kaethorn@gmail.com>
-// Copyright (c) 2013, Falko Schmidt <kaethorn@gmail.com>
-//
-// Redistribution and use is allowed according to the terms of the BSD license.
+/*!
+ * \file report.cxx
+ * \brief Program entry and command line parsing for MP3Report.
+ *
+ * Copyright (c) 2013 Falko Schmidt <kaethorn@gmail.com>
+ *
+ * Distributed under the MIT License (MIT) (See accompanying file LICENSE.txt
+ * or copy at http://opensource.org/licenses/MIT)
+ */
 
 #include <boost/program_options.hpp>
 namespace po = boost::program_options;
