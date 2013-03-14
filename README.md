@@ -41,6 +41,5 @@ The following report types are available:
 
 ## TODO
 * add more tests (e.g. one per reporter per file format)
-* escape reserved characters in CSV strings
 * HTML reports
 * find directories that have differing album names

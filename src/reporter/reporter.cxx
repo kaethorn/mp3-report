@@ -1,5 +1,6 @@
 #include <sstream>
 #include <fstream>
+#include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string/join.hpp>
 #include <magic.h>
@@ -95,9 +96,15 @@ void Reporter::generateCSV() {
         Scanner::Directories directories(album->second);
         for (Scanner::Directories::iterator directory=directories.begin();
             directory!=directories.end(); ++directory) {
-          ss << "\"" << artist->first << "\",";
-          ss << "\"" << album->first << "\",";
-          ss << "\"" << directory->first << "\",";
+          string escapedArtist(artist->first);
+          boost::replace_all(escapedArtist, "\"", "\"\"");
+          string escapedAlbum(album->first);
+          boost::replace_all(escapedAlbum, "\"", "\"\"");
+          string escapedDirectory(directory->first);
+          boost::replace_all(escapedDirectory, "\"", "\"\"");
+          ss << "\"" << escapedArtist << "\",";
+          ss << "\"" << escapedAlbum << "\",";
+          ss << "\"" << escapedDirectory << "\",";
           Scanner::Errors errors(directory->second);
           ss << boost::algorithm::join(errors, "|");
           ss << endl;
