@@ -20,21 +20,21 @@ class MP3Scanner: public Scanner {
   public:
 
     /*!
-     * Constructs a scanner for \a file in MP3 format. It will
-     * populate \a report with scan results.
+     * Constructs a scanner for MP3 files and populates \a report with
+     * scan results.
      *
      * \see Scanner::Scanner
      *
-     * \param [in]     file   The input file path.
      * \param [in,out] report A pointer to the report for scan results.
      */
-    MP3Scanner(const string file, ReportMap* report);
+    MP3Scanner(ReportMap* report);
 
     /*!
-     * Invokes private method scanner on the tags of the file defined in the
-     * instance's file attribute.
+     * Invokes private method scanners on the tags of \a file.
+     *
+     * \param [in] file The file to scan.
      */
-    void scan();
+    void scan(boost::filesystem::path file);
 
 
   private:

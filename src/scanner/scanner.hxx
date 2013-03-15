@@ -15,6 +15,7 @@
 #include <map>
 #include <set>
 using namespace std;
+#include <boost/filesystem.hpp>
 
 /*! \class Scanner
  * Scanner base class
@@ -49,15 +50,6 @@ class Scanner {
     typedef map<string, Genres> ReportMap;
 
     /*!
-     * Construct a scanner for \a file. It will populate \a report
-     * with scan results.
-     *
-     * \param [in]     file   The input file path.
-     * \param [in,out] report A pointer to the report for scan results.
-     */
-    Scanner(const string file, ReportMap* report);
-
-    /*!
      * Construct a scanner for \a report. It will add scan results to
      * \a report.
      *
@@ -89,15 +81,10 @@ class Scanner {
     /*!
      * Determines the directory name for \a path.
      *
-     * \param [in] path The path for which to return the directory name.
+     * \param [in] file The path for which to return the directory name.
      * \return The directory name for the input path.
      */
-    const string dirname(const string path);
-
-    /*!
-     * A string that holds the path to the file to scan by this instance.
-     */
-    string file;
+    const string dirname(const boost::filesystem::path file);
 
     /*!
      * A pointer to the report structure.

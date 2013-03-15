@@ -20,22 +20,21 @@ class OggVorbisScanner: public Scanner {
   public:
 
     /*!
-     * Constructs a scanner for \a file in ogg format. It will
-     * populate \a report with scan results.
+     * Constructs a scanner for ogg files and populates \a report with
+     * scan results.
      *
      * \see Scanner::Scanner
      *
-     * \param [in]     file   The input file path.
      * \param [in,out] report A pointer to the report for scan results.
      */
-    OggVorbisScanner(string file, ReportMap* report)
-      : Scanner(file, report) {};
+    OggVorbisScanner(ReportMap* report) : Scanner(report) {};
 
     /*!
-     * Invokes private method scanner on the tags of the file defined in the
-     * instance's file attribute.
+     * Invokes private method scanner on the tags \a file.
+     *
+     * \param [in] file The file to scan.
      */
-    void scan();
+    void scan(boost::filesystem::path file);
 
 
   private:

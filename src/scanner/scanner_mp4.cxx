@@ -1,7 +1,9 @@
 #include "scanner_mp4.hxx"
 
-void MP4Scanner::scan() {
-  TagLib::MP4::File fileTag(file.c_str());
+void MP4Scanner::scan(boost::filesystem::path file) {
+  string fileName(file.string());
+  directory = dirname(file);
+  TagLib::MP4::File fileTag(fileName.c_str());
 
   checkMP4Tags(&fileTag);
 }

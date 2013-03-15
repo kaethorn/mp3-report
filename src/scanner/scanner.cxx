@@ -4,14 +4,8 @@ using namespace std;
 
 #include "scanner.hxx"
 
-Scanner::Scanner(string file, ReportMap* report) {
-  this->file = file;
-  this->report = report;
-  this->directory = dirname(file);
-}
-
 Scanner::Scanner(ReportMap* report) {
-  report = report;
+  this->report = report;
 }
 
 void Scanner::addToReport(const string artist, const string genre,
@@ -19,6 +13,6 @@ void Scanner::addToReport(const string artist, const string genre,
   (*report)[artist][genre][album][directory].insert(error);
 }
 
-const string Scanner::dirname(const string path) {
-  return boost::filesystem::path(path).parent_path().string();
+const string Scanner::dirname(const boost::filesystem::path file) {
+  return file.parent_path().string();
 }

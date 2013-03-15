@@ -20,28 +20,29 @@ class FileScanner: public Scanner {
   public:
 
     /*!
-     * Constructs a scanner for \a report structure. It will
-     * populate \a report with scan results.
+     * Constructs a generic scanner for files and populates \a report with
+     * scan results.
      *
      * \see Scanner::Scanner
-     * \see Scanner::ReportMap
      *
-     * \param [in]     file   The input file path.
      * \param [in,out] report A pointer to the report to scan and report to.
      */
-    FileScanner(string file, ReportMap* report)
-      : Scanner(file, report) {};
+    FileScanner(ReportMap* report) : Scanner(report) {};
 
     /*!
-     * Invokes private method scanner on this report structure.
+     * Invokes private method scanners on the tags of \a file.
+     *
+     * \param [in] file The file to scan.
      */
-    void scan();
+    void scan(boost::filesystem::path file);
 
 
   private:
 
     /*!
      * Scans this file for magic type/file extension inconsistencies.
+     *
+     * \param [in] file The file to check.
      */
-    void checkFile();
+    void checkFile(const boost::filesystem::path file);
 };

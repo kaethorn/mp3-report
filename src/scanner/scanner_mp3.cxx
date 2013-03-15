@@ -7,16 +7,18 @@
 
 #include "scanner_mp3.hxx"
 
-MP3Scanner::MP3Scanner(const string file, ReportMap* report)
-  : Scanner(file, report) {
+MP3Scanner::MP3Scanner(ReportMap* report)
+  : Scanner(report) {
   framesToCheck.push_back("TIT2"); // artist
   framesToCheck.push_back("TPE1"); // title
   framesToCheck.push_back("TALB"); // album
   framesToCheck.push_back("TCON"); // genre
 };
 
-void MP3Scanner::scan() {
-  TagLib::MPEG::File fileTag(file.c_str());
+void MP3Scanner::scan(boost::filesystem::path file) {
+  string fileName(file.string());
+  directory = dirname(file);
+  TagLib::MPEG::File fileTag(fileName.c_str());
 
   checkID3v1Tags(&fileTag);
   checkID3v2Tags(&fileTag);

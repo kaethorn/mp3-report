@@ -150,6 +150,13 @@ const string Reporter::getFileType(const string file) {
 }
 
 void Reporter::iterateDirectory() {
+  MP3Scanner       MP3Scanner(&report);
+  OggVorbisScanner oggVorbisScanner(&report);
+  FLACScanner      flacScanner(&report);
+  MP4Scanner       MP4Scanner(&report);
+  FileScanner      fileScanner(&report);
+  MetaScanner      metaScanner(&report);
+
   for (fs::recursive_directory_iterator end, file(*directory);
       file != end; ++file) {
     if (is_directory(file->status())) {
@@ -159,28 +166,19 @@ void Reporter::iterateDirectory() {
     // Determine magic file type
     string fileType = getFileType(file->path().string());
 
-    // FIXME
-    // Don't instantiate a new scanner object for each iteration. Instead, use
-    // the ::scan method to provide the file.
     if (fileType == "audio/mpeg") {
-      MP3Scanner MP3Scanner(file->path().string(),&report);
-      MP3Scanner.scan();
+      MP3Scanner.scan(file->path());
     } else if (fileType == "application/ogg") {
-      OggVorbisScanner oggVorbisScanner(file->path().string(),&report);
-      oggVorbisScanner.scan();
+      oggVorbisScanner.scan(file->path());
     } else if (fileType == "audio/x-flac") {
-      FLACScanner flacScanner(file->path().string(),&report);
-      flacScanner.scan();
+      flacScanner.scan(file->path());
     } else if (fileType == "audio/mp4") {
-      MP4Scanner MP4Scanner(file->path().string(),&report);
-      MP4Scanner.scan();
+      MP4Scanner.scan(file->path());
     } else if (fileType.find("audio/") != string::npos) {
       cerr << "Missing support for type " << fileType << endl;
     } else {
-      FileScanner fileScanner(file->path().string(),&report);
-      fileScanner.scan();
+      fileScanner.scan(file->path());
     }
   }
-  MetaScanner metaScanner(&report);
   metaScanner.scan();
 }

@@ -1,7 +1,9 @@
 #include "scanner_ogg_vorbis.hxx"
 
-void OggVorbisScanner::scan() {
-  TagLib::Ogg::Vorbis::File fileTag(file.c_str());
+void OggVorbisScanner::scan(boost::filesystem::path file) {
+  string fileName(file.string());
+  directory = dirname(file);
+  TagLib::Ogg::Vorbis::File fileTag(fileName.c_str());
 
   checkOggVorbisTags(&fileTag);
 }

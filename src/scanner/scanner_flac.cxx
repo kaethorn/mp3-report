@@ -1,7 +1,9 @@
 #include "scanner_flac.hxx"
 
-void FLACScanner::scan() {
-  TagLib::FLAC::File fileTag(file.c_str());
+void FLACScanner::scan(boost::filesystem::path file) {
+  string fileName(file.string());
+  directory = dirname(file);
+  TagLib::FLAC::File fileTag(fileName.c_str());
 
   checkFLACTags(&fileTag);
 }

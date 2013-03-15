@@ -20,22 +20,21 @@ class MP4Scanner: public Scanner {
   public:
 
     /*!
-     * Constructs a scanner for \a file in MP4 format. It will
-     * populate \a report with scan results.
+     * Constructs a scanner for MP4 files and populates \a report with
+     * scan results.
      *
      * \see Scanner::Scanner
      *
-     * \param [in]     file   The input file path.
      * \param [in,out] report A pointer to the report for scan results.
      */
-    MP4Scanner(string file, ReportMap* report)
-      : Scanner(file, report) {};
+    MP4Scanner(ReportMap* report) : Scanner(report) {};
 
     /*!
-     * Invokes private method scanner on the tags of the file defined in the
-     * instance's file attribute.
+     * Invokes private method scanners on the tags of \a file.
+     *
+     * \param [in] file The file to scan.
      */
-    void scan();
+    void scan(boost::filesystem::path file);
 
 
   private:
