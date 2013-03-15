@@ -6,6 +6,9 @@ void MetaScanner::scan() {
 
 void MetaScanner::checkReport() {
   // Find artists that belong to different genres
+  if (report->empty()) {
+    return;
+  }
   for (ReportMap::iterator artist=report->begin();
       artist!=report->end(); ++artist) {
     if (artist->second.size() > 1) {
