@@ -11,6 +11,7 @@
 #include "scanner_flac.hxx"
 #include "scanner_mp4.hxx"
 #include "scanner_meta.hxx"
+#include "scanner_file.hxx"
 
 namespace fs = boost::filesystem;
 
@@ -154,7 +155,13 @@ void Reporter::iterateDirectory() {
     if (is_directory(file->status())) {
       continue;
     }
+
+    // Determine magic file type
     string fileType = getFileType(file->path().string());
+
+    // FIXME
+    // Don't instantiate a new scanner object for each iteration. Instead, use
+    // the ::scan method to provide the file.
     if (fileType == "audio/mpeg") {
       MP3Scanner MP3Scanner(file->path().string(),&report);
       MP3Scanner.scan();
@@ -169,6 +176,9 @@ void Reporter::iterateDirectory() {
       MP4Scanner.scan();
     } else if (fileType.find("audio/") != string::npos) {
       cerr << "Missing support for type " << fileType << endl;
+    } else {
+      FileScanner fileScanner(file->path().string(),&report);
+      fileScanner.scan();
     }
   }
   MetaScanner metaScanner(&report);
