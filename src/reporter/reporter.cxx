@@ -6,20 +6,15 @@
 #include <magic.h>
 
 #include "reporter.hxx"
-#include "scanner_mp3.hxx"
-#include "scanner_ogg_vorbis.hxx"
-#include "scanner_flac.hxx"
-#include "scanner_mp4.hxx"
-#include "scanner_meta.hxx"
-#include "scanner_file.hxx"
 
 namespace fs = boost::filesystem;
 
 Reporter::Reporter(const string* directory, const string* reportType,
-    const string* outputPath) {
+    const string* outputPath, bool strictMagic) {
   this->directory = directory;
   this->reportType = reportType;
   this->outputPath = outputPath;
+  this->strictMagic = strictMagic;
   report = Scanner::ReportMap();
 
   // Determine where the output will be written (file or stdout).
@@ -149,13 +144,56 @@ const string Reporter::getFileType(const string file) {
   return type;
 }
 
+void Reporter::scanByMagicByte(boost::filesystem::path file) {
+  // Determine the file's magic type
+  string fileType = getFileType(file.string());
+
+  if (fileType == "audio/mpeg") {
+    mp3Scanner->scan(file);
+  } else if (fileType == "application/ogg") {
+    oggVorbisScanner->scan(file);
+  } else if (fileType == "audio/x-flac") {
+    flacScanner->scan(file);
+  } else if (fileType == "audio/mp4") {
+    mp4Scanner->scan(file);
+  } else if (fileType.find("audio/") != string::npos) {
+    cerr << "Missing support for type " << fileType << endl;
+  } else {
+    fileScanner->scan(file);
+  }
+}
+
+void Reporter::scanByExtension(boost::filesystem::path file) {
+  // Determine the file's extension
+  string fileExtension = file.extension().string();
+  transform(fileExtension.begin(), fileExtension.end(), fileExtension.begin(), ::tolower);
+
+  if (fileExtension == ".mp3") {
+    mp3Scanner->scan(file);
+  } else if (fileExtension == ".ogg") {
+    oggVorbisScanner->scan(file);
+  } else if (fileExtension == ".flac") {
+    flacScanner->scan(file);
+  } else if ((fileExtension == ".mp4") || (fileExtension == ".aac")) {
+    mp4Scanner->scan(file);
+  }
+}
+
 void Reporter::iterateDirectory() {
+  // Instantiate scanners
   MP3Scanner       MP3Scanner(&report);
-  OggVorbisScanner oggVorbisScanner(&report);
-  FLACScanner      flacScanner(&report);
+  OggVorbisScanner OggVorbisScanner(&report);
+  FLACScanner      FLACScanner(&report);
   MP4Scanner       MP4Scanner(&report);
-  FileScanner      fileScanner(&report);
-  MetaScanner      metaScanner(&report);
+  FileScanner      FileScanner(&report);
+  MetaScanner      MetaScanner(&report);
+
+  this->mp3Scanner       = &MP3Scanner;
+  this->oggVorbisScanner = &OggVorbisScanner;
+  this->flacScanner      = &FLACScanner;
+  this->mp4Scanner       = &MP4Scanner;
+  this->fileScanner      = &FileScanner;
+  this->metaScanner      = &MetaScanner;
 
   for (fs::recursive_directory_iterator end, file(*directory);
       file != end; ++file) {
@@ -163,22 +201,10 @@ void Reporter::iterateDirectory() {
       continue;
     }
 
-    // Determine magic file type
-    string fileType = getFileType(file->path().string());
-
-    if (fileType == "audio/mpeg") {
-      MP3Scanner.scan(file->path());
-    } else if (fileType == "application/ogg") {
-      oggVorbisScanner.scan(file->path());
-    } else if (fileType == "audio/x-flac") {
-      flacScanner.scan(file->path());
-    } else if (fileType == "audio/mp4") {
-      MP4Scanner.scan(file->path());
-    } else if (fileType.find("audio/") != string::npos) {
-      cerr << "Missing support for type " << fileType << endl;
-    } else {
-      fileScanner.scan(file->path());
-    }
+    if (strictMagic)
+      scanByMagicByte(file->path());
+    else
+      scanByExtension(file->path());
   }
-  metaScanner.scan();
+  metaScanner->scan();
 }

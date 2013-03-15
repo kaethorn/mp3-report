@@ -43,3 +43,4 @@ The following report types are available:
 * add more tests (e.g. one per reporter per file format)
 * HTML reports
 * find directories that have differing album names
+* support WMA

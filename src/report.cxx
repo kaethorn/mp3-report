@@ -23,11 +23,14 @@ using namespace std;
 int main (int argc, char *argv[]) {
 
   string reportType, directory, outputPath;
+  bool strictMagic;
 
   po::options_description desc("Allowed options");
   desc.add_options()
     ("help,h", "Produce this help message")
     ("version,v", "Print version string")
+    ("strict-magic,s", po::value<bool>(&strictMagic)->zero_tokens()->default_value(false),
+     "Report if a file's extension doesn't match its magic byte")
     ("report-type,r", po::value<string>(&reportType)->default_value("plain"),
      "Report type (html_list, html_collapsible, csv, plain)")
     ("output-path,o", po::value<string>(&outputPath),
@@ -67,7 +70,7 @@ int main (int argc, char *argv[]) {
     return 1;
   }
 
-  Reporter reporter(&directory, &reportType, &outputPath);
+  Reporter reporter(&directory, &reportType, &outputPath, strictMagic);
   reporter.run();
   return 0;
 }

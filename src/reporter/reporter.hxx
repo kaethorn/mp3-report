@@ -14,6 +14,13 @@
 #include <fstream>
 
 #include "scanner.hxx"
+#include "scanner_mp3.hxx"
+#include "scanner_ogg_vorbis.hxx"
+#include "scanner_flac.hxx"
+#include "scanner_mp4.hxx"
+#include "scanner_meta.hxx"
+#include "scanner_file.hxx"
+
 
 /*! \class Reporter
  * Reports for the given directory
@@ -26,12 +33,13 @@ class Reporter {
      * Constructs a reporter for \a directory that writes results
      * in a \a reportType.
      *
-     * \param [in] directory  The directory in which to search for audio files
-     * \param [in] reportType The report type to use
-     * \param [in] outputPath The output file to write to (\a cout if empty)
+     * \param [in] directory   The directory in which to search for audio files
+     * \param [in] reportType  The report type to use
+     * \param [in] outputPath  The output file to write to (\a cout if empty)
+     * \param [in] strictMagic Flag indicationg whether to use strict checking
      */
     Reporter(const string* directory, const string* reportType,
-        const string* outputPath);
+        const string* outputPath, bool strictMagic);
 
     /*!
      * Destructs the reporter and closes the output file.
@@ -62,6 +70,11 @@ class Reporter {
     const string* outputPath;
 
     /*!
+     * Flag indicating whether to use strict magic type checking.
+     */
+    bool strictMagic;
+
+    /*!
      * The report structure to populate with scan results.
      */
     Scanner::ReportMap report;
@@ -81,6 +94,22 @@ class Reporter {
      * result in \a report.
      */
     void generate();
+
+    /*!
+     * Determines the file type by its magic byte and invokes the
+     * corresponding scanner.
+     *
+     * \param [in] file File to scan.
+     */
+    void scanByMagicByte(boost::filesystem::path file);
+
+    /*!
+     * Determines the file type by its extension and invokes the
+     * corresponding scanner.
+     *
+     * \param [in] file File to scan.
+     */
+    void scanByExtension(boost::filesystem::path file);
 
     /*!
      * Inspects each audio file in \a directory and runs the appropriate
@@ -136,6 +165,36 @@ class Reporter {
      * \note This reporter has not been implemented yet.
      */
     void generateHTMLCollapsible();
+
+    /*!
+     * Instance of an MP3 scanner.
+     */
+    MP3Scanner *mp3Scanner;
+
+    /*!
+     * Instance of an MP4 scanner.
+     */
+    MP4Scanner *mp4Scanner;
+
+    /*!
+     * Instance of an ogg vorbis scanner.
+     */
+    OggVorbisScanner *oggVorbisScanner;
+
+    /*!
+     * Instance of a FLAC scanner.
+     */
+    FLACScanner *flacScanner;
+
+    /*!
+     * Instance of a file scanner.
+     */
+    FileScanner *fileScanner;
+
+    /*!
+     * Instance of a file scanner.
+     */
+    MetaScanner *metaScanner;
 };
 
 #endif
