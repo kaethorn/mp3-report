@@ -165,7 +165,11 @@ void Reporter::scanByMagicByte(boost::filesystem::path file) {
     mp3Scanner->scan(file);
   } else if (fileType == "application/ogg") {
     oggVorbisScanner->scan(file);
+  } else if (fileType == "audio/x-vorbis+ogg") {
+    oggVorbisScanner->scan(file);
   } else if (fileType == "audio/x-flac") {
+    flacScanner->scan(file);
+  } else if (fileType == "audio/flac") {
     flacScanner->scan(file);
   } else if (fileType == "audio/x-ms-wma") {
     asfScanner->scan(file);
