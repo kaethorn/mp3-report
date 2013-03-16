@@ -13,7 +13,7 @@ void FileScanner::checkFile(const boost::filesystem::path file) {
   string fileExtension = file.extension().string();
   transform(fileExtension.begin(), fileExtension.end(), fileExtension.begin(), ::tolower);
 
-  if ((fileExtension == ".mp3") || (fileExtension == ".mp4") || (fileExtension == ".aac") || (fileExtension == ".flac") || (fileExtension == ".ogg")) {
+  if ((fileExtension == ".mp3") || (fileExtension == ".mp4") || (fileExtension == ".aac") || (fileExtension == ".flac") || (fileExtension == ".ogg") || (fileExtension == ".wma")) {
     addToReport("", "", "", directory, "magic_error");
   }
 }

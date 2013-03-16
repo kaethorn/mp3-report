@@ -23,14 +23,16 @@ using namespace std;
 int main (int argc, char *argv[]) {
 
   string reportType, directory, outputPath;
-  bool strictMagic;
+  bool noMagicType, useLibMagic;
 
   po::options_description desc("Allowed options");
   desc.add_options()
     ("help,h", "Produce this help message")
     ("version,v", "Print version string")
-    ("strict-magic,s", po::value<bool>(&strictMagic)->zero_tokens()->default_value(false),
-     "Report if a file's extension doesn't match its magic byte")
+    ("no-magic-type,n", po::value<bool>(&noMagicType)->zero_tokens()->default_value(false),
+     "Detect file types by their name (instead of magic type which is the default)")
+    ("use-libmagic,m", po::value<bool>(&useLibMagic)->zero_tokens()->default_value(false),
+     "Use libmagic when detecting file type by magic type (instead of xdgmime which is the default)")
     ("report-type,r", po::value<string>(&reportType)->default_value("plain"),
      "Report type (html_list, html_collapsible, csv, plain)")
     ("output-path,o", po::value<string>(&outputPath),
@@ -70,7 +72,7 @@ int main (int argc, char *argv[]) {
     return 1;
   }
 
-  Reporter reporter(&directory, &reportType, &outputPath, strictMagic);
+  Reporter reporter(&directory, &reportType, &outputPath, noMagicType, useLibMagic);
   reporter.run();
   return 0;
 }

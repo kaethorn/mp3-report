@@ -16,7 +16,7 @@ Finds out if there's something wrong with albums in your music collection.
 * finds tracks that have a text format other than UTF-8
 * finds artists with multiple genres
 * finds ID3v2 tracks with track frames that are not in the format num/total
-* supports MP3, MP4, FLAC and Ogg Vorbis audio formats
+* supports MP3, MP4, FLAC, WMA and Ogg Vorbis audio formats
 
 ## Setup
 
@@ -43,4 +43,4 @@ The following report types are available:
 * add more tests (e.g. one per reporter per file format)
 * HTML reports
 * find directories that have differing album names
-* support WMA
+* missing album/artist/track/title for all formats
