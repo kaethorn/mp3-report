@@ -17,6 +17,36 @@ void MP4Scanner::checkMP4Tags(TagLib::MP4::File *fileTag) {
   string genre(MP4Tag->genre().to8Bit(true));
   string album(MP4Tag->album().to8Bit(true));
 
+  // Find tracks without an artist tag
+  if (artist.size() == 0) {
+    addToReport(artist, genre, album, directory, "missing_artist");
+  }
+
+  // Find tracks without an album tag
+  if (album.size() == 0) {
+    addToReport(artist, genre, album, directory, "missing_album");
+  }
+
+  // Find tracks without a title tag
+  if (MP4Tag->title().to8Bit(true).size() == 0) {
+    addToReport(artist, genre, album, directory, "missing_title");
+  }
+
+  // Find tracks without a year tag
+  if (MP4Tag->year() == 0) {
+    addToReport(artist, genre, album, directory, "missing_year");
+  }
+
+  // Find tracks without a track number tag
+  if (MP4Tag->track() == 0) {
+    addToReport(artist, genre, album, directory, "missing_track");
+  }
+
+  // Find tracks without a genre tag
+  if (artist.size() == 0) {
+    addToReport(artist, genre, album, directory, "missing_artist");
+  }
+
   // Find tracks with missing album art
   if (!MP4Tag->itemListMap().contains("covr")) {
     addToReport(artist, genre, album, directory, "missing_art");
