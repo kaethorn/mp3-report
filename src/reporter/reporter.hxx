@@ -17,6 +17,7 @@
 #include "scanner_mp3.hxx"
 #include "scanner_ogg_vorbis.hxx"
 #include "scanner_flac.hxx"
+#include "scanner_asf.hxx"
 #include "scanner_mp4.hxx"
 #include "scanner_meta.hxx"
 #include "scanner_file.hxx"
@@ -36,10 +37,11 @@ class Reporter {
      * \param [in] directory   The directory in which to search for audio files
      * \param [in] reportType  The report type to use
      * \param [in] outputPath  The output file to write to (\a cout if empty)
-     * \param [in] strictMagic Flag indicationg whether to use strict checking
+     * \param [in] noMagicType Flag indicating whether to detect the file type by magic type (false) or by file name (true)
+     * \param [in] useLibMagic Flag indicating whether to use xdgmime (false) or libgmagic (true) for file type detection
      */
     Reporter(const string* directory, const string* reportType,
-        const string* outputPath, bool strictMagic);
+        const string* outputPath, bool noMagicType, bool useLibMagic);
 
     /*!
      * Destructs the reporter and closes the output file.
@@ -70,9 +72,16 @@ class Reporter {
     const string* outputPath;
 
     /*!
-     * Flag indicating whether to use strict magic type checking.
+     * Flag indicating whether to detect the file type by magic type (false)
+     * or by file name (true).
      */
-    bool strictMagic;
+    bool noMagicType;
+
+    /*!
+     * Flag indicating whether to use xdgmime (false) or libgmagic (true)
+     * for file type detection.
+     */
+    bool useLibMagic;
 
     /*!
      * The report structure to populate with scan results.
@@ -118,12 +127,21 @@ class Reporter {
     void iterateDirectory();
 
     /*!
-     * Determines the magic file type for \a file.
+     * Determines the magic file type for \a file by using libmagic.
      *
      * \param [in] file File to analyse.
      * \return A string containing the magic type.
      */
-    const string getFileType(const string);
+    const string getFileTypeLibMagic(const string);
+
+    /*!
+     * Determines the file type for \a file by using the freedesktop.org's
+     * shared-mime-type reference implementation.
+     *
+     * \param [in] file File to analyse.
+     * \return A string containing the file type.
+     */
+    const string getFileTypeByXdgMIME(const string);
 
     /*!
      * Produces a simple text report.
@@ -185,6 +203,11 @@ class Reporter {
      * Instance of a FLAC scanner.
      */
     FLACScanner *flacScanner;
+
+    /*!
+     * Instance of a FLAC scanner.
+     */
+    ASFScanner *asfScanner;
 
     /*!
      * Instance of a file scanner.

@@ -4,17 +4,19 @@
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string/join.hpp>
 #include <magic.h>
+#include "xdgmime.h"
 
 #include "reporter.hxx"
 
 namespace fs = boost::filesystem;
 
 Reporter::Reporter(const string* directory, const string* reportType,
-    const string* outputPath, bool strictMagic) {
+    const string* outputPath, bool noMagicType, bool useLibMagic) {
   this->directory = directory;
   this->reportType = reportType;
   this->outputPath = outputPath;
-  this->strictMagic = strictMagic;
+  this->noMagicType = noMagicType;
+  this->useLibMagic = useLibMagic;
   report = Scanner::ReportMap();
 
   // Determine where the output will be written (file or stdout).
@@ -119,7 +121,13 @@ void Reporter::generateHTMLCollapsible() {
   cout << "Report type '" << *reportType << "' is not supported yet." << endl;
 }
 
-const string Reporter::getFileType(const string file) {
+const string Reporter::getFileTypeByXdgMIME(const string file) {
+  const char *type;
+  type = xdg_mime_get_mime_type_for_file(file.c_str(), NULL);
+  return string(type);
+}
+
+const string Reporter::getFileTypeLibMagic(const string file) {
   const char *contentType; 
   string type;
 
@@ -146,7 +154,12 @@ const string Reporter::getFileType(const string file) {
 
 void Reporter::scanByMagicByte(boost::filesystem::path file) {
   // Determine the file's magic type
-  string fileType = getFileType(file.string());
+  string fileType;
+  if (useLibMagic) {
+    fileType = getFileTypeLibMagic(file.string());
+  } else  {
+    fileType = getFileTypeByXdgMIME(file.string());
+  }
 
   if (fileType == "audio/mpeg") {
     mp3Scanner->scan(file);
@@ -154,6 +167,8 @@ void Reporter::scanByMagicByte(boost::filesystem::path file) {
     oggVorbisScanner->scan(file);
   } else if (fileType == "audio/x-flac") {
     flacScanner->scan(file);
+  } else if (fileType == "audio/x-ms-wma") {
+    asfScanner->scan(file);
   } else if (fileType == "audio/mp4") {
     mp4Scanner->scan(file);
   } else if (fileType.find("audio/") != string::npos) {
@@ -174,6 +189,8 @@ void Reporter::scanByExtension(boost::filesystem::path file) {
     oggVorbisScanner->scan(file);
   } else if (fileExtension == ".flac") {
     flacScanner->scan(file);
+  } else if (fileExtension == ".wma") {
+    asfScanner->scan(file);
   } else if ((fileExtension == ".mp4") || (fileExtension == ".aac")) {
     mp4Scanner->scan(file);
   }
@@ -184,6 +201,7 @@ void Reporter::iterateDirectory() {
   MP3Scanner       MP3Scanner(&report);
   OggVorbisScanner OggVorbisScanner(&report);
   FLACScanner      FLACScanner(&report);
+  ASFScanner       ASFScanner(&report);
   MP4Scanner       MP4Scanner(&report);
   FileScanner      FileScanner(&report);
   MetaScanner      MetaScanner(&report);
@@ -191,6 +209,7 @@ void Reporter::iterateDirectory() {
   this->mp3Scanner       = &MP3Scanner;
   this->oggVorbisScanner = &OggVorbisScanner;
   this->flacScanner      = &FLACScanner;
+  this->asfScanner       = &ASFScanner;
   this->mp4Scanner       = &MP4Scanner;
   this->fileScanner      = &FileScanner;
   this->metaScanner      = &MetaScanner;
@@ -201,10 +220,10 @@ void Reporter::iterateDirectory() {
       continue;
     }
 
-    if (strictMagic)
-      scanByMagicByte(file->path());
-    else
+    if (noMagicType)
       scanByExtension(file->path());
+    else
+      scanByMagicByte(file->path());
   }
   metaScanner->scan();
 }
