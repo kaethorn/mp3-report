@@ -43,8 +43,8 @@ void OggVorbisScanner::checkOggVorbisTags(TagLib::Ogg::Vorbis::File *fileTag) {
   }
 
   // Find tracks without a genre tag
-  if (artist.size() == 0) {
-    addToReport(artist, genre, album, directory, "missing_artist");
+  if (genre.size() == 0) {
+    addToReport(artist, genre, album, directory, "missing_genre");
   }
 
   // Find tracks with missing album art
