@@ -104,6 +104,10 @@ run_sample (ogg_missing_year
 run_sample (ogg_missing_track
   "\"ogg\",\"somealbum\",\".+testcases/ogg_missing_track\",missing_track")
 
+# Ogg with an invalid track number format
+run_sample (ogg_invalid_track
+  "\"ogg\",\"somealbum\",\".+testcases/ogg_invalid_track\",invalid_track")
+
 # Ogg with multiple album art
 run_sample (ogg_multiple_art
   "\"ogg\",\"somealbum\",\".+testcases/ogg_multiple_art\",multiple_art")
@@ -156,23 +160,189 @@ run_sample (mp4_perfect
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
 
 
+### WMA samples
+#
+# WMA with an album artist
+run_sample (wma_album_artist
+  "\"wma\",\"somealbum\",\".+testcases/wma_album_artist\",album_artist")
+
+# WMA without an album
+run_sample (wma_missing_album
+  "\"wma\",\"\",\".+testcases/wma_missing_album\",missing_album")
+
+# WMA without album art
+run_sample (wma_missing_art
+  "\"wma\",\"somealbum\",\".+testcases/wma_missing_art\",missing_art")
+
+# WMA without an artist
+run_sample (wma_missing_artist
+  "\"\",\"somealbum\",\".+testcases/wma_missing_artist\",missing_artist")
+
+# WMA without a genre
+run_sample (wma_missing_genre
+  "\"wma\",\"somealbum\",\".+testcases/wma_missing_genre\",missing_genre")
+
+# WMA without a title
+run_sample (wma_missing_title
+  "\"wma\",\"somealbum\",\".+testcases/wma_missing_title\",missing_title")
+
+# WMA without a year
+run_sample (wma_missing_year
+  "\"wma\",\"somealbum\",\".+testcases/wma_missing_year\",missing_year")
+
+# WMA without a track number
+run_sample (wma_missing_track
+  "\"wma\",\"somealbum\",\".+testcases/wma_missing_track\",missing_track")
+
+# WMA with an invalid track number format
+run_sample (wma_invalid_track
+  "\"wma\",\"somealbum\",\".+testcases/wma_invalid_track\",invalid_track")
+
+# WMA with multiple album art
+run_sample (wma_multiple_art
+  "\"wma\",\"somealbum\",\".+testcases/wma_multiple_art\",multiple_art")
+
+# WMA without any flaws
+run_sample (wma_perfect
+  "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
+
+
+### FLAC samples
+#
+# FLAC with an album artist
+run_sample (flac_album_artist
+  "\"flac\",\"somealbum\",\".+testcases/flac_album_artist\",album_artist")
+
+# FLAC without an album
+run_sample (flac_missing_album
+  "\"flac\",\"\",\".+testcases/flac_missing_album\",missing_album")
+
+# FLAC without album art
+run_sample (flac_missing_art
+  "\"flac\",\"somealbum\",\".+testcases/flac_missing_art\",missing_art")
+
+# FLAC without an artist
+run_sample (flac_missing_artist
+  "\"\",\"somealbum\",\".+testcases/flac_missing_artist\",missing_artist")
+
+# FLAC without a genre
+run_sample (flac_missing_genre
+  "\"flac\",\"somealbum\",\".+testcases/flac_missing_genre\",missing_genre")
+
+# FLAC without a title
+run_sample (flac_missing_title
+  "\"flac\",\"somealbum\",\".+testcases/flac_missing_title\",missing_title")
+
+# FLAC without a year
+run_sample (flac_missing_year
+  "\"flac\",\"somealbum\",\".+testcases/flac_missing_year\",missing_year")
+
+# FLAC without a track number
+run_sample (flac_missing_track
+  "\"flac\",\"somealbum\",\".+testcases/flac_missing_track\",missing_track")
+
+# FLAC with an invalid track number format
+run_sample (flac_invalid_track
+  "\"flac\",\"somealbum\",\".+testcases/flac_invalid_track\",invalid_track")
+
+# FLAC with multiple album art
+run_sample (flac_multiple_art
+  "\"flac\",\"somealbum\",\".+testcases/flac_multiple_art\",multiple_art")
+
+# FLAC without any flaws
+run_sample (flac_perfect
+  "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
+
+
 ### MPC samples
 #
-# MPC without any flaws
-run_sample (mpc_perfect
-  "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
+# MPC with an album artist
+run_sample (mpc_album_artist
+  "\"mpc\",\"somealbum\",\".+testcases/mpc_album_artist\",album_artist")
+
+# MPC without an album
+run_sample (mpc_missing_album
+  "\"mpc\",\"\",\".+testcases/mpc_missing_album\",missing_album")
 
 # MPC without album art
 run_sample (mpc_missing_art
   "\"mpc\",\"somealbum\",\".+testcases/mpc_missing_art\",missing_art")
 
+# MPC without an artist
+run_sample (mpc_missing_artist
+  "\"\",\"somealbum\",\".+testcases/mpc_missing_artist\",missing_artist")
+
+# MPC without a genre
+run_sample (mpc_missing_genre
+  "\"mpc\",\"somealbum\",\".+testcases/mpc_missing_genre\",missing_genre")
+
+# MPC without a title
+run_sample (mpc_missing_title
+  "\"mpc\",\"somealbum\",\".+testcases/mpc_missing_title\",missing_title")
+
+# MPC without a year
+run_sample (mpc_missing_year
+  "\"mpc\",\"somealbum\",\".+testcases/mpc_missing_year\",missing_year")
+
+# MPC without a track number
+run_sample (mpc_missing_track
+  "\"mpc\",\"somealbum\",\".+testcases/mpc_missing_track\",missing_track")
+
+# MPC with an invalid track number format
+run_sample (mpc_invalid_track
+  "\"mpc\",\"somealbum\",\".+testcases/mpc_invalid_track\",invalid_track")
+
+# MPC with multiple album art (not yet implemented)
+#run_sample (mpc_multiple_art
+#  "\"mpc\",\"somealbum\",\".+testcases/mpc_multiple_art\",multiple_art")
+
+# MPC without any flaws
+run_sample (mpc_perfect
+  "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
+
 
 ### APE samples
 #
-# APE without any flaws
-run_sample (ape_perfect
-  "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
+# APE with an album artist
+run_sample (ape_album_artist
+  "\"ape\",\"somealbum\",\".+testcases/ape_album_artist\",album_artist")
+
+# APE without an album
+run_sample (ape_missing_album
+  "\"ape\",\"\",\".+testcases/ape_missing_album\",missing_album")
 
 # APE without album art
 run_sample (ape_missing_art
   "\"ape\",\"somealbum\",\".+testcases/ape_missing_art\",missing_art")
+
+# APE without an artist
+run_sample (ape_missing_artist
+  "\"\",\"somealbum\",\".+testcases/ape_missing_artist\",missing_artist")
+
+# APE without a genre
+run_sample (ape_missing_genre
+  "\"ape\",\"somealbum\",\".+testcases/ape_missing_genre\",missing_genre")
+
+# APE without a title
+run_sample (ape_missing_title
+  "\"ape\",\"somealbum\",\".+testcases/ape_missing_title\",missing_title")
+
+# APE without a year
+run_sample (ape_missing_year
+  "\"ape\",\"somealbum\",\".+testcases/ape_missing_year\",missing_year")
+
+# APE without a track number
+run_sample (ape_missing_track
+  "\"ape\",\"somealbum\",\".+testcases/ape_missing_track\",missing_track")
+
+# APE with an invalid track number format
+run_sample (ape_invalid_track
+  "\"ape\",\"somealbum\",\".+testcases/ape_invalid_track\",invalid_track")
+
+# APE with multiple album art (not yet implemented)
+#run_sample (ape_multiple_art
+#  "\"ape\",\"somealbum\",\".+testcases/ape_multiple_art\",multiple_art")
+
+# APE without any flaws
+run_sample (ape_perfect
+  "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")

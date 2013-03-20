@@ -39,7 +39,15 @@ On Debian/Ubuntu:
 The following report types are available:
 * plain (default)
 
+## Tests
+
+Make sure to have ctest installed. Then run
+
+`make test`
+
+to execute tests on various provided sample audio files and their tags.
+
 ## TODO
-* add more tests (e.g. one per reporter per file format)
 * HTML reports
 * find directories that have differing album names
+* find track titles or album names with invalid case

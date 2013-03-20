@@ -95,7 +95,6 @@ void MP3Scanner::checkID3v2Tags(TagLib::MPEG::File *fileTag) {
   }
 
   // Find tracks containing album artist tags
-  // FIXME album artists aren't bad per se, but check for albums with differing tags
   if (!ID3v2Tag->frameListMap()["TPE2"].isEmpty()) {
     addToReport(artist, genre, album, directory, "album_artist");
   }

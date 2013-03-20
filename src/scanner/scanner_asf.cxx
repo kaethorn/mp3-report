@@ -1,3 +1,4 @@
+#include <boost/regex.hpp>
 #include <asftag.h>
 
 #include "scanner_asf.hxx"
@@ -57,5 +58,19 @@ void ASFScanner::checkASFTags(TagLib::ASF::File *fileTag) {
   // Find tracks with more than one album art
   if (ASFTag->attributeListMap()["WM/Picture"].size() > 1) {
     addToReport(artist, genre, album, directory, "multiple_art");
+  }
+
+  // Find tracks containing album artist tags
+  if (!ASFTag->attributeListMap()["WM/AlbumArtist"].isEmpty()) {
+    addToReport(artist, genre, album, directory, "album_artist");
+  }
+
+  // Find tracks containing track numbers that are not formatted as <num>/<total>
+  if (!ASFTag->attributeListMap()["WM/TrackNumber"].isEmpty()) {
+    static const boost::regex e("\\d{2}/\\d{2}");
+    string track = ASFTag->attributeListMap()["WM/TrackNumber"].front().toString().to8Bit(true);
+    if (!boost::regex_match(track, e)) {
+      addToReport(artist, genre, album, directory, "invalid_track");
+    }
   }
 }
