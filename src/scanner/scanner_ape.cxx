@@ -51,10 +51,5 @@ void APEScanner::checkAPETags(TagLib::APE::File *fileTag) {
   // Find tracks with missing album art
   if (!APETag->itemListMap().contains("COVER ART (FRONT)")) {
     addToReport(artist, genre, album, directory, "missing_art");
-  } else {
-  // Find tracks with more than one album art
-    if (APETag->itemListMap()["COVER ART (FRONT)"].values().size() > 1) {
-      addToReport(artist, genre, album, directory, "multiple_art");
-    }  
   }  
 }
