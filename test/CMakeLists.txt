@@ -10,6 +10,9 @@ macro (run_sample test_name result)
     PROPERTIES PASS_REGULAR_EXPRESSION ${result})
 endmacro (run_sample)
 
+
+### MP3 samples
+#
 # MP3 with an album artist
 run_sample (mp3_album_artist 
   "\"mp3\",\"somealbum\",\".+testcases/mp3_album_artist\",album_artist")
@@ -67,6 +70,8 @@ run_sample (mp3_perfect
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
 
 
+### Ogg samples
+#
 # Ogg with an album artist
 run_sample (ogg_album_artist
   "\"ogg\",\"somealbum\",\".+testcases/ogg_album_artist\",album_artist")
@@ -108,6 +113,51 @@ run_sample (ogg_perfect
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
 
 
+### MP4 samples
+#
+# MP4 with an album artist
+run_sample (mp4_album_artist
+  "\"mp4\",\"somealbum\",\".+testcases/mp4_album_artist\",album_artist")
+
+# MP4 without an album
+run_sample (mp4_missing_album
+  "\"mp4\",\"\",\".+testcases/mp4_missing_album\",missing_album")
+
+# MP4 without album art
+run_sample (mp4_missing_art
+  "\"mp4\",\"somealbum\",\".+testcases/mp4_missing_art\",missing_art")
+
+# MP4 without an artist
+run_sample (mp4_missing_artist
+  "\"\",\"somealbum\",\".+testcases/mp4_missing_artist\",missing_artist")
+
+# MP4 without a genre
+run_sample (mp4_missing_genre
+  "\"mp4\",\"somealbum\",\".+testcases/mp4_missing_genre\",missing_genre")
+
+# MP4 without a title
+run_sample (mp4_missing_title
+  "\"mp4\",\"somealbum\",\".+testcases/mp4_missing_title\",missing_title")
+
+# MP4 without a year
+run_sample (mp4_missing_year
+  "\"mp4\",\"somealbum\",\".+testcases/mp4_missing_year\",missing_year")
+
+# MP4 without a track number
+run_sample (mp4_missing_track
+  "\"mp4\",\"somealbum\",\".+testcases/mp4_missing_track\",missing_track")
+
+# MP4 with multiple album art
+run_sample (mp4_multiple_art
+  "\"mp4\",\"somealbum\",\".+testcases/mp4_multiple_art\",multiple_art")
+
+# MP4 without any flaws
+run_sample (mp4_perfect
+  "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
+
+
+### MPC samples
+#
 # MPC without any flaws
 run_sample (mpc_perfect
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
@@ -117,6 +167,8 @@ run_sample (mpc_missing_art
   "\"mpc\",\"somealbum\",\".+testcases/mpc_missing_art\",missing_art")
 
 
+### APE samples
+#
 # APE without any flaws
 run_sample (ape_perfect
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")

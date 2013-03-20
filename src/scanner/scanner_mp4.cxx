@@ -56,4 +56,9 @@ void MP4Scanner::checkMP4Tags(TagLib::MP4::File *fileTag) {
       addToReport(artist, genre, album, directory, "multiple_art");
     }
   }
+
+  // Find tracks containing album artist tags
+  if (MP4Tag->itemListMap().contains("aART")) {
+    addToReport(artist, genre, album, directory, "album_artist");
+  }
 }
