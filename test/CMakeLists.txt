@@ -67,6 +67,47 @@ run_sample (mp3_perfect
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
 
 
+# Ogg with an album artist
+run_sample (ogg_album_artist
+  "\"ogg\",\"somealbum\",\".+testcases/ogg_album_artist\",album_artist")
+
+# Ogg without an album
+run_sample (ogg_missing_album
+  "\"ogg\",\"\",\".+testcases/ogg_missing_album\",missing_album")
+
+# Ogg without album art
+run_sample (ogg_missing_art
+  "\"ogg\",\"somealbum\",\".+testcases/ogg_missing_art\",missing_art")
+
+# Ogg without an artist
+run_sample (ogg_missing_artist
+  "\"\",\"somealbum\",\".+testcases/ogg_missing_artist\",missing_artist")
+
+# Ogg without a genre
+run_sample (ogg_missing_genre
+  "\"ogg\",\"somealbum\",\".+testcases/ogg_missing_genre\",missing_genre")
+
+# Ogg without a title
+run_sample (ogg_missing_title
+  "\"ogg\",\"somealbum\",\".+testcases/ogg_missing_title\",missing_title")
+
+# Ogg without a year
+run_sample (ogg_missing_year
+  "\"ogg\",\"somealbum\",\".+testcases/ogg_missing_year\",missing_year")
+
+# Ogg without a track number
+run_sample (ogg_missing_track
+  "\"ogg\",\"somealbum\",\".+testcases/ogg_missing_track\",missing_track")
+
+# Ogg with multiple album art
+run_sample (ogg_multiple_art
+  "\"ogg\",\"somealbum\",\".+testcases/ogg_multiple_art\",multiple_art")
+
+# Ogg without any flaws
+run_sample (ogg_perfect
+  "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
+
+
 # MPC without any flaws
 run_sample (mpc_perfect
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")

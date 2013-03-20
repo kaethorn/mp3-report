@@ -50,5 +50,15 @@ void OggVorbisScanner::checkOggVorbisTags(TagLib::Ogg::Vorbis::File *fileTag) {
   // Find tracks with missing album art
   if (oggVorbisTag->fieldListMap()["METADATA_BLOCK_PICTURE"].isEmpty()) {
     addToReport(artist, genre, album, directory, "missing_art");
+  } else {
+  // Find tracks with more than one album art
+    if (oggVorbisTag->fieldListMap()["METADATA_BLOCK_PICTURE"].size() > 1) {
+      addToReport(artist, genre, album, directory, "multiple_art");
+    }
+  }
+
+  // Find tracks containing album artist tags
+  if (!oggVorbisTag->fieldListMap()["ALBUMARTIST"].isEmpty()) {
+    addToReport(artist, genre, album, directory, "album_artist");
   }
 }
