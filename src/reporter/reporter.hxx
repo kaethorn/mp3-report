@@ -17,6 +17,8 @@
 #include "scanner_mp3.hxx"
 #include "scanner_ogg_vorbis.hxx"
 #include "scanner_flac.hxx"
+#include "scanner_mpc.hxx"
+#include "scanner_ape.hxx"
 #include "scanner_asf.hxx"
 #include "scanner_mp4.hxx"
 #include "scanner_meta.hxx"
@@ -205,7 +207,17 @@ class Reporter {
     FLACScanner *flacScanner;
 
     /*!
-     * Instance of a FLAC scanner.
+     * Instance of a MPC scanner.
+     */
+    MPCScanner *mpcScanner;
+
+    /*!
+     * Instance of a APE scanner.
+     */
+    APEScanner *apeScanner;
+
+    /*!
+     * Instance of a ASF scanner.
      */
     ASFScanner *asfScanner;
 

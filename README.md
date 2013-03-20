@@ -16,7 +16,7 @@ Finds out if there's something wrong with albums in your music collection.
 * finds tracks that have a text format other than UTF-8
 * finds artists with multiple genres
 * finds ID3v2 tracks with track frames that are not in the format num/total
-* supports MP3, MP4, FLAC, WMA and Ogg Vorbis audio formats
+* supports MP3, MP4, FLAC, WMA, MPC, APE and Ogg Vorbis audio formats
 
 ## Setup
 

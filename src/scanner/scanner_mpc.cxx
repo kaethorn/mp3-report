@@ -1,16 +1,17 @@
-#include "scanner_flac.hxx"
+#include "scanner_mpc.hxx"
 
-void FLACScanner::scan(boost::filesystem::path file) {
+void MPCScanner::scan(boost::filesystem::path file) {
   string fileName(file.string());
   directory = dirname(file);
-  TagLib::FLAC::File fileTag(fileName.c_str());
+  TagLib::MPC::File fileTag(fileName.c_str());
 
-  checkFLACTags(&fileTag);
+  checkMPCTags(&fileTag);
 }
 
-void FLACScanner::checkFLACTags(TagLib::FLAC::File *fileTag) {
-  // Retrieve the generic tag
+void MPCScanner::checkMPCTags(TagLib::MPC::File *fileTag) {
+  // Retrieve the generic and MPC tags
   TagLib::Tag *tag = fileTag->tag();
+  TagLib::APE::Tag *APETag = fileTag->APETag();
 
   // Get common frames
   string artist(tag->artist().to8Bit(true));
@@ -48,12 +49,12 @@ void FLACScanner::checkFLACTags(TagLib::FLAC::File *fileTag) {
   }
 
   // Find tracks with missing album art
-  if (fileTag->pictureList().size() < 1) {
+  if (!APETag->itemListMap().contains("COVER ART (FRONT)")) {
     addToReport(artist, genre, album, directory, "missing_art");
-  }
-
+  } else {
   // Find tracks with more than one album art
-  if (fileTag->pictureList().size() > 1) {
-    addToReport(artist, genre, album, directory, "multiple_art");
+    if (APETag->itemListMap()["COVER ART (FRONT)"].values().size() > 1) {
+      addToReport(artist, genre, album, directory, "multiple_art");
+    }
   }
 }

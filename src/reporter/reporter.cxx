@@ -171,6 +171,10 @@ void Reporter::scanByMagicByte(boost::filesystem::path file) {
     flacScanner->scan(file);
   } else if (fileType == "audio/flac") {
     flacScanner->scan(file);
+  } else if (fileType == "audio/x-ape") {
+    apeScanner->scan(file);
+  } else if (fileType == "audio/x-musepack") {
+    mpcScanner->scan(file);
   } else if (fileType == "audio/x-ms-wma") {
     asfScanner->scan(file);
   } else if (fileType == "audio/mp4") {
@@ -193,6 +197,10 @@ void Reporter::scanByExtension(boost::filesystem::path file) {
     oggVorbisScanner->scan(file);
   } else if (fileExtension == ".flac") {
     flacScanner->scan(file);
+  } else if (fileExtension == ".mpc") {
+    mpcScanner->scan(file);
+  } else if (fileExtension == ".ape") {
+    apeScanner->scan(file);
   } else if (fileExtension == ".wma") {
     asfScanner->scan(file);
   } else if ((fileExtension == ".mp4") || (fileExtension == ".aac")) {
@@ -205,6 +213,8 @@ void Reporter::iterateDirectory() {
   MP3Scanner       MP3Scanner(&report);
   OggVorbisScanner OggVorbisScanner(&report);
   FLACScanner      FLACScanner(&report);
+  MPCScanner       MPCScanner(&report);
+  APEScanner       APEScanner(&report);
   ASFScanner       ASFScanner(&report);
   MP4Scanner       MP4Scanner(&report);
   FileScanner      FileScanner(&report);
@@ -213,6 +223,8 @@ void Reporter::iterateDirectory() {
   this->mp3Scanner       = &MP3Scanner;
   this->oggVorbisScanner = &OggVorbisScanner;
   this->flacScanner      = &FLACScanner;
+  this->mpcScanner       = &MPCScanner;
+  this->apeScanner       = &APEScanner;
   this->asfScanner       = &ASFScanner;
   this->mp4Scanner       = &MP4Scanner;
   this->fileScanner      = &FileScanner;

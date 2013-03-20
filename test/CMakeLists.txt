@@ -65,3 +65,21 @@ run_sample (mp3_multiple_art
 # MP3 without any flaws
 run_sample (mp3_perfect
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
+
+
+# MPC without any flaws
+run_sample (mpc_perfect
+  "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
+
+# MPC without album art
+run_sample (mpc_missing_art
+  "\"mpc\",\"somealbum\",\".+testcases/mpc_missing_art\",missing_art")
+
+
+# APE without any flaws
+run_sample (ape_perfect
+  "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
+
+# APE without album art
+run_sample (ape_missing_art
+  "\"ape\",\"somealbum\",\".+testcases/ape_missing_art\",missing_art")
