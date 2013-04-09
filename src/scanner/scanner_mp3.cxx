@@ -59,7 +59,8 @@ void MP3Scanner::checkID3v2Tags(TagLib::MPEG::File *fileTag) {
   }
 
   // Find tracks without a title tag
-  if (ID3v2Tag->title().to8Bit(true).size() == 0) {
+  int titleSize = ID3v2Tag->title().size();
+  if (titleSize == 0) {
     addToReport(artist, genre, album, directory, "missing_title");
   }
 
@@ -106,6 +107,12 @@ void MP3Scanner::checkID3v2Tags(TagLib::MPEG::File *fileTag) {
     if (!boost::regex_match(track, e)) {
       addToReport(artist, genre, album, directory, "invalid_track");
     }
+  }
+
+  // Find track titles that have potentially been truncated during
+  // conversion from ID3v1 to ID3v2
+  if (titleSize == 30) {
+    addToReport(artist, genre, album, directory, "truncation_warning");
   }
 
   // Make sure the title, artist, album and genre tags are UTF-8 encoded

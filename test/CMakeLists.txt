@@ -65,6 +65,10 @@ run_sample (mp3_invalid_track
 run_sample (mp3_multiple_art
   "\"mp3\",\"somealbum\",\".+testcases/mp3_multiple_art\",multiple_art")
 
+# MP3 with truncated title
+run_sample (mp3_truncated
+  "\"mp3\",\"somealbum\",\".+testcases/mp3_truncated\",truncation_warning")
+
 # MP3 without any flaws
 run_sample (mp3_perfect
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")

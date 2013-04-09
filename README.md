@@ -16,6 +16,7 @@ Finds out if there's something wrong with albums in your music collection.
 * finds tracks that have a text format other than UTF-8
 * finds artists with multiple genres
 * finds ID3v2 tracks with track frames that are not in the format num/total
+* finds ID3v2 title tags with a length of exactly 30 bytes (which would occur when tags are converted from ID3v1 to ID3v2)
 * supports MP3, MP4, FLAC, WMA, MPC, APE and Ogg Vorbis audio formats
 
 ## Setup
@@ -49,5 +50,6 @@ to execute tests on various provided sample audio files and their tags.
 
 ## TODO
 * HTML reports
-* find directories that have differing album names
-* find track titles or album names with invalid case
+* find directories that have differing album names, genres, years or artists (except VA/splits)
+* find track titles or album names with invalid case (report as warning, not error)
+* find directories that don't have a cover image
