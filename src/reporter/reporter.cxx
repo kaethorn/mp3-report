@@ -18,6 +18,7 @@ Reporter::Reporter(const string* directory, const string* reportType,
   this->noMagicType = noMagicType;
   this->useLibMagic = useLibMagic;
   report = Scanner::ReportMap();
+  metaData = Scanner::MetaDataMap();
 
   // Determine where the output will be written (file or stdout).
   if (outputPath->size() == 0) {
@@ -52,19 +53,19 @@ void Reporter::generate() {
 void Reporter::generatePlain() {
   for (Scanner::ReportMap::iterator artist=report.begin();
       artist!=report.end(); ++artist) {
-    Scanner::Genres genres(artist->second);
+    Scanner::ReportGenres genres(artist->second);
     *output << "Artist: " << artist->first << endl;
 
-    for (Scanner::Genres::iterator genre=genres.begin();
+    for (Scanner::ReportGenres::iterator genre=genres.begin();
         genre!=genres.end(); ++genre) {
-      Scanner::Albums albums(genre->second);
+      Scanner::ReportAlbums albums(genre->second);
 
-      for (Scanner::Albums::iterator album=albums.begin();
+      for (Scanner::ReportAlbums::iterator album=albums.begin();
           album!=albums.end(); ++album) {
         *output << "  Album: " << album->first << endl;
-        Scanner::Directories directories(album->second);
+        Scanner::ReportDirectories directories(album->second);
 
-        for (Scanner::Directories::iterator directory=directories.begin();
+        for (Scanner::ReportDirectories::iterator directory=directories.begin();
             directory!=directories.end(); ++directory) {
           *output << "    Directory '" << directory->first << "': " << endl;
           Scanner::Errors errors(directory->second);
@@ -79,20 +80,19 @@ void Reporter::generatePlain() {
   }
 }
 
-// FIXME escape "
 void Reporter::generateCSV() {
   std::ostringstream ss;
   ss << "Artist,Album,Directory,Error(s)" << endl;
   for (Scanner::ReportMap::iterator artist=report.begin();
       artist!=report.end(); ++artist) {
-    Scanner::Genres genres(artist->second);
-    for (Scanner::Genres::iterator genre=genres.begin();
+    Scanner::ReportGenres genres(artist->second);
+    for (Scanner::ReportGenres::iterator genre=genres.begin();
         genre!=genres.end(); ++genre) {
-      Scanner::Albums albums(genre->second);
-      for (Scanner::Albums::iterator album=albums.begin();
+      Scanner::ReportAlbums albums(genre->second);
+      for (Scanner::ReportAlbums::iterator album=albums.begin();
           album!=albums.end(); ++album) {
-        Scanner::Directories directories(album->second);
-        for (Scanner::Directories::iterator directory=directories.begin();
+        Scanner::ReportDirectories directories(album->second);
+        for (Scanner::ReportDirectories::iterator directory=directories.begin();
             directory!=directories.end(); ++directory) {
           string escapedArtist(artist->first);
           boost::replace_all(escapedArtist, "\"", "\"\"");
@@ -210,15 +210,15 @@ void Reporter::scanByExtension(boost::filesystem::path file) {
 
 void Reporter::iterateDirectory() {
   // Instantiate scanners
-  MP3Scanner       MP3Scanner(&report);
-  OggVorbisScanner OggVorbisScanner(&report);
-  FLACScanner      FLACScanner(&report);
-  MPCScanner       MPCScanner(&report);
-  APEScanner       APEScanner(&report);
-  ASFScanner       ASFScanner(&report);
-  MP4Scanner       MP4Scanner(&report);
+  MP3Scanner       MP3Scanner(&report, &metaData);
+  OggVorbisScanner OggVorbisScanner(&report, &metaData);
+  FLACScanner      FLACScanner(&report, &metaData);
+  MPCScanner       MPCScanner(&report, &metaData);
+  APEScanner       APEScanner(&report, &metaData);
+  ASFScanner       ASFScanner(&report, &metaData);
+  MP4Scanner       MP4Scanner(&report, &metaData);
   FileScanner      FileScanner(&report);
-  MetaScanner      MetaScanner(&report);
+  MetaScanner      MetaScanner(&report, &metaData);
 
   this->mp3Scanner       = &MP3Scanner;
   this->oggVorbisScanner = &OggVorbisScanner;

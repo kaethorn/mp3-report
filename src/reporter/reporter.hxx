@@ -91,6 +91,11 @@ class Reporter {
     Scanner::ReportMap report;
 
     /*!
+     * The meta data structure to populate with every title found.
+     */
+    Scanner::MetaDataMap metaData;
+
+    /*!
      * The output stream associated with either a file or \a cout.
      */
     ostream* output;

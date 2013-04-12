@@ -18,6 +18,10 @@ void OggVorbisScanner::checkOggVorbisTags(TagLib::Ogg::Vorbis::File *fileTag) {
   string artist(oggVorbisTag->artist().to8Bit(true));
   string genre(oggVorbisTag->genre().to8Bit(true));
   string album(oggVorbisTag->album().to8Bit(true));
+  string title(oggVorbisTag->title().to8Bit(true));
+
+  // Store meta data
+  addToMetaData(artist, genre, album, directory, MP3, title);
 
   // Find tracks without an artist tag
   if (artist.size() == 0) {
@@ -30,7 +34,7 @@ void OggVorbisScanner::checkOggVorbisTags(TagLib::Ogg::Vorbis::File *fileTag) {
   }
 
   // Find tracks without a title tag
-  if (oggVorbisTag->title().to8Bit(true).size() == 0) {
+  if (title.size() == 0) {
     addToReport(artist, genre, album, directory, "missing_title");
   }
 

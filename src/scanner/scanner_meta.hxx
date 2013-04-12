@@ -27,9 +27,10 @@ class MetaScanner: public Scanner {
      * \see Scanner::ReportMap
      *
      * \param [in,out] report A pointer to the report to scan and report to.
+     * \param [in,out] report A pointer to the meta data.
      */
-    MetaScanner(ReportMap* report)
-      : Scanner(report) {};
+    MetaScanner(ReportMap* report, MetaDataMap* metaData)
+      : Scanner(report, metaData) {};
 
     /*!
      * Invokes private method scanner on this report structure.

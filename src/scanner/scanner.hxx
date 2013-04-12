@@ -30,9 +30,48 @@ class Scanner {
     typedef set<string> Errors;
 
     /*!
+     * A report map between directory names and an error set.
+     */
+    typedef map<string, Errors> ReportDirectories;
+
+    /*!
+     * A report map between album names and directory maps.
+     */
+    typedef map<string, ReportDirectories> ReportAlbums;
+
+    /*!
+     * A report map between genre names and album maps.
+     */
+    typedef map<string, ReportAlbums> ReportGenres;
+
+    /*!
+     * A report map between artist names and genre maps.
+     */
+    typedef map<string, ReportGenres> ReportMap;
+
+    /*!
+     * Enumerator for all supported file types as detected by
+     * this application.
+     */
+    enum FileType { MP3, MP4, ASF, APE, FLAC, OGG, MPC };
+
+    /*!
+     * Structure to hold song information.
+     */
+    struct Song {
+      string title;
+      FileType fileType;
+    };
+
+    /*!
+     * A list of song structures.
+     */
+    typedef list<Song> Songs;
+
+    /*!
      * A map between directory names and an error set.
      */
-    typedef map<string, Errors> Directories;
+    typedef map<string, Songs> Directories;
 
     /*!
      * A map between album names and directory maps.
@@ -45,9 +84,21 @@ class Scanner {
     typedef map<string, Albums> Genres;
 
     /*!
-     * A map between artist names and genre maps.
+     * A map of every song grouped by artist, genre, album and directory
      */
-    typedef map<string, Genres> ReportMap;
+    typedef map<string, Genres> MetaDataMap;
+
+    /*!
+     * Construct a scanner for \a report. It will add scan results to
+     * \a report.
+     *
+     * \note This can be used implement meta scanners that scan the report
+     * after it has been populated.
+     *
+     * \param [in,out] report A pointer to the report for scan results.
+     * \param [in,out] metaData A pointer to the meta data.
+     */
+    Scanner(ReportMap* report, MetaDataMap* metaData);
 
     /*!
      * Construct a scanner for \a report. It will add scan results to
@@ -79,6 +130,22 @@ class Scanner {
         const string album, const string directory, const string error);
 
     /*!
+     * Adds \a title and \a fileType to the meta data map.
+     *
+     * \see Scanner::MetaDataMap
+     *
+     * \param [in] artist    The artist
+     * \param [in] genre     The genre
+     * \param [in] album     The album
+     * \param [in] directory The directory
+     * \param [in] fileType  The song file type
+     * \param [in] title     The song title
+     */
+    void addToMetaData(const string artist, const string genre,
+        const string album, const string directory, const FileType fileType,
+        const string title);
+
+    /*!
      * Determines the directory name for \a path.
      *
      * \param [in] file The path for which to return the directory name.
@@ -92,6 +159,13 @@ class Scanner {
      * \see Scanner::ReportMap
      */
     ReportMap* report;
+
+    /*!
+     * A pointer to the meta data structure.
+     *
+     * \see Scanner::MetaDataMap
+     */
+    MetaDataMap* metaData;
 
     /*!
      * A string that holds the directory name of this file.

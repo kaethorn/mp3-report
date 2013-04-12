@@ -26,8 +26,10 @@ class FLACScanner: public Scanner {
      * \see Scanner::Scanner
      *
      * \param [in,out] report A pointer to the report for scan results.
+     * \param [in,out] report A pointer to the meta data.
      */
-    FLACScanner(ReportMap* report) : Scanner(report) {};
+    FLACScanner(ReportMap* report, MetaDataMap* metaData)
+      : Scanner(report, metaData) {};
 
     /*!
      * Invokes private method scanners on the tags of \a file.

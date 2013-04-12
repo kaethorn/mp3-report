@@ -19,6 +19,10 @@ void ASFScanner::checkASFTags(TagLib::ASF::File *fileTag) {
   string artist(ASFTag->artist().to8Bit(true));
   string genre(ASFTag->genre().to8Bit(true));
   string album(ASFTag->album().to8Bit(true));
+  string title(ASFTag->title().to8Bit(true));
+
+  // Store meta data
+  addToMetaData(artist, genre, album, directory, MP3, title);
 
   // Find tracks without an artist tag
   if (artist.size() == 0) {
@@ -31,7 +35,7 @@ void ASFScanner::checkASFTags(TagLib::ASF::File *fileTag) {
   }
 
   // Find tracks without a title tag
-  if (ASFTag->title().to8Bit(true).size() == 0) {
+  if (title.size() == 0) {
     addToReport(artist, genre, album, directory, "missing_title");
   }
 

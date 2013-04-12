@@ -65,13 +65,24 @@ run_sample (mp3_invalid_track
 run_sample (mp3_multiple_art
   "\"mp3\",\"somealbum\",\".+testcases/mp3_multiple_art\",multiple_art")
 
-# MP3 with truncated title
-run_sample (mp3_truncated
-  "\"mp3\",\"somealbum\",\".+testcases/mp3_truncated\",truncation_warning")
-
 # MP3 without any flaws
 run_sample (mp3_perfect
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
+
+
+### Meta information samples
+#
+# Song with truncated title
+run_sample (meta_truncated
+  "\"mp3\",\"somealbum\",\".+testcases/meta_truncated\",truncation_warning")
+
+# Song with non-truncated titles
+run_sample (meta_non_truncated
+  "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
+
+# Artists with multiple genres
+run_sample (meta_multiple_artist_genres
+  "\"mp3\",\"somealbum\",\".+testcases/meta_multiple_artist_genres\",multiple_artist_genres")
 
 
 ### Ogg samples

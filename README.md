@@ -53,3 +53,4 @@ to execute tests on various provided sample audio files and their tags.
 * find directories that have differing album names, genres, years or artists (except VA/splits)
 * find track titles or album names with invalid case (report as warning, not error)
 * find directories that don't have a cover image
+* add flag to suppress report warnings

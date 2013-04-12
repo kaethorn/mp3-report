@@ -7,8 +7,8 @@
 
 #include "scanner_mp3.hxx"
 
-MP3Scanner::MP3Scanner(ReportMap* report)
-  : Scanner(report) {
+MP3Scanner::MP3Scanner(ReportMap* report, MetaDataMap* metaData)
+  : Scanner(report, metaData) {
   framesToCheck.push_back("TIT2"); // artist
   framesToCheck.push_back("TPE1"); // title
   framesToCheck.push_back("TALB"); // album
@@ -47,6 +47,10 @@ void MP3Scanner::checkID3v2Tags(TagLib::MPEG::File *fileTag) {
   string artist(ID3v2Tag->artist().to8Bit(true));
   string genre(ID3v2Tag->genre().to8Bit(true));
   string album(ID3v2Tag->album().to8Bit(true));
+  string title(ID3v2Tag->title().to8Bit(true));
+
+  // Store meta data
+  addToMetaData(artist, genre, album, directory, MP3, title);
 
   // Find tracks without an artist tag
   if (artist.size() == 0) {
@@ -59,8 +63,7 @@ void MP3Scanner::checkID3v2Tags(TagLib::MPEG::File *fileTag) {
   }
 
   // Find tracks without a title tag
-  int titleSize = ID3v2Tag->title().size();
-  if (titleSize == 0) {
+  if (title.size() == 0) {
     addToReport(artist, genre, album, directory, "missing_title");
   }
 
@@ -107,12 +110,6 @@ void MP3Scanner::checkID3v2Tags(TagLib::MPEG::File *fileTag) {
     if (!boost::regex_match(track, e)) {
       addToReport(artist, genre, album, directory, "invalid_track");
     }
-  }
-
-  // Find track titles that have potentially been truncated during
-  // conversion from ID3v1 to ID3v2
-  if (titleSize == 30) {
-    addToReport(artist, genre, album, directory, "truncation_warning");
   }
 
   // Make sure the title, artist, album and genre tags are UTF-8 encoded
