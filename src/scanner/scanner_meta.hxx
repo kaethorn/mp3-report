@@ -27,10 +27,13 @@ class MetaScanner: public Scanner {
      * \see Scanner::ReportMap
      *
      * \param [in,out] report A pointer to the report to scan and report to.
-     * \param [in,out] report A pointer to the meta data.
+     * \param [in,out] metaData A pointer to the meta data.
+     * \param [in] showWarnings Flag indicating whether to show warnings as well as errors in the report.
      */
-    MetaScanner(ReportMap* report, MetaDataMap* metaData)
-      : Scanner(report, metaData) {};
+    MetaScanner(ReportMap* report, MetaDataMap* metaData, bool showWarnings)
+      : Scanner(report, metaData) {
+        this->showWarnings = showWarnings;
+      };
 
     /*!
      * Invokes private method scanner on this report structure.
@@ -44,4 +47,9 @@ class MetaScanner: public Scanner {
      * Scans this report structure for inconsistencies.
      */
     void checkReport();
+
+    /*!
+     * Flag indicating whether to show warnings as well as errors in the report.
+     */
+    bool showWarnings;
 };

@@ -41,9 +41,11 @@ class Reporter {
      * \param [in] outputPath  The output file to write to (\a cout if empty)
      * \param [in] noMagicType Flag indicating whether to detect the file type by magic type (false) or by file name (true)
      * \param [in] useLibMagic Flag indicating whether to use xdgmime (false) or libgmagic (true) for file type detection
+     * \param [in] showWarnings Flag indicating whether to show warnings as well as errors in the report.
      */
     Reporter(const string* directory, const string* reportType,
-        const string* outputPath, bool noMagicType, bool useLibMagic);
+        const string* outputPath, bool noMagicType, bool useLibMagic,
+        bool showWarnings);
 
     /*!
      * Destructs the reporter and closes the output file.
@@ -84,6 +86,11 @@ class Reporter {
      * for file type detection.
      */
     bool useLibMagic;
+
+    /*!
+     * Flag indicating whether to show warnings as well as errors in the report.
+     */
+    bool showWarnings;
 
     /*!
      * The report structure to populate with scan results.

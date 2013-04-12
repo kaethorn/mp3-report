@@ -11,12 +11,14 @@
 namespace fs = boost::filesystem;
 
 Reporter::Reporter(const string* directory, const string* reportType,
-    const string* outputPath, bool noMagicType, bool useLibMagic) {
+    const string* outputPath, bool noMagicType, bool useLibMagic,
+    bool showWarnings) {
   this->directory = directory;
   this->reportType = reportType;
   this->outputPath = outputPath;
   this->noMagicType = noMagicType;
   this->useLibMagic = useLibMagic;
+  this->showWarnings = showWarnings;
   report = Scanner::ReportMap();
   metaData = Scanner::MetaDataMap();
 
@@ -218,7 +220,7 @@ void Reporter::iterateDirectory() {
   ASFScanner       ASFScanner(&report, &metaData);
   MP4Scanner       MP4Scanner(&report, &metaData);
   FileScanner      FileScanner(&report);
-  MetaScanner      MetaScanner(&report, &metaData);
+  MetaScanner      MetaScanner(&report, &metaData, showWarnings);
 
   this->mp3Scanner       = &MP3Scanner;
   this->oggVorbisScanner = &OggVorbisScanner;

@@ -23,7 +23,7 @@ using namespace std;
 int main (int argc, char *argv[]) {
 
   string reportType, directory, outputPath;
-  bool noMagicType, useLibMagic;
+  bool noMagicType, useLibMagic, showWarnings;
 
   po::options_description desc("Allowed options");
   desc.add_options()
@@ -35,6 +35,8 @@ int main (int argc, char *argv[]) {
      "Use libmagic when detecting file type by magic type (instead of xdgmime which is the default)")
     ("report-type,r", po::value<string>(&reportType)->default_value("plain"),
      "Report type (html_list, html_collapsible, csv, plain)")
+    ("show-warnings,w", po::value<bool>(&showWarnings)->zero_tokens()->default_value(false),
+     "Show inconsistencies in the report that are considered warnings. Errors will always be reported.")
     ("output-path,o", po::value<string>(&outputPath),
      "File to write the report to (fallback: stdout)")
     ("directory", po::value<string>(&directory)->required(), "Working directory")
@@ -72,7 +74,8 @@ int main (int argc, char *argv[]) {
     return 1;
   }
 
-  Reporter reporter(&directory, &reportType, &outputPath, noMagicType, useLibMagic);
+  Reporter reporter(&directory, &reportType, &outputPath, noMagicType,
+      useLibMagic, showWarnings);
   reporter.run();
   return 0;
 }
