@@ -3,8 +3,12 @@ add_test (MP3Report_runs ${PROJECT_BINARY_DIR}/src/MP3Report .)
 
 # Macro to facilitate running MP3Report with different sample data
 macro (run_sample test_name result)
+  set(params "")
+  foreach(param ${ARGN})
+    list(APPEND params ${param})
+  endforeach()
   add_test (MP3Report_${test_name}
-    ${PROJECT_BINARY_DIR}/src/MP3Report -r csv
+    ${PROJECT_BINARY_DIR}/src/MP3Report -r csv ${params}
     ${PROJECT_BINARY_DIR}/test/testcases/${test_name})
   set_tests_properties (MP3Report_${test_name}
     PROPERTIES PASS_REGULAR_EXPRESSION ${result})
@@ -74,11 +78,11 @@ run_sample (mp3_perfect
 #
 # Song with truncated title
 run_sample (meta_truncated
-  "\"mp3\",\"somealbum\",\".+testcases/meta_truncated\",truncation_warning")
+  "\"mp3\",\"somealbum\",\".+testcases/meta_truncated\",truncation_warning" "-w")
 
 # Song with non-truncated titles
 run_sample (meta_non_truncated
-  "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
+  "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$" "-w")
 
 # Artists with multiple genres
 run_sample (meta_multiple_artist_genres
