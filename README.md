@@ -38,11 +38,9 @@ On Debian/Ubuntu:
 
 ## Report types
 
-The following report types are available:
+The following report types are currently available:
 * stdout (default)
 * plain text
-* HTML
-* collapsible HTML
 * CSV
 
 ## Tests
