@@ -17,17 +17,17 @@ endmacro (run_sample)
 
 ### MP3 samples
 #
-# MP3 with an album artist
-run_sample (mp3_album_artist 
-  "\"mp3\",\"somealbum\",\".+testcases/mp3_album_artist\",album_artist")
+# MP3 without an album artist
+run_sample (mp3_missing_album_artist
+  "\"mp3\",\"somealbum\",\".+testcases/mp3_missing_album_artist\",missing_album_artist")
 
-# mp3 with an ID3v1 tag
-run_sample (mp3_id3v1 
+# MP3 with an ID3v1 tag
+run_sample (mp3_id3v1
   "\"mp3\",\"somealbum\",\".+testcases/mp3_id3v1\",id3v1")
 
 # MP3 with an obsolete ID3v2 version
 run_sample (mp3_id3v2_obsolete
-  "\"mp3\",\"somealbum\",\".+testcases/mp3_id3v2_obsolete\",obsolete_id3v2_version")
+  "\"mp3\",\"somealbum\",\".+testcases/mp3_id3v2_obsolete\",invalid_encoding|obsolete_id3v2_version")
 
 # MP3 with an invalid text frame encoding
 run_sample (mp3_invalid_encoding
@@ -91,9 +91,9 @@ run_sample (meta_multiple_artist_genres
 
 ### Ogg samples
 #
-# Ogg with an album artist
-run_sample (ogg_album_artist
-  "\"ogg\",\"somealbum\",\".+testcases/ogg_album_artist\",album_artist")
+# Ogg without an album artist
+run_sample (ogg_missing_album_artist
+  "\"ogg\",\"somealbum\",\".+testcases/ogg_missing_album_artist\",missing_album_artist")
 
 # Ogg without an album
 run_sample (ogg_missing_album
@@ -138,9 +138,9 @@ run_sample (ogg_perfect
 
 ### MP4 samples
 #
-# MP4 with an album artist
-run_sample (mp4_album_artist
-  "\"mp4\",\"somealbum\",\".+testcases/mp4_album_artist\",album_artist")
+# MP4 without an album artist
+run_sample (mp4_missing_album_artist
+  "\"mp4\",\"somealbum\",\".+testcases/mp4_missing_album_artist\",missing_album_artist")
 
 # MP4 without an album
 run_sample (mp4_missing_album
@@ -181,9 +181,9 @@ run_sample (mp4_perfect
 
 ### WMA samples
 #
-# WMA with an album artist
-run_sample (wma_album_artist
-  "\"wma\",\"somealbum\",\".+testcases/wma_album_artist\",album_artist")
+# WMA without an album artist
+run_sample (wma_missing_album_artist
+  "\"wma\",\"somealbum\",\".+testcases/wma_missing_album_artist\",missing_album_artist")
 
 # WMA without an album
 run_sample (wma_missing_album
@@ -228,9 +228,9 @@ run_sample (wma_perfect
 
 ### FLAC samples
 #
-# FLAC with an album artist
-run_sample (flac_album_artist
-  "\"flac\",\"somealbum\",\".+testcases/flac_album_artist\",album_artist")
+# FLAC without an album artist
+run_sample (flac_missing_album_artist
+  "\"flac\",\"somealbum\",\".+testcases/flac_missing_album_artist\",missing_album_artist")
 
 # FLAC without an album
 run_sample (flac_missing_album
@@ -275,9 +275,9 @@ run_sample (flac_perfect
 
 ### MPC samples
 #
-# MPC with an album artist
-run_sample (mpc_album_artist
-  "\"mpc\",\"somealbum\",\".+testcases/mpc_album_artist\",album_artist")
+# MPC without an album artist
+run_sample (mpc_missing_album_artist
+  "\"mpc\",\"somealbum\",\".+testcases/mpc_missing_album_artist\",missing_album_artist")
 
 # MPC without an album
 run_sample (mpc_missing_album
@@ -322,9 +322,9 @@ run_sample (mpc_perfect
 
 ### APE samples
 #
-# APE with an album artist
-run_sample (ape_album_artist
-  "\"ape\",\"somealbum\",\".+testcases/ape_album_artist\",album_artist")
+# APE without an album artist
+run_sample (ape_missing_album_artist
+  "\"ape\",\"somealbum\",\".+testcases/ape_missing_album_artist\",missing_album_artist")
 
 # APE without an album
 run_sample (ape_missing_album

@@ -1,0 +1,9 @@
+language: cpp
+sudo: required
+dist: trusty
+install:
+  - sudo apt-get install -y libtag1-dev libmagic-dev libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-regex-dev
+script: 'cmake . && cmake --build . && cmake --build . --target test'
+notifications:
+  recipients:
+    - kaethorn@gmail.com

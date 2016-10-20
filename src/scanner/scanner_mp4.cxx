@@ -51,6 +51,12 @@ void MP4Scanner::checkMP4Tags(TagLib::MP4::File *fileTag) {
     addToReport(artist, genre, album, directory, "missing_genre");
   }
 
+  // Find tracks without an album artist tag
+  if (!MP4Tag->itemListMap().contains("aART") ||
+      MP4Tag->itemListMap()["aART"].toStringList().size() == 0) {
+    addToReport(artist, genre, album, directory, "missing_album_artist");
+  }
+
   // Find tracks with missing album art
   if (!MP4Tag->itemListMap().contains("covr")) {
     addToReport(artist, genre, album, directory, "missing_art");
@@ -59,10 +65,5 @@ void MP4Scanner::checkMP4Tags(TagLib::MP4::File *fileTag) {
     if (MP4Tag->itemListMap()["covr"].toCoverArtList().size() > 1) {
       addToReport(artist, genre, album, directory, "multiple_art");
     }
-  }
-
-  // Find tracks containing album artist tags
-  if (MP4Tag->itemListMap().contains("aART")) {
-    addToReport(artist, genre, album, directory, "album_artist");
   }
 }

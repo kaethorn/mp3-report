@@ -53,6 +53,11 @@ void OggVorbisScanner::checkOggVorbisTags(TagLib::Ogg::Vorbis::File *fileTag) {
     addToReport(artist, genre, album, directory, "missing_genre");
   }
 
+  // Find tracks without an album artist tag
+  if (oggVorbisTag->fieldListMap()["ALBUMARTIST"].isEmpty()) {
+    addToReport(artist, genre, album, directory, "missing_album_artist");
+  }
+
   // Find tracks with missing album art
   if (oggVorbisTag->fieldListMap()["METADATA_BLOCK_PICTURE"].isEmpty()) {
     addToReport(artist, genre, album, directory, "missing_art");
@@ -63,17 +68,12 @@ void OggVorbisScanner::checkOggVorbisTags(TagLib::Ogg::Vorbis::File *fileTag) {
     }
   }
 
-  // Find tracks containing album artist tags
-  if (!oggVorbisTag->fieldListMap()["ALBUMARTIST"].isEmpty()) {
-    addToReport(artist, genre, album, directory, "album_artist");
-  }
-
   // Find tracks containing track numbers that are not formatted as <num>/<total>
   if (!oggVorbisTag->fieldListMap()["TRACKNUMBER"].isEmpty()) {
     static const boost::regex e("\\d{2}/\\d{2}");
     string track = oggVorbisTag->fieldListMap()["TRACKNUMBER"].front().to8Bit(true);
     if (!boost::regex_match(track, e)) {
       addToReport(artist, genre, album, directory, "invalid_track");
-    }   
+    }
   }
 }

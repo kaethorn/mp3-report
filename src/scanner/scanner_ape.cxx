@@ -54,15 +54,15 @@ void APEScanner::checkAPETags(TagLib::APE::File *fileTag) {
     addToReport(artist, genre, album, directory, "missing_genre");
   }
 
+  // Find tracks without an album artist tag
+  if (APETag->itemListMap()["ALBUMARTIST"].isEmpty()) {
+    addToReport(artist, genre, album, directory, "missing_album_artist");
+  }
+
   // Find tracks with missing album art
   if (!APETag->itemListMap().contains("COVER ART (FRONT)")) {
     addToReport(artist, genre, album, directory, "missing_art");
-  }  
-
-  // Find tracks containing album artist tags
-  if (APETag->itemListMap().contains("ALBUMARTIST")) {
-    addToReport(artist, genre, album, directory, "album_artist");
-  }  
+  }
 
   // Find tracks containing track numbers that are not formatted as <num>/<total>
   if (!APETag->itemListMap()["TRACK"].isEmpty()) {
@@ -70,6 +70,6 @@ void APEScanner::checkAPETags(TagLib::APE::File *fileTag) {
     string track = APETag->itemListMap()["TRACK"].toString().to8Bit(true);
     if (!boost::regex_match(track, e)) {
       addToReport(artist, genre, album, directory, "invalid_track");
-    }   
-  }  
+    }
+  }
 }
