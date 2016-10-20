@@ -1,6 +1,8 @@
 mp3-report
 ==========
 
+[![Build Status](https://travis-ci.org/kaethorn/mp3-report.svg?branch=master)](https://travis-ci.org/kaethorn/mp3-report)
+
 Audio file tag consistency reporter.
 
 ## About
@@ -50,9 +52,3 @@ Make sure to have ctest installed. Then run
 `make test`
 
 to execute tests on various provided sample audio files and their tags.
-
-## TODO
-* HTML reports
-* find directories that have differing album names, genres, years or artists (except VA/splits)
-* find track titles or album names with invalid case (report as warning, not error)
-* find directories that don't have a cover image
