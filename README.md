@@ -1,10 +1,10 @@
 mp3-report
 ==========
 
-Audio file tag consistency reporter
+Audio file tag consistency reporter.
 
 ## About
-Finds out if there's something wrong with albums in your music collection.
+Finds out if there's something wrong with albums in your music collection. It's ready-only and produces a report.
 
 ### Features
 * groups results by artist, album and directory
@@ -18,7 +18,7 @@ Finds out if there's something wrong with albums in your music collection.
 * finds ID3v2 tracks with track frames that are not in the format num/total
 * finds ID3v2 title tags with a length of exactly 30 bytes (which would occur when tags are converted from ID3v1 to ID3v2)
 * supports MP3, MP4, FLAC, WMA, MPC, APE and Ogg Vorbis audio formats
-* exports report as CSV
+* provides various report formats, see below
 
 ## Setup
 
@@ -36,10 +36,14 @@ On Debian/Ubuntu:
 
 `./src/MP3Report -h`
 
-## Report type
+## Report types
 
 The following report types are available:
-* plain (default)
+* stdout (default)
+* plain text
+* HTML
+* collapsible HTML
+* CSV
 
 ## Tests
 
