@@ -1,6 +1,7 @@
 language: cpp
 before install:
   - sudo apt-get update -qq
+install:
   - sudo apt-get install -qq libtag1-dev libmagic-dev libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-regex-dev
 script: 'cmake . && cmake --build . && cmake --build . --target test'
 notifications:
