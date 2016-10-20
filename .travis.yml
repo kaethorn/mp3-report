@@ -1,11 +1,8 @@
 language: cpp
+sudo: required
+dist: trusty
 install:
-  - sudo apt-get install -y libtag1-dev
-  - sudo apt-get install -y libmagic-dev
-  - sudo apt-get install -y libboost-filesystem-dev
-  - sudo apt-get install -y libboost-program-options-dev
-  - sudo apt-get install -y libboost-system-dev
-  - sudo apt-get install -y libboost-regex-dev
+  - sudo apt-get install -y libtag1-dev libmagic-dev libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-regex-dev
 script: 'cmake . && cmake --build . && cmake --build . --target test'
 notifications:
   recipients:
