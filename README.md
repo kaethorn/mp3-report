@@ -1,6 +1,8 @@
 mp3-report
 ==========
 
+[![Build Status](https://travis-ci.org/kaethorn/mp3-report.svg?branch=master)](https://travis-ci.org/kaethorn/mp3-report)
+
 Audio file tag consistency reporter.
 
 ## About
