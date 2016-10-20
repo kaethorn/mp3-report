@@ -13,6 +13,7 @@ MP3Scanner::MP3Scanner(ReportMap* report, MetaDataMap* metaData)
   framesToCheck.push_back("TPE1"); // title
   framesToCheck.push_back("TALB"); // album
   framesToCheck.push_back("TCON"); // genre
+  framesToCheck.push_back("TPE2"); // album artist
 };
 
 void MP3Scanner::scan(boost::filesystem::path file) {
@@ -82,6 +83,12 @@ void MP3Scanner::checkID3v2Tags(TagLib::MPEG::File *fileTag) {
     addToReport(artist, genre, album, directory, "missing_genre");
   }
 
+  // Find tracks without an album artist tag
+  if (!ID3v2Tag->frameListMap().contains("TPE2") ||
+      ID3v2Tag->frameListMap()["TPE2"].isEmpty()) {
+    addToReport(artist, genre, album, directory, "missing_album_artist");
+  }
+
   // Find tracks with missing album art
   if (ID3v2Tag->frameListMap()["APIC"].isEmpty()) {
     addToReport(artist, genre, album, directory, "missing_art");
@@ -98,11 +105,6 @@ void MP3Scanner::checkID3v2Tags(TagLib::MPEG::File *fileTag) {
     addToReport(artist, genre, album, directory, "obsolete_id3v2_version");
   }
 
-  // Find tracks containing album artist tags
-  if (!ID3v2Tag->frameListMap()["TPE2"].isEmpty()) {
-    addToReport(artist, genre, album, directory, "album_artist");
-  }
-
   // Find tracks containing track numbers that are not formatted as <num>/<total>
   if (!ID3v2Tag->frameListMap()["TRCK"].isEmpty()) {
     static const boost::regex e("\\d{2}/\\d{2}");
@@ -112,7 +114,7 @@ void MP3Scanner::checkID3v2Tags(TagLib::MPEG::File *fileTag) {
     }
   }
 
-  // Make sure the title, artist, album and genre tags are UTF-8 encoded
+  // Make sure the title, artist, album, genre and album artist tags are UTF-8 encoded
   for (vector<string>::iterator it = framesToCheck.begin();
       it != framesToCheck.end(); ++it) {
     TagLib::ID3v2::FrameList artist_tag = ID3v2Tag->frameListMap()[it->c_str()];

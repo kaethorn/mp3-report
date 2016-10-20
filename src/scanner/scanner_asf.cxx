@@ -54,6 +54,11 @@ void ASFScanner::checkASFTags(TagLib::ASF::File *fileTag) {
     addToReport(artist, genre, album, directory, "missing_genre");
   }
 
+  // Find tracks whithout an album artist tag
+  if (ASFTag->attributeListMap()["WM/AlbumArtist"].isEmpty()) {
+    addToReport(artist, genre, album, directory, "missing_album_artist");
+  }
+
   // Find tracks with missing album art
   if (ASFTag->attributeListMap()["WM/Picture"].size() < 1) {
     addToReport(artist, genre, album, directory, "missing_art");
@@ -62,11 +67,6 @@ void ASFScanner::checkASFTags(TagLib::ASF::File *fileTag) {
   // Find tracks with more than one album art
   if (ASFTag->attributeListMap()["WM/Picture"].size() > 1) {
     addToReport(artist, genre, album, directory, "multiple_art");
-  }
-
-  // Find tracks containing album artist tags
-  if (!ASFTag->attributeListMap()["WM/AlbumArtist"].isEmpty()) {
-    addToReport(artist, genre, album, directory, "album_artist");
   }
 
   // Find tracks containing track numbers that are not formatted as <num>/<total>
