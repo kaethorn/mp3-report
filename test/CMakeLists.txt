@@ -21,17 +21,13 @@ endmacro (run_sample)
 run_sample (mp3_missing_album_artist
   "\"mp3\",\"somealbum\",\".+testcases/mp3_missing_album_artist\",missing_album_artist")
 
-# MP3 with an empty album artist
-run_sample (mp3_empty_album_artist
-  "\"mp3\",\"somealbum\",\".+testcases/mp3_empty_album_artist\",missing_album_artist")
-
-# mp3 with an ID3v1 tag
+# MP3 with an ID3v1 tag
 run_sample (mp3_id3v1
   "\"mp3\",\"somealbum\",\".+testcases/mp3_id3v1\",id3v1")
 
 # MP3 with an obsolete ID3v2 version
 run_sample (mp3_id3v2_obsolete
-  "\"mp3\",\"somealbum\",\".+testcases/mp3_id3v2_obsolete\",obsolete_id3v2_version")
+  "\"mp3\",\"somealbum\",\".+testcases/mp3_id3v2_obsolete\",invalid_encoding|obsolete_id3v2_version")
 
 # MP3 with an invalid text frame encoding
 run_sample (mp3_invalid_encoding
