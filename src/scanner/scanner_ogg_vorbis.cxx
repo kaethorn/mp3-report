@@ -19,10 +19,9 @@ void OggVorbisScanner::checkOggVorbisTags(TagLib::Ogg::Vorbis::File *fileTag) {
   string genre(oggVorbisTag->genre().to8Bit(true));
   string album(oggVorbisTag->album().to8Bit(true));
   string title(oggVorbisTag->title().to8Bit(true));
-  string albumArtist("");
-  if (!oggVorbisTag->fieldListMap()["ALBUMARTIST"].isEmpty()) {
-    albumArtist = oggVorbisTag->fieldListMap()["ALBUMARTIST"].toString().to8Bit(true);
-  }
+  string albumArtist(oggVorbisTag->fieldListMap()["ALBUMARTIST"].isEmpty() ?
+    "" : oggVorbisTag->fieldListMap()["ALBUMARTIST"].toString().to8Bit(true)
+  );
 
   // Store meta data
   addToMetaData(artist, genre, album, directory, MP3, title, albumArtist);

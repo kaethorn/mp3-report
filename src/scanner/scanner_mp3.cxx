@@ -49,10 +49,9 @@ void MP3Scanner::checkID3v2Tags(TagLib::MPEG::File *fileTag) {
   string genre(ID3v2Tag->genre().to8Bit(true));
   string album(ID3v2Tag->album().to8Bit(true));
   string title(ID3v2Tag->title().to8Bit(true));
-  string albumArtist("");
-  if (!ID3v2Tag->frameListMap()["TPE2"].isEmpty()) {
-    albumArtist = ID3v2Tag->frameListMap()["TPE2"].front()->toString().to8Bit(true);
-  }
+  string albumArtist(ID3v2Tag->frameListMap()["TPE2"].isEmpty() ?
+    "" : ID3v2Tag->frameListMap()["TPE2"].front()->toString().to8Bit(true)
+  );
 
   // Store meta data
   addToMetaData(artist, genre, album, directory, MP3, title, albumArtist);

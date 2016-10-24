@@ -20,10 +20,9 @@ void MPCScanner::checkMPCTags(TagLib::MPC::File *fileTag) {
   string genre(tag->genre().to8Bit(true));
   string album(tag->album().to8Bit(true));
   string title(tag->title().to8Bit(true));
-  string albumArtist("");
-  if (!APETag->itemListMap()["ALBUMARTIST"].isEmpty()) {
-    albumArtist = APETag->itemListMap()["ALBUMARTIST"].toString().to8Bit(true);
-  }
+  string albumArtist(APETag->itemListMap()["ALBUMARTIST"].isEmpty() ?
+    "" : APETag->itemListMap()["ALBUMARTIST"].toString().to8Bit(true)
+  );
 
   // Store meta data
   addToMetaData(artist, genre, album, directory, MP3, title, albumArtist);

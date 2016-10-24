@@ -20,10 +20,9 @@ void ASFScanner::checkASFTags(TagLib::ASF::File *fileTag) {
   string genre(ASFTag->genre().to8Bit(true));
   string album(ASFTag->album().to8Bit(true));
   string title(ASFTag->title().to8Bit(true));
-  string albumArtist("");
-  if (!ASFTag->attributeListMap()["WM/AlbumArtist"].isEmpty()) {
-    albumArtist = ASFTag->attributeListMap()["WM/AlbumArtist"].front().toString().to8Bit(true);
-  }
+  string albumArtist(ASFTag->attributeListMap()["WM/AlbumArtist"].isEmpty() ?
+    "" : ASFTag->attributeListMap()["WM/AlbumArtist"].front().toString().to8Bit(true)
+  );
 
   // Store meta data
   addToMetaData(artist, genre, album, directory, MP3, title, albumArtist);
