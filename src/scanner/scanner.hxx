@@ -59,8 +59,9 @@ class Scanner {
      * Structure to hold song information.
      */
     struct Song {
-      string title;
+      string   title;
       FileType fileType;
+      string   albumArtist;
     };
 
     /*!
@@ -134,16 +135,17 @@ class Scanner {
      *
      * \see Scanner::MetaDataMap
      *
-     * \param [in] artist    The artist
-     * \param [in] genre     The genre
-     * \param [in] album     The album
-     * \param [in] directory The directory
-     * \param [in] fileType  The song file type
-     * \param [in] title     The song title
+     * \param [in] artist      The artist
+     * \param [in] genre       The genre
+     * \param [in] album       The album
+     * \param [in] directory   The directory
+     * \param [in] fileType    The song file type
+     * \param [in] title       The song title
+     * \param [in] albumArtist The song album artist
      */
     void addToMetaData(const string artist, const string genre,
         const string album, const string directory, const FileType fileType,
-        const string title);
+        const string title, const string albumArtist);
 
     /*!
      * Determines the directory name for \a path.

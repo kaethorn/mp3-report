@@ -14,15 +14,19 @@ void FLACScanner::scan(boost::filesystem::path file) {
 void FLACScanner::checkFLACTags(TagLib::FLAC::File *fileTag) {
   // Retrieve the generic tag
   TagLib::Tag *tag = fileTag->tag();
+  TagLib::Ogg::XiphComment *oggVorbisTag = fileTag->xiphComment();
 
   // Get common frames
   string artist(tag->artist().to8Bit(true));
   string genre(tag->genre().to8Bit(true));
   string album(tag->album().to8Bit(true));
   string title(tag->title().to8Bit(true));
+  string albumArtist(oggVorbisTag->fieldListMap()["ALBUMARTIST"].isEmpty() ?
+    "" : oggVorbisTag->fieldListMap()["ALBUMARTIST"].front().to8Bit(true)
+  );
 
   // Store meta data
-  addToMetaData(artist, genre, album, directory, MP3, title);
+  addToMetaData(artist, genre, album, directory, MP3, title, albumArtist);
 
   // Find tracks without an artist tag
   if (artist.size() == 0) {
@@ -55,7 +59,6 @@ void FLACScanner::checkFLACTags(TagLib::FLAC::File *fileTag) {
   }
 
   // Find tracks without an album artist tag
-  TagLib::Ogg::XiphComment *oggVorbisTag = fileTag->xiphComment();
   if (oggVorbisTag->fieldListMap()["ALBUMARTIST"].isEmpty()) {
     addToReport(artist, genre, album, directory, "missing_album_artist");
   }

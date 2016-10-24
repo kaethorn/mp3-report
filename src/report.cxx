@@ -54,7 +54,7 @@ int main (int argc, char *argv[]) {
     return 0;
   }
   if (vm.count("version")) {
-    cout << boost::filesystem::basename(argv[0]) << " version " << 
+    cout << boost::filesystem::basename(argv[0]) << " version " <<
       MP3REPORT_VERSION_MAJOR << "." << MP3REPORT_VERSION_MINOR << endl;
     return 0;
   }
@@ -66,7 +66,7 @@ int main (int argc, char *argv[]) {
     return 1;
   }
 
-  if (vm["report-type"].as<string>() != "html_list" && 
+  if (vm["report-type"].as<string>() != "html_list" &&
       vm["report-type"].as<string>() != "html_collapsible" &&
       vm["report-type"].as<string>() != "csv" &&
       vm["report-type"].as<string>() != "plain") {
