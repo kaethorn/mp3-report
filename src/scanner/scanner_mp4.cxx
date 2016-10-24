@@ -17,9 +17,13 @@ void MP4Scanner::checkMP4Tags(TagLib::MP4::File *fileTag) {
   string genre(MP4Tag->genre().to8Bit(true));
   string album(MP4Tag->album().to8Bit(true));
   string title(MP4Tag->title().to8Bit(true));
+  string albumArtist("");
+  if (MP4Tag->itemListMap()["aART"].toStringList().size() != 0) {
+    albumArtist = MP4Tag->itemListMap()["aART"].toStringList().toString().to8Bit(true);
+  }
 
   // Store meta data
-  addToMetaData(artist, genre, album, directory, MP3, title);
+  addToMetaData(artist, genre, album, directory, MP3, title, albumArtist);
 
   // Find tracks without an artist tag
   if (artist.size() == 0) {

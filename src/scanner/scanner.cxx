@@ -20,10 +20,11 @@ void Scanner::addToReport(const string artist, const string genre,
 
 void Scanner::addToMetaData(const string artist, const string genre,
     const string album, const string directory, const FileType fileType,
-    const string title) {
+    const string title, const string albumArtist) {
   Song song;
   song.title = title;
   song.fileType = fileType;
+  song.albumArtist = albumArtist;
   (*metaData)[artist][genre][album][directory].push_back(song);
 }
 

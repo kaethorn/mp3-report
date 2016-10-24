@@ -88,6 +88,10 @@ run_sample (meta_non_truncated
 run_sample (meta_multiple_artist_genres
   "\"mp3\",\"somealbum\",\".+testcases/meta_multiple_artist_genres\",multiple_artist_genres")
 
+# Various artists with multiple genres
+run_sample (meta_various_artist_genres
+  "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
+
 
 ### Ogg samples
 #
