@@ -69,7 +69,7 @@ void APEScanner::checkAPETags(TagLib::APE::File *fileTag) {
 
   // Find tracks containing track numbers that are not formatted as <num>/<total>
   if (!APETag->itemListMap()["TRACK"].isEmpty()) {
-    static const boost::regex e("\\d{2}/\\d{2}");
+    static const boost::regex e("\\d{2}/\\d{2}|\\d{3}/\\d{3}");
     string track = APETag->itemListMap()["TRACK"].toString().to8Bit(true);
     if (!boost::regex_match(track, e)) {
       addToReport(artist, genre, album, directory, "invalid_track");
