@@ -62,6 +62,8 @@ class Scanner {
       string   title;
       FileType fileType;
       string   albumArtist;
+      uint     track;
+      uint     disc;
     };
 
     /*!
@@ -142,10 +144,13 @@ class Scanner {
      * \param [in] fileType    The song file type
      * \param [in] title       The song title
      * \param [in] albumArtist The song album artist
+     * \param [in] track       The song track number
+     * \param [in] disc        The song disc number
      */
     void addToMetaData(const string artist, const string genre,
         const string album, const string directory, const FileType fileType,
-        const string title, const string albumArtist);
+        const string title, const string albumArtist, const string track,
+        const string disc);
 
     /*!
      * Determines the directory name for \a path.

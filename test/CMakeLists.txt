@@ -65,6 +65,14 @@ run_sample (mp3_missing_track
 run_sample (mp3_invalid_track
   "\"mp3\",\"somealbum\",\".+testcases/mp3_invalid_track\",invalid_track")
 
+# MP3 with an invalid track number format
+run_sample (mp3_invalid_disc
+  "\"mp3\",\"somealbum\",\".+testcases/mp3_invalid_disc\",invalid_disc")
+
+# MP3 with an invalid track number format
+run_sample (mp3_valid_disc
+  "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
+
 # MP3 with multiple album art
 run_sample (mp3_multiple_art
   "\"mp3\",\"somealbum\",\".+testcases/mp3_multiple_art\",multiple_art")
