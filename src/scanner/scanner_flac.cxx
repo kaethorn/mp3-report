@@ -81,7 +81,7 @@ void FLACScanner::checkFLACTags(TagLib::FLAC::File *fileTag) {
 
   // Find tracks containing track numbers that are not formatted as <num>/<total>
   if (!oggVorbisTag->fieldListMap()["TRACKNUMBER"].isEmpty()) {
-    static const boost::regex expression("\\d{2}/\\d{2}");
+    static const boost::regex expression("\\d{2}/\\d{2}|\\d{3}/\\d{3}");
     if (!boost::regex_match(track, expression)) {
       addToReport(artist, genre, album, directory, "invalid_track");
     }

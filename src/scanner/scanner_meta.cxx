@@ -20,7 +20,7 @@ void MetaScanner::checkReport() {
       string album((*metaData)[artist][genre].begin()->first);
       string directory((*metaData)[artist][genre][album].begin()->first);
       string albumArtist((*metaData)[artist][genre][album][directory].begin()->albumArtist);
-      if (albumArtist != "[Various Artists]") {
+      if (albumArtist != "Various Artists") {
         addToReport(artist, genre, album, directory, "multiple_artist_genres");
       }
     }
