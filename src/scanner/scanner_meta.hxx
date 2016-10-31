@@ -9,6 +9,7 @@
  */
 
 #include "scanner.hxx"
+#include <cstdio>
 
 /*! \class MetaScanner
  * Scanner for \a report structure

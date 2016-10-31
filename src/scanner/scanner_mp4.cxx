@@ -20,9 +20,15 @@ void MP4Scanner::checkMP4Tags(TagLib::MP4::File *fileTag) {
   string albumArtist(MP4Tag->itemListMap()["aART"].toStringList().size() == 0 ?
     "" : MP4Tag->itemListMap()["aART"].toStringList().toString().to8Bit(true)
   );
+  string track(MP4Tag->itemListMap()["trkn"].toStringList().size() == 0 ?
+    "" : MP4Tag->itemListMap()["trkn"].toStringList().toString().to8Bit(true)
+  );
+  string disc(MP4Tag->itemListMap()["disc"].toStringList().size() == 0 ?
+    "" : MP4Tag->itemListMap()["disc"].toStringList().toString().to8Bit(true)
+  );
 
   // Store meta data
-  addToMetaData(artist, genre, album, directory, MP3, title, albumArtist);
+  addToMetaData(artist, genre, album, directory, MP3, title, albumArtist, track, disc);
 
   // Find tracks without an artist tag
   if (artist.size() == 0) {

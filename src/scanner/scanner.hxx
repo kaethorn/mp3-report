@@ -62,8 +62,8 @@ class Scanner {
       string   title;
       FileType fileType;
       string   albumArtist;
-      uint     track;
-      uint     disc;
+      string   track;
+      string   disc;
     };
 
     /*!

@@ -36,21 +36,21 @@ void MetaScanner::checkReport() {
           Scanner::Songs songs(directory->second);
 
           // Collect album names, track numbers and disc numbers
-          vector<uint>   tracks;
-          vector<uint>   discs;
-          vector<string> albums;
+          vector<string> tracks;
+          vector<string> discs;
           for (Scanner::Songs::iterator song=songs.begin();
               song!=songs.end(); ++song) {
             tracks.push_back(song->track);
             discs.push_back(song->disc);
-            FIXME albums.push_back(song->album);
           }
           std::sort(tracks.begin(), tracks.end());
           std::sort(discs.begin(), discs.end());
 
-          // Find inconsitencies in directories, such as album title mismatches
+          // Find inconsitencies in directories, such as album name mismatches
           // or incomplete disc- and track numbers.
-          if (tracks.back() < tracks.size()) {
+          string last("");
+          sprintf(&last, "%02o", tracks.size());
+          if (tracks.back() < last) {
             addToReport(item->first, genre->first, album->first,
                 directory->first, "missing_song");
           }
@@ -60,9 +60,12 @@ void MetaScanner::checkReport() {
           }
 
           // Collect album names
-          for
-          // Find inconsitencies in directories, such as album title mismatches
-          // or incomplete disc- and track numbers.
+          // TODO
+          //vector<string> albums;
+
+          // Find album name mismatches within a directory
+          // TODO
+          //albums.push_back(song->album);
 
           // Find MP3 track titles that have potentially been truncated during
           // conversion from ID3v1 to ID3v2
