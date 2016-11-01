@@ -23,10 +23,10 @@ bool MetaScanner::isIncomplete(vector<string>* items) {
   return false;
 }
 
-void MetaScanner::reportMultipleArtistGenres(MetaDataMap::iterator directory) {
-  Scanner::Genres genres(directory->second);
+void MetaScanner::reportMultipleArtistGenres(MetaDataMap::iterator item) {
+  Scanner::Genres genres(item->second);
   if (genres.size() > 1) {
-    string artist(directory->first);
+    string artist(item->first);
     string genre((*metaData)[artist].begin()->first);
     string album((*metaData)[artist][genre].begin()->first);
     string directory((*metaData)[artist][genre][album].begin()->first);
@@ -34,6 +34,31 @@ void MetaScanner::reportMultipleArtistGenres(MetaDataMap::iterator directory) {
     if (albumArtist != "Various Artists") {
       addToReport(artist, genre, album, directory, "multiple_artist_genres");
     }
+  }
+}
+
+void MetaScanner::reportIndexInconsistencies(MetaDataMap::iterator item,
+        Scanner::Genres::iterator genre, Scanner::Albums::iterator album,
+        Scanner::Directories::iterator directory, Scanner::Songs* songs) {
+  // Collect track- and disc numbers
+  vector<string> tracks;
+  vector<string> discs;
+  for (Scanner::Songs::iterator song=songs->begin();
+      song!=songs->end(); ++song) {
+    tracks.push_back(song->track);
+    if (song->disc.size()) {
+      discs.push_back(song->disc);
+    }
+  }
+
+  if (isIncomplete(&tracks)) {
+    addToReport(item->first, genre->first, album->first,
+        directory->first, "incomplete_album");
+  }
+
+  if (isIncomplete(&discs)) {
+    addToReport(item->first, genre->first, album->first,
+        directory->first, "incomplete_collection");
   }
 }
 
@@ -57,26 +82,7 @@ void MetaScanner::checkReport() {
             directory!=directories.end(); ++directory) {
           Scanner::Songs songs(directory->second);
 
-          // Collect track- and disc numbers
-          vector<string> tracks;
-          vector<string> discs;
-          for (Scanner::Songs::iterator song=songs.begin();
-              song!=songs.end(); ++song) {
-            tracks.push_back(song->track);
-            if (song->disc.size()) {
-              discs.push_back(song->disc);
-            }
-          }
-
-          if (isIncomplete(&tracks)) {
-            addToReport(item->first, genre->first, album->first,
-                directory->first, "incomplete_album");
-          }
-
-          if (isIncomplete(&discs)) {
-            addToReport(item->first, genre->first, album->first,
-                directory->first, "incomplete_collection");
-          }
+          reportIndexInconsistencies(item, genre, album, directory, &songs);
 
           // Find MP3 track titles that have potentially been truncated during
           // conversion from ID3v1 to ID3v2

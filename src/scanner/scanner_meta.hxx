@@ -68,5 +68,9 @@ class MetaScanner: public Scanner {
      *
      * \param [in] directory A pointer to the directory level of meta data.
      */
-    void reportMultipleArtistGenres(MetaDataMap::iterator directory);
+    void reportMultipleArtistGenres(MetaDataMap::iterator item);
+
+    void reportIndexInconsistencies(MetaDataMap::iterator item,
+        Scanner::Genres::iterator genre, Scanner::Albums::iterator album,
+        Scanner::Directories::iterator directory, Scanner::Songs* songs);
 };
