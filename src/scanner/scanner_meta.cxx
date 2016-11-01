@@ -66,12 +66,12 @@ void MetaScanner::checkReport() {
           }
           if (isIncomplete(&tracks)) {
             addToReport(item->first, genre->first, album->first,
-                directory->first, "missing_track");
+                directory->first, "incomplete_album");
           }
 
           if (isIncomplete(&discs)) {
             addToReport(item->first, genre->first, album->first,
-                directory->first, "invalid_disc");
+                directory->first, "incomplete_collection");
           }
 
           // Find MP3 track titles that have potentially been truncated during

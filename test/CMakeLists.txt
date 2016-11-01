@@ -75,7 +75,7 @@ run_sample (mp3_valid_disc
 
 # MP3 with triple digit track numbers
 run_sample (mp3_valid_track
-  "\"mp3\",\"somealbum\",\".+testcases/mp3_valid_track\",missing_track")
+  "\"mp3\",\"somealbum\",\".+testcases/mp3_valid_track\",incomplete_album")
 
 # MP3 with multiple album art
 run_sample (mp3_multiple_art
@@ -103,6 +103,14 @@ run_sample (meta_multiple_artist_genres
 # Various artists with multiple genres
 run_sample (meta_various_artist_genres
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
+
+# Inconsistent track sequences
+run_sample (meta_incomplete_album
+  "\"mp3\",\"somealbum\",\".+testcases/meta_incomplete_album\",incomplete_album")
+
+# Inconsistent disc sequences
+run_sample (meta_incomplete_collection
+  "\"mp3\",\"somealbum\",\".+testcases/meta_incomplete_collection\",incomplete_collection")
 
 
 ### Ogg samples
