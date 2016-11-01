@@ -70,7 +70,30 @@ class MetaScanner: public Scanner {
      */
     void reportMultipleArtistGenres(MetaDataMap::iterator item);
 
+    /*!
+     * Find inconsistencies in track- or disc number sequences.
+     *
+     * \param [in] item An iterator of meta items.
+     * \param [in] genre An iterator of genres.
+     * \param [in] album An iterator of albums.
+     * \param [in] directory An iterator of directories.
+     * \param [in] songs A pointer to the list of song structures.
+     */
     void reportIndexInconsistencies(MetaDataMap::iterator item,
+        Scanner::Genres::iterator genre, Scanner::Albums::iterator album,
+        Scanner::Directories::iterator directory, Scanner::Songs* songs);
+
+    /*!
+     * Find MP3 track titles that have potentially been truncated during
+     * conversion from ID3v1 to ID3v2.
+     *
+     * \param [in] item An iterator of meta items.
+     * \param [in] genre An iterator of genres.
+     * \param [in] album An iterator of albums.
+     * \param [in] directory An iterator of directories.
+     * \param [in] songs A pointer to the list of song structures.
+     */
+    void reportTitleTruncation(MetaDataMap::iterator item,
         Scanner::Genres::iterator genre, Scanner::Albums::iterator album,
         Scanner::Directories::iterator directory, Scanner::Songs* songs);
 };

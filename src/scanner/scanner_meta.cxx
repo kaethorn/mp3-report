@@ -62,6 +62,26 @@ void MetaScanner::reportIndexInconsistencies(MetaDataMap::iterator item,
   }
 }
 
+void MetaScanner::reportTitleTruncation(MetaDataMap::iterator item,
+        Scanner::Genres::iterator genre, Scanner::Albums::iterator album,
+        Scanner::Directories::iterator directory, Scanner::Songs* songs) {
+  if (this->showWarnings) {
+    uint maxTitleLength = 0;
+    for (Scanner::Songs::iterator song=songs->begin();
+        song!=songs->end(); ++song) {
+      if (song->title.size() > maxTitleLength) {
+        if (song->fileType == MP3) {
+          maxTitleLength = song->title.size();
+        }
+      }
+    }
+    if (maxTitleLength == 30) {
+      addToReport(item->first, genre->first, album->first,
+          directory->first, "truncation_warning");
+    }
+  }
+}
+
 void MetaScanner::checkReport() {
   if (metaData->empty()) {
     return;
@@ -83,24 +103,7 @@ void MetaScanner::checkReport() {
           Scanner::Songs songs(directory->second);
 
           reportIndexInconsistencies(item, genre, album, directory, &songs);
-
-          // Find MP3 track titles that have potentially been truncated during
-          // conversion from ID3v1 to ID3v2
-          if (this->showWarnings) {
-            uint maxTitleLength = 0;
-            for (Scanner::Songs::iterator song=songs.begin();
-                song!=songs.end(); ++song) {
-              if (song->title.size() > maxTitleLength) {
-                if (song->fileType == MP3) {
-                  maxTitleLength = song->title.size();
-                }
-              }
-            }
-            if (maxTitleLength == 30) {
-              addToReport(item->first, genre->first, album->first,
-                  directory->first, "truncation_warning");
-            }
-          }
+          reportTitleTruncation(item, genre, album, directory, &songs);
         }
       }
     }
