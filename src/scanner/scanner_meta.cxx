@@ -66,7 +66,7 @@ void MetaScanner::checkReport() {
           }
           if (isIncomplete(&tracks)) {
             addToReport(item->first, genre->first, album->first,
-                directory->first, "missing_song");
+                directory->first, "missing_track");
           }
 
           if (isIncomplete(&discs)) {
