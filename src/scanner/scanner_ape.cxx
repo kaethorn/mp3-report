@@ -23,9 +23,15 @@ void APEScanner::checkAPETags(TagLib::APE::File *fileTag) {
   string albumArtist(APETag->itemListMap()["ALBUMARTIST"].isEmpty() ?
     "" : APETag->itemListMap()["ALBUMARTIST"].toString().to8Bit(true)
   );
+  string track(APETag->itemListMap()["TRACK"].isEmpty() ?
+    "" : APETag->itemListMap()["TRACK"].toString().to8Bit(true)
+  );
+  string disc(APETag->itemListMap()["DISC"].isEmpty() ?
+    "" : APETag->itemListMap()["TRACK"].toString().to8Bit(true)
+  );
 
   // Store meta data
-  addToMetaData(artist, genre, album, directory, APE, title, albumArtist);
+  addToMetaData(artist, genre, album, directory, APE, title, albumArtist, track, disc);
 
   // Find tracks without an artist tag
   if (artist.size() == 0) {
@@ -69,10 +75,17 @@ void APEScanner::checkAPETags(TagLib::APE::File *fileTag) {
 
   // Find tracks containing track numbers that are not formatted as <num>/<total>
   if (!APETag->itemListMap()["TRACK"].isEmpty()) {
-    static const boost::regex e("\\d{2}/\\d{2}|\\d{3}/\\d{3}");
-    string track = APETag->itemListMap()["TRACK"].toString().to8Bit(true);
-    if (!boost::regex_match(track, e)) {
+    static const boost::regex expression("\\d{2}/\\d{2}|\\d{3}/\\d{3}");
+    if (!boost::regex_match(track, expression)) {
       addToReport(artist, genre, album, directory, "invalid_track");
+    }
+  }
+
+  // Find tracks containing disc numbers that are not formatted as <num>/<total>
+  if (!APETag->itemListMap()["DISC"].isEmpty()) {
+    static const boost::regex expression("\\d/\\d|\\d{2}/\\d{2}");
+    if (!boost::regex_match(disc, expression)) {
+      addToReport(artist, genre, album, directory, "invalid_disc");
     }
   }
 }

@@ -52,4 +52,48 @@ class MetaScanner: public Scanner {
      * Flag indicating whether to show warnings as well as errors in the report.
      */
     bool showWarnings;
+
+    /*!
+     * Determines whether the given vector's values are discontinous.
+     *
+     * The given vector will be sorted.
+     *
+     * \param [in,out] items A pointer to vector containing track or disc numbers.
+     * \return true if the given vector is inconsistent, false otherwise.
+     */
+    bool isIncomplete(vector<string>* items);
+
+    /*!
+     * Find artists that belong to different genres.
+     *
+     * \param [in] directory A pointer to the directory level of meta data.
+     */
+    void reportMultipleArtistGenres(MetaDataMap::iterator item);
+
+    /*!
+     * Find inconsistencies in track- or disc number sequences.
+     *
+     * \param [in] item An iterator of meta items.
+     * \param [in] genre An iterator of genres.
+     * \param [in] album An iterator of albums.
+     * \param [in] directory An iterator of directories.
+     * \param [in] songs A pointer to the list of song structures.
+     */
+    void reportIndexInconsistencies(MetaDataMap::iterator item,
+        Scanner::Genres::iterator genre, Scanner::Albums::iterator album,
+        Scanner::Directories::iterator directory, Scanner::Songs* songs);
+
+    /*!
+     * Find MP3 track titles that have potentially been truncated during
+     * conversion from ID3v1 to ID3v2.
+     *
+     * \param [in] item An iterator of meta items.
+     * \param [in] genre An iterator of genres.
+     * \param [in] album An iterator of albums.
+     * \param [in] directory An iterator of directories.
+     * \param [in] songs A pointer to the list of song structures.
+     */
+    void reportTitleTruncation(MetaDataMap::iterator item,
+        Scanner::Genres::iterator genre, Scanner::Albums::iterator album,
+        Scanner::Directories::iterator directory, Scanner::Songs* songs);
 };

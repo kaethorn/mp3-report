@@ -52,9 +52,15 @@ void MP3Scanner::checkID3v2Tags(TagLib::MPEG::File *fileTag) {
   string albumArtist(ID3v2Tag->frameListMap()["TPE2"].isEmpty() ?
     "" : ID3v2Tag->frameListMap()["TPE2"].front()->toString().to8Bit(true)
   );
+  string track(ID3v2Tag->frameListMap()["TRCK"].isEmpty() ?
+    "" : ID3v2Tag->frameListMap()["TRCK"].front()->toString().to8Bit(true)
+  );
+  string disc(ID3v2Tag->frameListMap()["TPOS"].isEmpty() ?
+    "" : ID3v2Tag->frameListMap()["TPOS"].front()->toString().to8Bit(true)
+  );
 
   // Store meta data
-  addToMetaData(artist, genre, album, directory, MP3, title, albumArtist);
+  addToMetaData(artist, genre, album, directory, MP3, title, albumArtist, track, disc);
 
   // Find tracks without an artist tag
   if (artist.size() == 0) {
@@ -110,10 +116,17 @@ void MP3Scanner::checkID3v2Tags(TagLib::MPEG::File *fileTag) {
 
   // Find tracks containing track numbers that are not formatted as <num>/<total>
   if (!ID3v2Tag->frameListMap()["TRCK"].isEmpty()) {
-    static const boost::regex e("\\d{2}/\\d{2}|\\d{3}/\\d{3}");
-    string track = ID3v2Tag->frameListMap()["TRCK"].front()->toString().to8Bit(true);
-    if (!boost::regex_match(track, e)) {
+    static const boost::regex expression("\\d{2}/\\d{2}|\\d{3}/\\d{3}");
+    if (!boost::regex_match(track, expression)) {
       addToReport(artist, genre, album, directory, "invalid_track");
+    }
+  }
+
+  // Find tracks containing disc numbers that are not formatted as <num>/<total>
+  if (!ID3v2Tag->frameListMap()["TPOS"].isEmpty()) {
+    static const boost::regex expression("\\d/\\d|\\d{2}/\\d{2}");
+    if (!boost::regex_match(disc, expression)) {
+      addToReport(artist, genre, album, directory, "invalid_disc");
     }
   }
 
