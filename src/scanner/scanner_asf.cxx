@@ -23,7 +23,7 @@ void ASFScanner::checkASFTags(TagLib::ASF::File *fileTag) {
   string albumArtist(ASFTag->attributeListMap()["WM/AlbumArtist"].isEmpty() ?
     "" : ASFTag->attributeListMap()["WM/AlbumArtist"].front().toString().to8Bit(true)
   );
-  string track(ASFTag->attributeListMap()["WM/TrackNumber"].isEmpty() ?
+  string track(ASFTag->track() == 0 ?
     "" : ASFTag->attributeListMap()["WM/TrackNumber"].front().toString().to8Bit(true)
   );
   string disc(ASFTag->attributeListMap()["WM/PartOfSet"].isEmpty() ?
