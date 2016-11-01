@@ -83,7 +83,7 @@ void APEScanner::checkAPETags(TagLib::APE::File *fileTag) {
 
   // Find tracks containing disc numbers that are not formatted as <num>/<total>
   if (!APETag->itemListMap()["DISC"].isEmpty()) {
-    static const boost::regex expression("\\d/\\d");
+    static const boost::regex expression("\\d/\\d|\\d{2}/\\d{2}");
     if (!boost::regex_match(disc, expression)) {
       addToReport(artist, genre, album, directory, "invalid_disc");
     }
