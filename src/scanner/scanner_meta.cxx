@@ -23,6 +23,20 @@ bool MetaScanner::isIncomplete(vector<string>* items) {
   return false;
 }
 
+void MetaScanner::reportMultipleArtistGenres(MetaDataMap::iterator directory) {
+  Scanner::Genres genres(directory->second);
+  if (genres.size() > 1) {
+    string artist(directory->first);
+    string genre((*metaData)[artist].begin()->first);
+    string album((*metaData)[artist][genre].begin()->first);
+    string directory((*metaData)[artist][genre][album].begin()->first);
+    string albumArtist((*metaData)[artist][genre][album][directory].begin()->albumArtist);
+    if (albumArtist != "Various Artists") {
+      addToReport(artist, genre, album, directory, "multiple_artist_genres");
+    }
+  }
+}
+
 void MetaScanner::checkReport() {
   if (metaData->empty()) {
     return;
@@ -30,22 +44,11 @@ void MetaScanner::checkReport() {
 
   for (MetaDataMap::iterator item=metaData->begin();
        item!=metaData->end(); ++item) {
-    Scanner::Genres genres(item->second);
 
-    // Find artists that belong to different genres
-    if (genres.size() > 1) {
-      string artist(item->first);
-      string genre((*metaData)[artist].begin()->first);
-      string album((*metaData)[artist][genre].begin()->first);
-      string directory((*metaData)[artist][genre][album].begin()->first);
-      string albumArtist((*metaData)[artist][genre][album][directory].begin()->albumArtist);
-      if (albumArtist != "Various Artists") {
-        addToReport(artist, genre, album, directory, "multiple_artist_genres");
-      }
-    }
+    reportMultipleArtistGenres(item);
 
-    for (Scanner::Genres::iterator genre=genres.begin();
-        genre!=genres.end(); ++genre) {
+    for (Scanner::Genres::iterator genre=item->second.begin();
+        genre!=item->second.end(); ++genre) {
       Scanner::Albums albums(genre->second);
       for (Scanner::Albums::iterator album=albums.begin();
           album!=albums.end(); ++album) {
@@ -64,6 +67,7 @@ void MetaScanner::checkReport() {
               discs.push_back(song->disc);
             }
           }
+
           if (isIncomplete(&tracks)) {
             addToReport(item->first, genre->first, album->first,
                 directory->first, "incomplete_album");

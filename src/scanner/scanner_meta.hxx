@@ -55,6 +55,18 @@ class MetaScanner: public Scanner {
 
     /*!
      * Determines whether the given vector's values are discontinous.
+     *
+     * The given vector will be sorted.
+     *
+     * \param [in,out] items A pointer to vector containing track or disc numbers.
+     * \return true if the given vector is inconsistent, false otherwise.
      */
     bool isIncomplete(vector<string>* items);
+
+    /*!
+     * Find artists that belong to different genres.
+     *
+     * \param [in] directory A pointer to the directory level of meta data.
+     */
+    void reportMultipleArtistGenres(MetaDataMap::iterator directory);
 };
