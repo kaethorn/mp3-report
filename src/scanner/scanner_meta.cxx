@@ -4,6 +4,25 @@ void MetaScanner::scan() {
   checkReport();
 }
 
+bool MetaScanner::isIncomplete(vector<string>* items) {
+  std::sort(items->begin(), items->end());
+
+  int next = 1;
+  for (std::vector<string>::iterator item = items->begin(); item != items->end(); ++item) {
+    string token(item->substr(0, item->find("/")));
+    int parsedItem = atoi(token.c_str());
+
+    // Invalid tracks are already reported separately.
+    if (parsedItem == 0) return false;
+
+    // The next item in the vector has an unexpected value indicating an inconsistency
+    if (parsedItem != next) return true;
+
+    ++next;
+  }
+  return false;
+}
+
 void MetaScanner::checkReport() {
   if (metaData->empty()) {
     return;
@@ -35,37 +54,25 @@ void MetaScanner::checkReport() {
             directory!=directories.end(); ++directory) {
           Scanner::Songs songs(directory->second);
 
-          // Collect album names, track numbers and disc numbers
+          // Collect track- and disc numbers
           vector<string> tracks;
           vector<string> discs;
           for (Scanner::Songs::iterator song=songs.begin();
               song!=songs.end(); ++song) {
             tracks.push_back(song->track);
-            discs.push_back(song->disc);
+            if (song->disc.size()) {
+              discs.push_back(song->disc);
+            }
           }
-          std::sort(tracks.begin(), tracks.end());
-          std::sort(discs.begin(), discs.end());
-
-          // Find inconsitencies in directories, such as album name mismatches
-          // or incomplete disc- and track numbers.
-          string last("");
-          sprintf(&last, "%02o", tracks.size());
-          if (tracks.back() < last) {
+          if (isIncomplete(&tracks)) {
             addToReport(item->first, genre->first, album->first,
                 directory->first, "missing_song");
           }
-          if (discs.size() > 0 && discs.back() < discs.size()) {
+
+          if (isIncomplete(&discs)) {
             addToReport(item->first, genre->first, album->first,
                 directory->first, "invalid_disc");
           }
-
-          // Collect album names
-          // TODO
-          //vector<string> albums;
-
-          // Find album name mismatches within a directory
-          // TODO
-          //albums.push_back(song->album);
 
           // Find MP3 track titles that have potentially been truncated during
           // conversion from ID3v1 to ID3v2

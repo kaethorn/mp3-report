@@ -9,7 +9,6 @@
  */
 
 #include "scanner.hxx"
-#include <cstdio>
 
 /*! \class MetaScanner
  * Scanner for \a report structure
@@ -53,4 +52,9 @@ class MetaScanner: public Scanner {
      * Flag indicating whether to show warnings as well as errors in the report.
      */
     bool showWarnings;
+
+    /*!
+     * Determines whether the given vector's values are discontinous.
+     */
+    bool isIncomplete(vector<string>* items);
 };
