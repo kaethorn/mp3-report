@@ -3,7 +3,7 @@
 #include <id3v1tag.h>
 #include <id3v2frame.h>
 #include <id3v2header.h>
-#include <taglib/attachedpictureframe.h>
+#include <attachedpictureframe.h>
 #include <textidentificationframe.h>
 
 #include "scanner_mp3.hxx"
