@@ -113,7 +113,7 @@ void MP3Scanner::checkID3v2Tags(TagLib::MPEG::File *fileTag) {
   if (!ID3v2Tag->frameListMap()["APIC"].isEmpty() &&
       ID3v2Tag->frameListMap()["APIC"].size() == 1) {
     const TagLib::ID3v2::AttachedPictureFrame* albumArt =
-      dynamic_cast<const TagLib::ID3v2::AttachedPictureFrame*>(*(ID3v2Tag->frameListMap()["APIC"].begin()));
+      dynamic_cast<const TagLib::ID3v2::AttachedPictureFrame*>(ID3v2Tag->frameListMap()["APIC"].front());
     if (albumArt->type() != TagLib::ID3v2::AttachedPictureFrame::FrontCover) {
       addToReport(artist, genre, album, directory, "invalid_art");
     }
