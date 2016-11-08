@@ -108,11 +108,13 @@ void MP3Scanner::checkID3v2Tags(TagLib::MPEG::File *fileTag) {
   } else if (pictures.size() > 1) {
     addToReport(artist, genre, album, directory, "multiple_art");
 
-  // Find tracks with invalid album art types
+  // Find tracks with invalid album art types or sizes
   } else {
     const TagLib::ID3v2::AttachedPictureFrame* albumArt =
       dynamic_cast<const TagLib::ID3v2::AttachedPictureFrame*>(pictures.front());
-    if (albumArt->type() != TagLib::ID3v2::AttachedPictureFrame::FrontCover) {
+
+    if (albumArt->type() != TagLib::ID3v2::AttachedPictureFrame::FrontCover ||
+        albumArt->picture().size() == 0) {
       addToReport(artist, genre, album, directory, "invalid_art");
     }
   }

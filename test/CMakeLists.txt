@@ -37,6 +37,10 @@ run_sample (mp3_invalid_encoding
 run_sample (mp3_invalid_art_type
   "\"mp3\",\"somealbum\",\".+testcases/mp3_invalid_art_type\",invalid_art")
 
+# MP3 with an invalid album art size
+run_sample (mp3_invalid_art_size
+  "\"mp3\",\"somealbum\",\".+testcases/mp3_invalid_art_size\",invalid_art")
+
 # MP3 without an album
 run_sample (mp3_missing_album
   "\"mp3\",\"\",\".+testcases/mp3_missing_album\",missing_album")
