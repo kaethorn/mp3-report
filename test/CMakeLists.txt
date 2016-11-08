@@ -34,8 +34,8 @@ run_sample (mp3_invalid_encoding
   "\"mp3\",\"somealbum\",\".+testcases/mp3_invalid_encoding\",invalid_encoding")
 
 # MP3 with an invalid album art type
-run_sample (mp3_invalid_art
-  "\"mp3\",\"somealbum\",\".+testcases/mp3_invalid_art\",invalid_art")
+run_sample (mp3_invalid_art_type
+  "\"mp3\",\"somealbum\",\".+testcases/mp3_invalid_art_type\",invalid_art")
 
 # MP3 without an album
 run_sample (mp3_missing_album
@@ -156,8 +156,8 @@ run_sample (ogg_invalid_track
   "\"ogg\",\"somealbum\",\".+testcases/ogg_invalid_track\",invalid_track")
 
 # Ogg with invalid album art
-run_sample (ogg_invalid_art
-  "\"ogg\",\"somealbum\",\".+testcases/ogg_invalid_art\",invalid_art")
+run_sample (ogg_invalid_art_type
+  "\"ogg\",\"somealbum\",\".+testcases/ogg_invalid_art_type\",invalid_art")
 
 # Ogg with multiple album art
 run_sample (ogg_multiple_art
@@ -297,8 +297,8 @@ run_sample (flac_invalid_track
   "\"flac\",\"somealbum\",\".+testcases/flac_invalid_track\",invalid_track")
 
 # FLAC with invalid album art
-run_sample (flac_invalid_art
-  "\"flac\",\"somealbum\",\".+testcases/flac_invalid_art\",invalid_art")
+run_sample (flac_invalid_art_type
+  "\"flac\",\"somealbum\",\".+testcases/flac_invalid_art_type\",invalid_art")
 
 # FLAC with multiple album art
 run_sample (flac_multiple_art
