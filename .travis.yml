@@ -7,7 +7,8 @@ install:
   - wget http://mirrors.kernel.org/ubuntu/pool/main/t/taglib/libtag1v5_1.11.1-0.1ubuntu2_amd64.deb
   - wget http://mirrors.kernel.org/ubuntu/pool/main/t/taglib/libtag1v5-vanilla_1.11.1-0.1ubuntu2_amd64.deb
   - wget http://mirrors.kernel.org/ubuntu/pool/main/g/gcc-6/libstdc++6_6.2.0-11ubuntu1_amd64.deb
-  - sudo dpkg -i libstdc++6_6.2.0-11ubuntu1_amd64.deb libtag1v5_1.11.1-0.1ubuntu2_amd64.deb libtag1v5-vanilla_1.11.1-0.1ubuntu2_amd64.deb libtag1-dev_1.11.1-0.1ubuntu2_amd64.deb
+  - wget http://mirrors.kernel.org/ubuntu/pool/main/g/gcc-6/gcc-6-base_6.2.0-11ubuntu1_amd64.deb
+  - sudo dpkg -i gcc-6-base_6.2.0-11ubuntu1_amd64.deb libstdc++6_6.2.0-11ubuntu1_amd64.deb libtag1v5_1.11.1-0.1ubuntu2_amd64.deb libtag1v5-vanilla_1.11.1-0.1ubuntu2_amd64.deb libtag1-dev_1.11.1-0.1ubuntu2_amd64.deb
 script: 'cmake . && cmake --build . && cmake --build . --target test'
 notifications:
   recipients:
