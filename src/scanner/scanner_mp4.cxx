@@ -69,8 +69,9 @@ void MP4Scanner::checkMP4Tags(TagLib::MP4::File *fileTag) {
   // Find tracks with missing album art
   if (!MP4Tag->itemListMap().contains("covr")) {
     addToReport(artist, genre, album, directory, "missing_art");
+
+  // Find tracks with more than one album art
   } else if (MP4Tag->itemListMap()["covr"].toCoverArtList().size() > 1) {
-    // Find tracks with more than one album art
     addToReport(artist, genre, album, directory, "multiple_art");
   }
 }

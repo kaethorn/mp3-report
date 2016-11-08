@@ -100,20 +100,18 @@ void MP3Scanner::checkID3v2Tags(TagLib::MPEG::File *fileTag) {
   }
 
   // Find tracks with missing album art
-  if (ID3v2Tag->frameListMap()["APIC"].isEmpty()) {
+  const TagLib::ID3v2::FrameList& pictures = ID3v2Tag->frameListMap()["APIC"];
+  if (pictures.isEmpty()) {
     addToReport(artist, genre, album, directory, "missing_art");
-  }
 
   // Find tracks with more than one album art
-  if (ID3v2Tag->frameListMap()["APIC"].size() > 1) {
+  } else if (pictures.size() > 1) {
     addToReport(artist, genre, album, directory, "multiple_art");
-  }
 
-  // Find tracks with invalid album art
-  if (!ID3v2Tag->frameListMap()["APIC"].isEmpty() &&
-      ID3v2Tag->frameListMap()["APIC"].size() == 1) {
+  // Find tracks with invalid album art types
+  } else {
     const TagLib::ID3v2::AttachedPictureFrame* albumArt =
-      dynamic_cast<const TagLib::ID3v2::AttachedPictureFrame*>(ID3v2Tag->frameListMap()["APIC"].front());
+      dynamic_cast<const TagLib::ID3v2::AttachedPictureFrame*>(pictures.front());
     if (albumArt->type() != TagLib::ID3v2::AttachedPictureFrame::FrontCover) {
       addToReport(artist, genre, album, directory, "invalid_art");
     }

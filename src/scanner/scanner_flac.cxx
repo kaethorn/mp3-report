@@ -70,13 +70,23 @@ void FLACScanner::checkFLACTags(TagLib::FLAC::File *fileTag) {
   }
 
   // Find tracks with missing album art
-  if (fileTag->pictureList().size() < 1) {
+  // FIXME do this in all scanners
+  // FIXME snail case to camel case
+  // FIXME includes with folder, e.g. <tablib/flacfile.h>
+  const TagLib::List<TagLib::FLAC::Picture*>& pictures = fileTag->pictureList();
+  if (pictures.size() < 1) {
     addToReport(artist, genre, album, directory, "missing_art");
-  }
 
   // Find tracks with more than one album art
-  if (fileTag->pictureList().size() > 1) {
+  } else  if (pictures.size() > 1) {
     addToReport(artist, genre, album, directory, "multiple_art");
+
+  // Find tracks with invalid album art types
+  } else {
+    const TagLib::FLAC::Picture* albumArt = pictures.front();
+    if (albumArt->type() != TagLib::FLAC::Picture::FrontCover) {
+      addToReport(artist, genre, album, directory, "invalid_art");
+    }
   }
 
   // Find tracks containing track numbers that are not formatted as <num>/<total>

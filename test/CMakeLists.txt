@@ -155,6 +155,10 @@ run_sample (ogg_missing_track
 run_sample (ogg_invalid_track
   "\"ogg\",\"somealbum\",\".+testcases/ogg_invalid_track\",invalid_track")
 
+# Ogg with invalid album art
+run_sample (ogg_invalid_art
+  "\"ogg\",\"somealbum\",\".+testcases/ogg_invalid_art\",invalid_art")
+
 # Ogg with multiple album art
 run_sample (ogg_multiple_art
   "\"ogg\",\"somealbum\",\".+testcases/ogg_multiple_art\",multiple_art")
@@ -291,6 +295,10 @@ run_sample (flac_missing_track
 # FLAC with an invalid track number format
 run_sample (flac_invalid_track
   "\"flac\",\"somealbum\",\".+testcases/flac_invalid_track\",invalid_track")
+
+# FLAC with invalid album art
+run_sample (flac_invalid_art
+  "\"flac\",\"somealbum\",\".+testcases/flac_invalid_art\",invalid_art")
 
 # FLAC with multiple album art
 run_sample (flac_multiple_art

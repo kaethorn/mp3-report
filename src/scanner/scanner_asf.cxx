@@ -69,13 +69,23 @@ void ASFScanner::checkASFTags(TagLib::ASF::File *fileTag) {
   }
 
   // Find tracks with missing album art
-  if (ASFTag->attributeListMap()["WM/Picture"].size() < 1) {
+  const TagLib::ASF::AttributeList& pictures = ASFTag->attributeListMap()["WM/Picture"];
+  if (pictures.size() < 1) {
     addToReport(artist, genre, album, directory, "missing_art");
-  }
 
   // Find tracks with more than one album art
-  if (ASFTag->attributeListMap()["WM/Picture"].size() > 1) {
+  } else if (pictures.size() > 1) {
     addToReport(artist, genre, album, directory, "multiple_art");
+
+  // Find tracks with invalid album art types
+  } else {
+    const TagLib::ASF::Picture& albumArt = pictures.front().toPicture();
+    if (albumArt.type() != TagLib::ASF::Picture::FrontCover) {
+      addToReport(artist, genre, album, directory, "invalid_art");
+    }
+    if (!albumArt.isValid()) {
+      addToReport(artist, genre, album, directory, "invalid_art");
+    }
   }
 
   // Find tracks containing track numbers that are not formatted as <num>/<total>

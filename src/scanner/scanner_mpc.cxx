@@ -67,10 +67,9 @@ void MPCScanner::checkMPCTags(TagLib::MPC::File *fileTag) {
   if (!APETag->itemListMap().contains("ALBUMARTIST") ||
       APETag->itemListMap()["ALBUMARTIST"].isEmpty()) {
     addToReport(artist, genre, album, directory, "missing_album_artist");
-  }
 
   // Find tracks with missing album art
-  if (!APETag->itemListMap().contains("COVER ART (FRONT)")) {
+  } else if (!APETag->itemListMap().contains("COVER ART (FRONT)")) {
     addToReport(artist, genre, album, directory, "missing_art");
   }
 
