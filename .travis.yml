@@ -2,7 +2,7 @@ language: cpp
 sudo: required
 dist: trusty
 install:
-  - sudo apt-get install -y libtag1-dev libmagic-dev libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-regex-dev
+  - sudo apt-get install -y libmagic-dev libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-regex-dev
   - wget http://mirrors.kernel.org/ubuntu/pool/main/t/taglib/libtag1-dev_1.11.1-0.1ubuntu2_amd64.deb
   - wget http://mirrors.kernel.org/ubuntu/pool/main/t/taglib/libtag1v5_1.11.1-0.1ubuntu2_amd64.deb
   - wget http://mirrors.kernel.org/ubuntu/pool/main/t/taglib/libtag1v5-vanilla_1.11.1-0.1ubuntu2_amd64.deb
