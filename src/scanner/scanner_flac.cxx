@@ -70,8 +70,6 @@ void FLACScanner::checkFLACTags(TagLib::FLAC::File *fileTag) {
   }
 
   // Find tracks with missing album art
-  // FIXME do this in all scanners
-  // FIXME snail case to camel case
   const TagLib::List<TagLib::FLAC::Picture*>& pictures = fileTag->pictureList();
   if (pictures.size() < 1) {
     addToReport(artist, genre, album, directory, "missing_art");

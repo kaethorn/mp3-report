@@ -11,6 +11,12 @@ void OggVorbisScanner::scan(boost::filesystem::path file) {
 }
 
 TagLib::ByteVector OggVorbisScanner::decodeCover(const TagLib::Ogg::XiphComment* oggVorbisTag) {
+
+  // FIXME upgrade to taglib 1.11.1 in order to use internal base64 decoder
+  //return TagLib::ByteVector(TagLib::ByteVector::fromBase64(
+  //  oggVorbisTag->fieldListMap()["METADATA_BLOCK_PICTURE"].front()
+  //));
+
   string cover = oggVorbisTag->fieldListMap()["METADATA_BLOCK_PICTURE"].front().to8Bit();
   std::stringstream os;
 
@@ -100,7 +106,6 @@ void OggVorbisScanner::checkOggVorbisTags(TagLib::Ogg::Vorbis::File *fileTag) {
   // Find tracks with invalid album art types
   } else {
     TagLib::FLAC::Picture* albumArt = new TagLib::FLAC::Picture(decodeCover(oggVorbisTag));
-    cout << "Ogg album art type: " << albumArt->type() << " should be " << TagLib::FLAC::Picture::FrontCover << endl;
     if (albumArt->type() != TagLib::FLAC::Picture::FrontCover) {
       addToReport(artist, genre, album, directory, "invalid_art");
     }
