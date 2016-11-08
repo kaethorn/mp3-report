@@ -1,5 +1,5 @@
 #include <boost/regex.hpp>
-#include <asftag.h>
+#include <taglib/asftag.h>
 
 #include "scanner_asf.hxx"
 

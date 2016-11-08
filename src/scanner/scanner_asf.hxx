@@ -8,7 +8,7 @@
  * or copy at http://opensource.org/licenses/MIT)
  */
 
-#include <asffile.h>
+#include <taglib/asffile.h>
 
 #include "scanner.hxx"
 

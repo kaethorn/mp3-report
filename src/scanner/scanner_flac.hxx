@@ -8,7 +8,7 @@
  * or copy at http://opensource.org/licenses/MIT)
  */
 
-#include <flacfile.h>
+#include <taglib/flacfile.h>
 
 #include "scanner.hxx"
 

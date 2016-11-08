@@ -1,5 +1,5 @@
 #include <boost/regex.hpp>
-#include <vorbisfile.h>
+#include <taglib/vorbisfile.h>
 
 #include "scanner_flac.hxx"
 
@@ -72,7 +72,6 @@ void FLACScanner::checkFLACTags(TagLib::FLAC::File *fileTag) {
   // Find tracks with missing album art
   // FIXME do this in all scanners
   // FIXME snail case to camel case
-  // FIXME includes with folder, e.g. <tablib/flacfile.h>
   const TagLib::List<TagLib::FLAC::Picture*>& pictures = fileTag->pictureList();
   if (pictures.size() < 1) {
     addToReport(artist, genre, album, directory, "missing_art");

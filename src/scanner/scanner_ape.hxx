@@ -8,8 +8,8 @@
  * or copy at http://opensource.org/licenses/MIT)
  */
 
-#include <apefile.h>
-#include <apetag.h>
+#include <taglib/apefile.h>
+#include <taglib/apetag.h>
 
 #include "scanner.hxx"
 

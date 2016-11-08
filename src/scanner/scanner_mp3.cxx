@@ -1,10 +1,10 @@
 #include <boost/regex.hpp>
-#include <id3v2tag.h>
-#include <id3v1tag.h>
-#include <id3v2frame.h>
-#include <id3v2header.h>
-#include <attachedpictureframe.h>
-#include <textidentificationframe.h>
+#include <taglib/id3v2tag.h>
+#include <taglib/id3v1tag.h>
+#include <taglib/id3v2frame.h>
+#include <taglib/id3v2header.h>
+#include <taglib/attachedpictureframe.h>
+#include <taglib/textidentificationframe.h>
 
 #include "scanner_mp3.hxx"
 
