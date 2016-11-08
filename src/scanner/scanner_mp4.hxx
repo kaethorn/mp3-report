@@ -8,7 +8,7 @@
  * or copy at http://opensource.org/licenses/MIT)
  */
 
-#include <mp4file.h>
+#include <taglib/mp4file.h>
 
 #include "scanner.hxx"
 

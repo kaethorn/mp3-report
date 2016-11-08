@@ -8,7 +8,10 @@
  * or copy at http://opensource.org/licenses/MIT)
  */
 
-#include <vorbisfile.h>
+#include <taglib/vorbisfile.h>
+#include <boost/archive/iterators/base64_from_binary.hpp>
+#include <boost/archive/iterators/binary_from_base64.hpp>
+#include <boost/archive/iterators/transform_width.hpp>
 
 #include "scanner.hxx"
 
@@ -42,9 +45,17 @@ class OggVorbisScanner: public Scanner {
   private:
 
     /*!
-     * Scans \a fileTag for tag inconsistencies.
+     * Scans a fileTag for tag inconsistencies.
      *
      * \param [in] fileTag A pointer to the ogg file tag object
      */
     void checkOggVorbisTags(TagLib::Ogg::Vorbis::File *fileTag);
+
+    /*!
+     * Extracts the first cover from the given tag.
+     *
+     * \param [in] oggVorbisTag The vorbis tag containing a cover
+     * \return A byte vector of the first cover found
+     */
+    TagLib::ByteVector decodeCover(const TagLib::Ogg::XiphComment* oggVorbisTag);
 };

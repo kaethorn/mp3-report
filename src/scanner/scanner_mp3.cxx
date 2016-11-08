@@ -1,9 +1,10 @@
 #include <boost/regex.hpp>
-#include <id3v2tag.h>
-#include <id3v1tag.h>
-#include <id3v2frame.h>
-#include <id3v2header.h>
-#include <textidentificationframe.h>
+#include <taglib/id3v2tag.h>
+#include <taglib/id3v1tag.h>
+#include <taglib/id3v2frame.h>
+#include <taglib/id3v2header.h>
+#include <taglib/attachedpictureframe.h>
+#include <taglib/textidentificationframe.h>
 
 #include "scanner_mp3.hxx"
 
@@ -99,13 +100,21 @@ void MP3Scanner::checkID3v2Tags(TagLib::MPEG::File *fileTag) {
   }
 
   // Find tracks with missing album art
-  if (ID3v2Tag->frameListMap()["APIC"].isEmpty()) {
+  const TagLib::ID3v2::FrameList& pictures = ID3v2Tag->frameListMap()["APIC"];
+  if (pictures.isEmpty()) {
     addToReport(artist, genre, album, directory, "missing_art");
-  }
 
   // Find tracks with more than one album art
-  if (ID3v2Tag->frameListMap()["APIC"].size() > 1) {
+  } else if (pictures.size() > 1) {
     addToReport(artist, genre, album, directory, "multiple_art");
+
+  // Find tracks with invalid album art types
+  } else {
+    const TagLib::ID3v2::AttachedPictureFrame* albumArt =
+      dynamic_cast<const TagLib::ID3v2::AttachedPictureFrame*>(pictures.front());
+    if (albumArt->type() != TagLib::ID3v2::AttachedPictureFrame::FrontCover) {
+      addToReport(artist, genre, album, directory, "invalid_art");
+    }
   }
 
   // Find tracks containing id3v2 tags with versions lower than
