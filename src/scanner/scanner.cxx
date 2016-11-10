@@ -30,6 +30,9 @@ void Scanner::addToMetaData(const string artist, const string genre,
   song.track       = track;
   song.disc        = disc;
   song.directory   = directory;
+  song.album       = album;
+  song.genre       = genre;
+  song.artist      = artist;
   (*metaData)[artist][genre][album][directory].push_back(song);
   (*albumMetaData)[album].push_back(song);
 }

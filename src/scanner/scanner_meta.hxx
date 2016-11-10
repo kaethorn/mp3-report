@@ -74,15 +74,10 @@ class MetaScanner: public Scanner {
     /*!
      * Find inconsistencies in track- or disc number sequences.
      *
-     * \param [in] item An iterator of meta items.
-     * \param [in] genre An iterator of genres.
-     * \param [in] album An iterator of albums.
-     * \param [in] directory An iterator of directories.
+     * \param [in] item An iterator of albums.
      * \param [in] songs A pointer to the list of song structures.
      */
-    void reportIndexInconsistencies(MetaDataMap::iterator item,
-        Scanner::Genres::iterator genre, Scanner::Albums::iterator album,
-        Scanner::Directories::iterator directory, Scanner::Songs* songs);
+    void reportIndexInconsistencies(AlbumMetaDataMap::iterator album);
 
     /*!
      * Find MP3 track titles that have potentially been truncated during

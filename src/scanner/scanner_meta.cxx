@@ -37,31 +37,28 @@ void MetaScanner::reportMultipleArtistGenres(MetaDataMap::iterator item) {
   }
 }
 
-void MetaScanner::reportIndexInconsistencies(MetaDataMap::iterator item,
-        Scanner::Genres::iterator genre, Scanner::Albums::iterator album,
-        Scanner::Directories::iterator directory, Scanner::Songs* songs) {
+void MetaScanner::reportIndexInconsistencies(AlbumMetaDataMap::iterator album) {
   // Collect track- and disc numbers
   vector<string> tracks;
   vector<string> discs;
-  cout << "New album '" << album->first << "' with tracks: ";
-  for (Scanner::Songs::iterator song=songs->begin();
-      song!=songs->end(); ++song) {
+  for (Scanner::Songs::iterator song=album->second.begin();
+      song!=album->second.end(); ++song) {
     tracks.push_back(song->track);
-    cout << " '" << song->title;
     if (song->disc.size()) {
       discs.push_back(song->disc);
     }
   }
-  cout << endl;
 
   if (isIncomplete(&tracks)) {
-    addToReport(item->first, genre->first, album->first,
-        directory->first, "incomplete_album");
+    addToReport(album->second.begin()->artist, album->second.begin()->genre,
+        album->second.begin()->album, album->second.begin()->directory,
+        "incomplete_album");
   }
 
   if (isIncomplete(&discs)) {
-    addToReport(item->first, genre->first, album->first,
-        directory->first, "incomplete_collection");
+    addToReport(album->second.begin()->artist, album->second.begin()->genre,
+        album->second.begin()->album, album->second.begin()->directory,
+        "incomplete_collection");
   }
 }
 
@@ -91,10 +88,9 @@ void MetaScanner::checkReport() {
     return;
   }
 
-  for (AlbumMetaDataMap::iterator item=albumMetaData->begin();
-       item != albumMetaData->end(); ++item) {
-    // TODO adjust to new structure
-    //reportIndexInconsistencies(item, genre, album, directory, &songs);
+  for (AlbumMetaDataMap::iterator album=albumMetaData->begin();
+       album != albumMetaData->end(); ++album) {
+    reportIndexInconsistencies(album);
   }
 
   if (metaData->empty()) {

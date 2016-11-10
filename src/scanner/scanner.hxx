@@ -65,6 +65,9 @@ class Scanner {
       string   track;
       string   disc;
       string   directory;
+      string   album;
+      string   genre;
+      string   artist;
     };
 
     /*!
