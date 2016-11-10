@@ -212,8 +212,19 @@ void Reporter::scanByExtension(boost::filesystem::path file) {
   }
 }
 
-void Reporter::printProgress(string message, string progress) {
-  cout << "\r " << message << " " << left << setw(70) << progress.substr(0,70) << flush;
+void Reporter::printActivity(string activity, string message, bool showSpinner = false) {
+  cout << "\r ";
+  if (showSpinner) {
+    printSpinner();
+  }
+  cout << activity << " " << left << setw(70) << message.substr(0,70) << flush;
+}
+
+void Reporter::printSpinner() {
+  static int spinnerPosition = 0;
+  static const string spinnerCharacters[14] = {"▁", "▂", "▃", "▄", "▅", "▆", "▇", "█", "▇", "▆", "▅", "▄", "▃", "▁"};
+  cout << spinnerCharacters[spinnerPosition] << " ";
+  spinnerPosition = (spinnerPosition + 1) % 14;
 }
 
 void Reporter::iterateDirectory() {
@@ -241,7 +252,7 @@ void Reporter::iterateDirectory() {
   for (fs::recursive_directory_iterator end, file(*directory);
       file != end; ++file) {
     if (is_directory(file->status())) {
-      printProgress("Scanning", file->path().filename().string());
+      printActivity("Scanning", file->path().filename().string(), true);
       continue;
     }
 
@@ -250,8 +261,8 @@ void Reporter::iterateDirectory() {
     else
       scanByMagicByte(file->path());
   }
-  printProgress("Inspecting", "tag information");
+  printActivity("Inspecting", "tag information");
   metaScanner->scan();
-  printProgress("☀", "Done");
+  printActivity("☀", "Done");
   cout << endl;
 }

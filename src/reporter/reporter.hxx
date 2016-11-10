@@ -93,9 +93,18 @@ class Reporter {
     bool showWarnings;
 
     /*!
-     * Outputs \a progress to the standard output with proper padding.
+     * Outputs \a activity with \a message to the standard output with proper padding.
+     *
+     * \param [in] activity Activity description
+     * \param [in] message Message detailing the current activity
+     * \param [in] showSpinner Optional flag requesting a spinner being printed
      */
-    void printProgress(string message, string progress);
+    void printActivity(const string activity, const string message, bool showSpinner);
+
+    /*!
+     * Renders a spinner character.
+     */
+    void printSpinner();
 
     /*!
      * The report structure to populate with scan results.
