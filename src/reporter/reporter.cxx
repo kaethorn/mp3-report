@@ -4,7 +4,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string/join.hpp>
 #include <magic.h>
-#include "xdgmime.h"
+#include "../xdgmime/xdgmime.h"
 
 #include "reporter.hxx"
 
@@ -21,6 +21,7 @@ Reporter::Reporter(const string* directory, const string* reportType,
   this->showWarnings = showWarnings;
   report = Scanner::ReportMap();
   metaData = Scanner::MetaDataMap();
+  albumMetaData = Scanner::AlbumMetaDataMap();
 
   // Determine where the output will be written (file or stdout).
   if (outputPath->size() == 0) {
@@ -130,25 +131,25 @@ const string Reporter::getFileTypeByXdgMIME(const string file) {
 }
 
 const string Reporter::getFileTypeLibMagic(const string file) {
-  const char *contentType; 
+  const char *contentType;
   string type;
 
-  magic_t magic = magic_open(MAGIC_MIME_TYPE|MAGIC_ERROR); 
-  if (magic == NULL) { 
+  magic_t magic = magic_open(MAGIC_MIME_TYPE|MAGIC_ERROR);
+  if (magic == NULL) {
     cerr << file << ": Error initializing libmagic" << endl;
     return "unknown";
-  } 
+  }
   if (magic_load(magic, NULL) != 0) {
     cerr << file << ": Error loading libmagic database" << endl;
     magic_close(magic);
     return "unknown";
   }
-  contentType = magic_file(magic, file.c_str()); 
-  if (contentType == NULL) { 
-    cerr << file << ": Unknown content type" << endl; 
+  contentType = magic_file(magic, file.c_str());
+  if (contentType == NULL) {
+    cerr << file << ": Unknown content type" << endl;
     magic_close(magic);
     return "unknown";
-  } 
+  }
   type = string(contentType);
   magic_close(magic);
   return type;
@@ -212,15 +213,15 @@ void Reporter::scanByExtension(boost::filesystem::path file) {
 
 void Reporter::iterateDirectory() {
   // Instantiate scanners
-  MP3Scanner       MP3Scanner(&report, &metaData);
-  OggVorbisScanner OggVorbisScanner(&report, &metaData);
-  FLACScanner      FLACScanner(&report, &metaData);
-  MPCScanner       MPCScanner(&report, &metaData);
-  APEScanner       APEScanner(&report, &metaData);
-  ASFScanner       ASFScanner(&report, &metaData);
-  MP4Scanner       MP4Scanner(&report, &metaData);
+  MP3Scanner       MP3Scanner(&report, &metaData, &albumMetaData);
+  OggVorbisScanner OggVorbisScanner(&report, &metaData, &albumMetaData);
+  FLACScanner      FLACScanner(&report, &metaData, &albumMetaData);
+  MPCScanner       MPCScanner(&report, &metaData, &albumMetaData);
+  APEScanner       APEScanner(&report, &metaData, &albumMetaData);
+  ASFScanner       ASFScanner(&report, &metaData, &albumMetaData);
+  MP4Scanner       MP4Scanner(&report, &metaData, &albumMetaData);
   FileScanner      FileScanner(&report);
-  MetaScanner      MetaScanner(&report, &metaData, showWarnings);
+  MetaScanner      MetaScanner(&report, &metaData, &albumMetaData, showWarnings);
 
   this->mp3Scanner       = &MP3Scanner;
   this->oggVorbisScanner = &OggVorbisScanner;

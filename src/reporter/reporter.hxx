@@ -13,16 +13,16 @@
 
 #include <fstream>
 
-#include "scanner.hxx"
-#include "scanner_mp3.hxx"
-#include "scanner_ogg_vorbis.hxx"
-#include "scanner_flac.hxx"
-#include "scanner_mpc.hxx"
-#include "scanner_ape.hxx"
-#include "scanner_asf.hxx"
-#include "scanner_mp4.hxx"
-#include "scanner_meta.hxx"
-#include "scanner_file.hxx"
+#include "../scanner/scanner.hxx"
+#include "../scanner/scanner_mp3.hxx"
+#include "../scanner/scanner_ogg_vorbis.hxx"
+#include "../scanner/scanner_flac.hxx"
+#include "../scanner/scanner_mpc.hxx"
+#include "../scanner/scanner_ape.hxx"
+#include "../scanner/scanner_asf.hxx"
+#include "../scanner/scanner_mp4.hxx"
+#include "../scanner/scanner_meta.hxx"
+#include "../scanner/scanner_file.hxx"
 
 
 /*! \class Reporter
@@ -103,6 +103,11 @@ class Reporter {
     Scanner::MetaDataMap metaData;
 
     /*!
+     * The album meta data structure to populate with every title found.
+     */
+    Scanner::AlbumMetaDataMap albumMetaData;
+
+    /*!
      * The output stream associated with either a file or \a cout.
      */
     ostream* output;
@@ -164,7 +169,7 @@ class Reporter {
      * \code
      * Artist: <artist>
      *   Album: <album>
-     *     Directory '<directory>': 
+     *     Directory '<directory>':
      *       * <error>
      *       [* .. ]
      *     [..]

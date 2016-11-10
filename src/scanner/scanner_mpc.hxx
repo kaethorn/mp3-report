@@ -28,9 +28,10 @@ class MPCScanner: public Scanner {
      *
      * \param [in,out] report A pointer to the report for scan results.
      * \param [in,out] metaData A pointer to the meta data.
+     * \param [in,out] albumMetaData A pointer to the album meta data.
      */
-    MPCScanner(ReportMap* report, MetaDataMap* metaData)
-      : Scanner(report, metaData) {};
+    MPCScanner(ReportMap* report, MetaDataMap* metaData, AlbumMetaDataMap* albumMetaData)
+      : Scanner(report, metaData, albumMetaData) {};
 
     /*!
      * Invokes private method scanners on the tags of \a file.
