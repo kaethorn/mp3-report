@@ -8,8 +8,8 @@
 
 #include "scanner_mp3.hxx"
 
-MP3Scanner::MP3Scanner(ReportMap* report, MetaDataMap* metaData)
-  : Scanner(report, metaData) {
+MP3Scanner::MP3Scanner(ReportMap* report, MetaDataMap* metaData, AlbumMetaDataMap* albumMetaData)
+  : Scanner(report, metaData, albumMetaData) {
   framesToCheck.push_back("TIT2"); // artist
   framesToCheck.push_back("TPE1"); // title
   framesToCheck.push_back("TALB"); // album

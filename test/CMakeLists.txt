@@ -112,6 +112,10 @@ run_sample (meta_multiple_artist_genres
 run_sample (meta_various_artist_genres
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
 
+# Various artists albums should be valid
+run_sample (meta_valid_various_artists
+  "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
+
 # Inconsistent track sequences
 run_sample (meta_incomplete_album
   "\"mp3\",\"somealbum\",\".+testcases/meta_incomplete_album\",incomplete_album")
