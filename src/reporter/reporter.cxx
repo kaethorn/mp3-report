@@ -222,9 +222,9 @@ void Reporter::printActivity(string activity, string message, bool showSpinner =
 
 void Reporter::printSpinner() {
   static int spinnerPosition = 0;
-  static const string spinnerCharacters[14] = {"▁", "▂", "▃", "▄", "▅", "▆", "▇", "█", "▇", "▆", "▅", "▄", "▃", "▁"};
+  static const string spinnerCharacters[4] = { "◐", "◓", "◑", "◒" };
   cout << spinnerCharacters[spinnerPosition] << " ";
-  spinnerPosition = (spinnerPosition + 1) % 14;
+  spinnerPosition = (spinnerPosition + 1) % 4;
 }
 
 void Reporter::iterateDirectory() {
