@@ -183,7 +183,7 @@ void Reporter::scanByMagicByte(boost::filesystem::path file) {
   } else if (fileType == "audio/mp4") {
     mp4Scanner->scan(file);
   } else if (fileType.find("audio/") != string::npos) {
-    cerr << "Missing support for type " << fileType << endl;
+    cerr << "File type " << fileType << " in file " << file.string() << " is not supported." << endl;
   } else {
     fileScanner->scan(file);
   }
