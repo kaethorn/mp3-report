@@ -64,6 +64,7 @@ class Scanner {
       string   albumArtist;
       string   track;
       string   disc;
+      string   directory;
     };
 
     /*!
@@ -92,6 +93,11 @@ class Scanner {
     typedef map<string, Genres> MetaDataMap;
 
     /*!
+     * A map of every song grouped by album
+     */
+    typedef map<string, Songs> AlbumMetaDataMap;
+
+    /*!
      * Construct a scanner for \a report. It will add scan results to
      * \a report.
      *
@@ -100,8 +106,9 @@ class Scanner {
      *
      * \param [in,out] report A pointer to the report for scan results.
      * \param [in,out] metaData A pointer to the meta data.
+     * \param [in,out] albumMetaData A pointer to the album meta data.
      */
-    Scanner(ReportMap* report, MetaDataMap* metaData);
+    Scanner(ReportMap* report, MetaDataMap* metaData, AlbumMetaDataMap* albumMetaData);
 
     /*!
      * Construct a scanner for \a report. It will add scan results to
@@ -173,6 +180,13 @@ class Scanner {
      * \see Scanner::MetaDataMap
      */
     MetaDataMap* metaData;
+
+    /*!
+     * A pointer to the album meta data structure.
+     *
+     * \see Scanner::AlbumMetaDataMap
+     */
+    AlbumMetaDataMap* albumMetaData;
 
     /*!
      * A string that holds the directory name of this file.

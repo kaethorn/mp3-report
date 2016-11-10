@@ -28,10 +28,11 @@ class MetaScanner: public Scanner {
      *
      * \param [in,out] report A pointer to the report to scan and report to.
      * \param [in,out] metaData A pointer to the meta data.
+     * \param [in,out] albumMetaData A pointer to the album meta data.
      * \param [in] showWarnings Flag indicating whether to show warnings as well as errors in the report.
      */
-    MetaScanner(ReportMap* report, MetaDataMap* metaData, bool showWarnings)
-      : Scanner(report, metaData) {
+    MetaScanner(ReportMap* report, MetaDataMap* metaData, AlbumMetaDataMap* albumMetaData, bool showWarnings)
+      : Scanner(report, metaData, albumMetaData) {
         this->showWarnings = showWarnings;
       };
 

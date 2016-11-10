@@ -30,9 +30,10 @@ class OggVorbisScanner: public Scanner {
      *
      * \param [in,out] report A pointer to the report for scan results.
      * \param [in,out] metaData A pointer to the meta data.
+     * \param [in,out] albumMetaData A pointer to the album meta data.
      */
-    OggVorbisScanner(ReportMap* report, MetaDataMap* metaData)
-      : Scanner(report, metaData) {};
+    OggVorbisScanner(ReportMap* report, MetaDataMap* metaData, AlbumMetaDataMap* albumMetaData)
+      : Scanner(report, metaData, albumMetaData) {};
 
     /*!
      * Invokes private method scanner on the tags \a file.

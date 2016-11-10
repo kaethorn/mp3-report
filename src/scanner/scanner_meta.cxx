@@ -43,13 +43,16 @@ void MetaScanner::reportIndexInconsistencies(MetaDataMap::iterator item,
   // Collect track- and disc numbers
   vector<string> tracks;
   vector<string> discs;
+  cout << "New album '" << album->first << "' with tracks: ";
   for (Scanner::Songs::iterator song=songs->begin();
       song!=songs->end(); ++song) {
     tracks.push_back(song->track);
+    cout << " '" << song->title;
     if (song->disc.size()) {
       discs.push_back(song->disc);
     }
   }
+  cout << endl;
 
   if (isIncomplete(&tracks)) {
     addToReport(item->first, genre->first, album->first,
@@ -83,12 +86,23 @@ void MetaScanner::reportTitleTruncation(MetaDataMap::iterator item,
 }
 
 void MetaScanner::checkReport() {
+
+  if (albumMetaData->empty()) {
+    return;
+  }
+
+  for (AlbumMetaDataMap::iterator item=albumMetaData->begin();
+       item != albumMetaData->end(); ++item) {
+    // TODO adjust to new structure
+    //reportIndexInconsistencies(item, genre, album, directory, &songs);
+  }
+
   if (metaData->empty()) {
     return;
   }
 
   for (MetaDataMap::iterator item=metaData->begin();
-       item!=metaData->end(); ++item) {
+       item != metaData->end(); ++item) {
 
     reportMultipleArtistGenres(item);
 
@@ -101,8 +115,6 @@ void MetaScanner::checkReport() {
         for (Scanner::Directories::iterator directory=directories.begin();
             directory!=directories.end(); ++directory) {
           Scanner::Songs songs(directory->second);
-
-          reportIndexInconsistencies(item, genre, album, directory, &songs);
           reportTitleTruncation(item, genre, album, directory, &songs);
         }
       }

@@ -4,9 +4,10 @@ using namespace std;
 
 #include "scanner.hxx"
 
-Scanner::Scanner(ReportMap* report, MetaDataMap* metaData) {
+Scanner::Scanner(ReportMap* report, MetaDataMap* metaData, AlbumMetaDataMap* albumMetaData) {
   this->report = report;
   this->metaData = metaData;
+  this->albumMetaData = albumMetaData;
 }
 
 Scanner::Scanner(ReportMap* report) {
@@ -28,7 +29,9 @@ void Scanner::addToMetaData(const string artist, const string genre,
   song.albumArtist = albumArtist;
   song.track       = track;
   song.disc        = disc;
+  song.directory   = directory;
   (*metaData)[artist][genre][album][directory].push_back(song);
+  (*albumMetaData)[album].push_back(song);
 }
 
 const string Scanner::dirname(const boost::filesystem::path file) {
