@@ -1,5 +1,6 @@
 #include <sstream>
 #include <fstream>
+#include <iomanip>
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string/join.hpp>
@@ -183,7 +184,7 @@ void Reporter::scanByMagicByte(boost::filesystem::path file) {
   } else if (fileType == "audio/mp4") {
     mp4Scanner->scan(file);
   } else if (fileType.find("audio/") != string::npos) {
-    cerr << "File type " << fileType << " in file " << file.string() << " is not supported." << endl;
+    cerr << "\r" << " ⚠ File type `" << fileType << "` in file `" << file.string() << "` is not supported." << endl;
   } else {
     fileScanner->scan(file);
   }
@@ -211,6 +212,10 @@ void Reporter::scanByExtension(boost::filesystem::path file) {
   }
 }
 
+void Reporter::printProgress(string message, string progress) {
+  cout << "\r " << message << " " << left << setw(70) << progress.substr(0,70) << flush;
+}
+
 void Reporter::iterateDirectory() {
   // Instantiate scanners
   MP3Scanner       MP3Scanner(&report, &metaData, &albumMetaData);
@@ -236,6 +241,7 @@ void Reporter::iterateDirectory() {
   for (fs::recursive_directory_iterator end, file(*directory);
       file != end; ++file) {
     if (is_directory(file->status())) {
+      printProgress("Scanning", file->path().filename().string());
       continue;
     }
 
@@ -244,5 +250,8 @@ void Reporter::iterateDirectory() {
     else
       scanByMagicByte(file->path());
   }
+  printProgress("Inspecting", "tag information");
   metaScanner->scan();
+  printProgress("☀", "Done");
+  cout << endl;
 }

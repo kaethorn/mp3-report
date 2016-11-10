@@ -93,6 +93,11 @@ class Reporter {
     bool showWarnings;
 
     /*!
+     * Outputs \a progress to the standard output with proper padding.
+     */
+    void printProgress(string message, string progress);
+
+    /*!
      * The report structure to populate with scan results.
      */
     Scanner::ReportMap report;
