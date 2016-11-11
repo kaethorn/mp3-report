@@ -75,9 +75,15 @@ class MetaScanner: public Scanner {
      * Find inconsistencies in track- or disc number sequences.
      *
      * \param [in] item An iterator of albums.
-     * \param [in] songs A pointer to the list of song structures.
      */
     void reportIndexInconsistencies(AlbumMetaDataMap::iterator album);
+
+    /*!
+     * Find frames with invalid white spaces.
+     *
+     * \param [in] item An iterator of albums.
+     */
+    void reportWhiteSpaces(AlbumMetaDataMap::iterator album);
 
     /*!
      * Find MP3 track titles that have potentially been truncated during

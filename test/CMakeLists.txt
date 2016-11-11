@@ -89,6 +89,46 @@ run_sample (mp3_valid_track
 run_sample (mp3_multiple_art
   "\"mp3\",\"somealbum\",\".+testcases/mp3_multiple_art\",multiple_art")
 
+# MP3 with an album frame containing invalid white spaces
+run_sample (mp3_spaces_leading_album
+  "\"mp3\",\"an album\\ \",\".+testcases/mp3_spaces_leading_album\",spaces_album")
+run_sample (mp3_spaces_trailing_album
+  "\"mp3\",\"\\ another album\",\".+testcases/mp3_spaces_trailing_album\",spaces_album")
+run_sample (mp3_spaces_multiple_album
+  "\"mp3\",\"spacious\\ \\ album\",\".+testcases/mp3_spaces_multiple_album\",spaces_album")
+run_sample (mp3_spaces_invalid_album
+  "\"mp3\",\"tabbed\\talbum\",\".+testcases/mp3_spaces_invalid_album\",spaces_album")
+
+# MP3 with an artist frame containing invalid white spaces
+run_sample (mp3_spaces_leading_artist
+  "\"\\ some\\ artist\",\"album1\",\".+testcases/mp3_spaces_leading_artist\",spaces_artist")
+run_sample (mp3_spaces_trailing_artist
+  "\"some\\ artist\\ \",\"album2\",\".+testcases/mp3_spaces_trailing_artist\",spaces_artist")
+run_sample (mp3_spaces_multiple_artist
+  "\"some\\ \\ artist\",\"album3\",\".+testcases/mp3_spaces_multiple_artist\",spaces_artist")
+run_sample (mp3_spaces_invalid_artist
+  "\"some\\tartist\",\"album4\",\".+testcases/mp3_spaces_invalid_artist\",spaces_artist")
+
+# MP3 with an album artist frame containing invalid white spaces
+run_sample (mp3_spaces_leading_albumartist
+  "\"mp3\",\"album1\",\".+testcases/mp3_spaces_leading_albumartist\",spaces_albumartist")
+run_sample (mp3_spaces_trailing_albumartist
+  "\"mp3\",\"album2\",\".+testcases/mp3_spaces_trailing_albumartist\",spaces_albumartist")
+run_sample (mp3_spaces_multiple_albumartist
+  "\"mp3\",\"album3\",\".+testcases/mp3_spaces_multiple_albumartist\",spaces_albumartist")
+run_sample (mp3_spaces_invalid_albumartist
+  "\"mp3\",\"album4\",\".+testcases/mp3_spaces_invalid_albumartist\",spaces_albumartist")
+
+# MP3 with a title frame containing invalid white spaces
+run_sample (mp3_spaces_leading_title
+  "\"mp3\",\"album1\",\".+testcases/mp3_spaces_leading_title\",spaces_title")
+run_sample (mp3_spaces_trailing_title
+  "\"mp3\",\"album2\",\".+testcases/mp3_spaces_trailing_title\",spaces_title")
+run_sample (mp3_spaces_multiple_title
+  "\"mp3\",\"album3\",\".+testcases/mp3_spaces_multiple_title\",spaces_title")
+run_sample (mp3_spaces_invalid_title
+  "\"mp3\",\"album4\",\".+testcases/mp3_spaces_invalid_title\",spaces_title")
+
 # MP3 without any flaws
 run_sample (mp3_perfect
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
