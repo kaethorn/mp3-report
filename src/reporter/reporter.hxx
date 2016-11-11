@@ -42,11 +42,11 @@ class Reporter {
      * \param [in] noMagicType Flag indicating whether to detect the file type by magic type (false) or by file name (true)
      * \param [in] useLibMagic Flag indicating whether to use xdgmime (false) or libgmagic (true) for file type detection
      * \param [in] showWarnings Flag indicating whether to show warnings as well as errors in the report.
-     * \param [in] hideProgress Flag indicating whether to hide file scanning progress.
+     * \param [in] beQuiet Flag indicating whether to hide file scanning progress.
      */
     Reporter(const string* directory, const string* reportType,
         const string* outputPath, bool noMagicType, bool useLibMagic,
-        bool showWarnings, bool hideProgress);
+        bool showWarnings, bool beQuiet);
 
     /*!
      * Destructs the reporter and closes the output file.
@@ -94,9 +94,9 @@ class Reporter {
     bool showWarnings;
 
     /*!
-     * Flag indicating whether to show warnings as well as errors in the report.
+     * Flag indicating whether to hide progress and warnings.
      */
-    bool hideProgress;
+    bool beQuiet;
 
     /*!
      * The report structure to populate with scan results.

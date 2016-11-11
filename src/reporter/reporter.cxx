@@ -13,14 +13,14 @@ namespace fs = boost::filesystem;
 
 Reporter::Reporter(const string* directory, const string* reportType,
     const string* outputPath, bool noMagicType, bool useLibMagic,
-    bool showWarnings, bool hideProgress) {
+    bool showWarnings, bool beQuiet) {
   this->directory = directory;
   this->reportType = reportType;
   this->outputPath = outputPath;
   this->noMagicType = noMagicType;
   this->useLibMagic = useLibMagic;
   this->showWarnings = showWarnings;
-  this->hideProgress = hideProgress;
+  this->beQuiet = beQuiet;
   report = Scanner::ReportMap();
   metaData = Scanner::MetaDataMap();
   albumMetaData = Scanner::AlbumMetaDataMap();
@@ -210,7 +210,8 @@ void Reporter::scanByMagicByte(boost::filesystem::path file) {
   } else if (fileType == "audio/mp4") {
     mp4Scanner->scan(file);
   } else if (fileType.find("audio/") != string::npos) {
-    cerr << "\r" << " ⚠ File type `" << fileType << "` in file `" << file.string() << "` is not supported." << endl;
+    if (!this->beQuiet)
+      cerr << "\r" << " ⚠ File type `" << fileType << "` in file `" << file.string() << "` is not supported." << endl;
   } else {
     fileScanner->scan(file);
   }
@@ -244,7 +245,7 @@ void Reporter::printProgress(string activity, string message, float progress) {
 }
 
 void Reporter::printActivity(string activity, string message) {
-  if (!this->hideProgress)
+  if (!this->beQuiet)
     cout << "\r " << activity << " " << left << setw(70) << message.substr(0,70) << flush;
 }
 
@@ -308,6 +309,6 @@ void Reporter::iterateDirectory() {
   printActivity("Inspecting", "tag information");
   metaScanner->scan();
   printActivity("✓", "Done");
-  if (!this->hideProgress)
+  if (!this->beQuiet)
     cout << endl;
 }
