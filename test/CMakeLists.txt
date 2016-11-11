@@ -8,7 +8,7 @@ macro (run_sample test_name result)
     list(APPEND params ${param})
   endforeach()
   add_test (MP3Report_${test_name}
-    ${PROJECT_BINARY_DIR}/src/MP3Report -r csv ${params}
+    ${PROJECT_BINARY_DIR}/src/MP3Report -p -r csv ${params}
     ${PROJECT_BINARY_DIR}/test/testcases/${test_name})
   set_tests_properties (MP3Report_${test_name}
     PROPERTIES PASS_REGULAR_EXPRESSION ${result})

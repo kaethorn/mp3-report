@@ -13,13 +13,14 @@ namespace fs = boost::filesystem;
 
 Reporter::Reporter(const string* directory, const string* reportType,
     const string* outputPath, bool noMagicType, bool useLibMagic,
-    bool showWarnings) {
+    bool showWarnings, bool hideProgress) {
   this->directory = directory;
   this->reportType = reportType;
   this->outputPath = outputPath;
   this->noMagicType = noMagicType;
   this->useLibMagic = useLibMagic;
   this->showWarnings = showWarnings;
+  this->hideProgress = hideProgress;
   report = Scanner::ReportMap();
   metaData = Scanner::MetaDataMap();
   albumMetaData = Scanner::AlbumMetaDataMap();
@@ -243,7 +244,8 @@ void Reporter::printProgress(string activity, string message, float progress) {
 }
 
 void Reporter::printActivity(string activity, string message) {
-  cout << "\r " << activity << " " << left << setw(70) << message.substr(0,70) << flush;
+  if (!this->hideProgress)
+    cout << "\r " << activity << " " << left << setw(70) << message.substr(0,70) << flush;
 }
 
 string Reporter::getSpinner() {
@@ -306,5 +308,6 @@ void Reporter::iterateDirectory() {
   printActivity("Inspecting", "tag information");
   metaScanner->scan();
   printActivity("✓", "Done");
-  cout << "\r" << setw(0);
+  if (!this->hideProgress)
+    cout << endl;
 }

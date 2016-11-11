@@ -18,12 +18,12 @@ namespace po = boost::program_options;
 using namespace std;
 
 #include "report_config.hxx"
-#include "reporter.hxx"
+#include "reporter/reporter.hxx"
 
 int main (int argc, char *argv[]) {
 
   string reportType, directory, outputPath;
-  bool noMagicType, useLibMagic, showWarnings;
+  bool noMagicType, useLibMagic, showWarnings, hideProgress;
 
   po::options_description desc("Allowed options");
   desc.add_options()
@@ -40,6 +40,8 @@ int main (int argc, char *argv[]) {
     ("output-path,o", po::value<string>(&outputPath),
      "File to write the report to (fallback: stdout)")
     ("directory", po::value<string>(&directory)->required(), "Working directory")
+    ("hide-progress,p", po::value<bool>(&hideProgress)->zero_tokens()->default_value(false),
+     "Hides file scanning progress otherwise displayed on the command line.")
   ;
 
   po::positional_options_description p;
@@ -75,7 +77,7 @@ int main (int argc, char *argv[]) {
   }
 
   Reporter reporter(&directory, &reportType, &outputPath, noMagicType,
-      useLibMagic, showWarnings);
+      useLibMagic, showWarnings, hideProgress);
   reporter.run();
   return 0;
 }
