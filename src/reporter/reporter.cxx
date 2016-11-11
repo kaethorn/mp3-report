@@ -38,8 +38,33 @@ Reporter::~Reporter() {
 }
 
 void Reporter::run() {
+  initializeScanners();
   iterateDirectory();
   generate();
+}
+
+void Reporter::initializeScanners() {
+  // Instantiate scanners
+  static MP3Scanner       MP3Scanner(&report, &metaData, &albumMetaData);
+  static OggVorbisScanner OggVorbisScanner(&report, &metaData, &albumMetaData);
+  static FLACScanner      FLACScanner(&report, &metaData, &albumMetaData);
+  static MPCScanner       MPCScanner(&report, &metaData, &albumMetaData);
+  static APEScanner       APEScanner(&report, &metaData, &albumMetaData);
+  static ASFScanner       ASFScanner(&report, &metaData, &albumMetaData);
+  static MP4Scanner       MP4Scanner(&report, &metaData, &albumMetaData);
+  static FileScanner      FileScanner(&report);
+  static MetaScanner      MetaScanner(&report, &metaData, &albumMetaData, showWarnings);
+
+  // Assign scanner pointers
+  this->mp3Scanner       = &MP3Scanner;
+  this->oggVorbisScanner = &OggVorbisScanner;
+  this->flacScanner      = &FLACScanner;
+  this->mpcScanner       = &MPCScanner;
+  this->apeScanner       = &APEScanner;
+  this->asfScanner       = &ASFScanner;
+  this->mp4Scanner       = &MP4Scanner;
+  this->fileScanner      = &FileScanner;
+  this->metaScanner      = &MetaScanner;
 }
 
 void Reporter::generate() {
@@ -234,28 +259,7 @@ string Reporter::getProgress(float progress) {
   return percentage.str();
 }
 
-void Reporter::iterateDirectory() {
-  // Instantiate scanners
-  MP3Scanner       MP3Scanner(&report, &metaData, &albumMetaData);
-  OggVorbisScanner OggVorbisScanner(&report, &metaData, &albumMetaData);
-  FLACScanner      FLACScanner(&report, &metaData, &albumMetaData);
-  MPCScanner       MPCScanner(&report, &metaData, &albumMetaData);
-  APEScanner       APEScanner(&report, &metaData, &albumMetaData);
-  ASFScanner       ASFScanner(&report, &metaData, &albumMetaData);
-  MP4Scanner       MP4Scanner(&report, &metaData, &albumMetaData);
-  FileScanner      FileScanner(&report);
-  MetaScanner      MetaScanner(&report, &metaData, &albumMetaData, showWarnings);
-
-  this->mp3Scanner       = &MP3Scanner;
-  this->oggVorbisScanner = &OggVorbisScanner;
-  this->flacScanner      = &FLACScanner;
-  this->mpcScanner       = &MPCScanner;
-  this->apeScanner       = &APEScanner;
-  this->asfScanner       = &ASFScanner;
-  this->mp4Scanner       = &MP4Scanner;
-  this->fileScanner      = &FileScanner;
-  this->metaScanner      = &MetaScanner;
-
+uint Reporter::getFolderCount(const string* directory) {
   printActivity("∞", "Counting files");
   uint totalFolderCount = 0;
   fs::recursive_directory_iterator file(*directory), end;
@@ -270,16 +274,24 @@ void Reporter::iterateDirectory() {
     ++file;
   }
 
-  uint folderCount = 0;
-  file = fs::recursive_directory_iterator(*directory);
+  return totalFolderCount;
+}
+
+void Reporter::iterateDirectory() {
+
+  printActivity("∞", "Counting files");
+  uint totalFolderCount = getFolderCount(directory);
+
+  uint folderCounter = 0;
+  fs::recursive_directory_iterator file(*directory), end;
   while (file != end) {
     if (is_directory(file->status())) {
       if (file->path().filename() == "@eaDir") {
         file.no_push();
       } else {
-        folderCount++;
+        folderCounter++;
         printProgress("Scanning", file->path().filename().string(),
-          100.0*(float)folderCount/(float)totalFolderCount);
+          100.0*(float)folderCounter/(float)totalFolderCount);
       }
     } else {
       if (noMagicType)
@@ -294,5 +306,5 @@ void Reporter::iterateDirectory() {
   printActivity("Inspecting", "tag information");
   metaScanner->scan();
   printActivity("✓", "Done");
-  cout << endl;
+  cout << "\r" << setw(0);
 }
