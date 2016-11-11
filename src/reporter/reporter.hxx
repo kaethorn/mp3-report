@@ -99,6 +99,11 @@ class Reporter {
     bool beQuiet;
 
     /*!
+     * Terminal width
+     */
+    uint terminalWidth;
+
+    /*!
      * The report structure to populate with scan results.
      */
     Scanner::ReportMap report;
@@ -292,6 +297,11 @@ class Reporter {
      * Instantiates and assigns all scanners.
      */
     void initializeScanners();
+
+    /*!
+     * Determines and sets the current terminal width.
+     */
+    void initializeTerminalWidth();
 };
 
 #endif

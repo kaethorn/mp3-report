@@ -7,6 +7,11 @@
 #include <magic.h>
 #include "../xdgmime/xdgmime.h"
 
+#ifdef __linux__
+#include <sys/ioctl.h>
+#include <unistd.h>
+#endif
+
 #include "reporter.hxx"
 
 namespace fs = boost::filesystem;
@@ -40,6 +45,7 @@ Reporter::~Reporter() {
 
 void Reporter::run() {
   initializeScanners();
+  initializeTerminalWidth();
   iterateDirectory();
   generate();
 }
@@ -244,9 +250,21 @@ void Reporter::printProgress(string activity, string message, float progress) {
   printActivity(progressActivity, message);
 }
 
+void Reporter::initializeTerminalWidth() {
+#ifdef __linux__
+  struct winsize w;
+  ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+  terminalWidth = w.ws_col;
+#else
+  terminalWidth = 70;
+#endif
+}
+
 void Reporter::printActivity(string activity, string message) {
   if (!this->beQuiet)
-    cout << "\r " << activity << " " << left << setw(70) << message.substr(0,70) << flush;
+    cout << "\r" << left << setw(terminalWidth)
+      << " " + activity + " " + message.substr(0,terminalWidth)
+      << flush;
 }
 
 string Reporter::getSpinner() {
