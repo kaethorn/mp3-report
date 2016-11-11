@@ -1,3 +1,4 @@
+#include <boost/regex.hpp>
 #include "scanner_meta.hxx"
 
 void MetaScanner::scan() {
@@ -48,17 +49,41 @@ void MetaScanner::reportIndexInconsistencies(AlbumMetaDataMap::iterator album) {
       discs.push_back(song->disc);
     }
   }
+  Song song = *album->second.begin();
 
   if (isIncomplete(&tracks)) {
-    addToReport(album->second.begin()->artist, album->second.begin()->genre,
-        album->second.begin()->album, album->second.begin()->directory,
-        "incomplete_album");
+    addToReport(song.artist, song.genre, song.album, song.directory, "incomplete_album");
   }
 
   if (isIncomplete(&discs)) {
-    addToReport(album->second.begin()->artist, album->second.begin()->genre,
-        album->second.begin()->album, album->second.begin()->directory,
-        "incomplete_collection");
+    addToReport(song.artist, song.genre, song.album, song.directory, "incomplete_collection");
+  }
+}
+
+void MetaScanner::reportWhiteSpaces(AlbumMetaDataMap::iterator album) {
+  static const boost::regex leadingWhiteSpace("^\\s.*");
+  static const boost::regex trailingWhiteSpace(".*\\s$");
+  static const boost::regex multipleSpaces(".*\\ {2}.*");
+  static const boost::regex invalidWhiteSpace(".*[^\\S\\ ].*");
+
+  static const char *framesToCheck[4] = {"album", "title", "artist", "albumartist"};
+
+  for (Scanner::Songs::iterator song=album->second.begin();
+      song!=album->second.end(); ++song) {
+    for (int i = 0; i < sizeof(framesToCheck); i++) {
+      string frame;
+      if (framesToCheck[i] == "album")       { frame = song->album; }
+      if (framesToCheck[i] == "title")       { frame = song->title; }
+      if (framesToCheck[i] == "artist")      { frame = song->artist; }
+      if (framesToCheck[i] == "albumartist") { frame = song->albumArtist; }
+
+      if (boost::regex_match(frame, leadingWhiteSpace)  ||
+          boost::regex_match(frame, trailingWhiteSpace) ||
+          boost::regex_match(frame, multipleSpaces)     ||
+          boost::regex_match(frame, invalidWhiteSpace)) {
+        addToReport(song->artist, song->genre, song->album, song->directory, "spaces_" + string(framesToCheck[i]));
+      }
+    }
   }
 }
 
@@ -91,6 +116,7 @@ void MetaScanner::checkReport() {
   for (AlbumMetaDataMap::iterator album=albumMetaData->begin();
        album != albumMetaData->end(); ++album) {
     reportIndexInconsistencies(album);
+    reportWhiteSpaces(album);
   }
 
   if (metaData->empty()) {
