@@ -212,19 +212,26 @@ void Reporter::scanByExtension(boost::filesystem::path file) {
   }
 }
 
-void Reporter::printActivity(string activity, string message, bool showSpinner = false) {
-  cout << "\r ";
-  if (showSpinner) {
-    printSpinner();
-  }
-  cout << activity << " " << left << setw(70) << message.substr(0,70) << flush;
+void Reporter::printProgress(string activity, string message, float progress) {
+  string progressActivity = activity + " " + getSpinner() + " " + getProgress(progress) + " -";
+  printActivity(progressActivity, message);
 }
 
-void Reporter::printSpinner() {
-  static int spinnerPosition = 0;
+void Reporter::printActivity(string activity, string message) {
+  cout << "\r " << activity << " " << left << setw(70) << message.substr(0,70) << flush;
+}
+
+string Reporter::getSpinner() {
+  static uint spinnerPosition = 0;
   static const string spinnerCharacters[4] = { "◐", "◓", "◑", "◒" };
-  cout << spinnerCharacters[spinnerPosition] << " ";
   spinnerPosition = (spinnerPosition + 1) % 4;
+  return spinnerCharacters[spinnerPosition];
+}
+
+string Reporter::getProgress(float progress) {
+  stringstream percentage;
+  percentage << fixed << setprecision(0) << progress << '%';
+  return percentage.str();
 }
 
 void Reporter::iterateDirectory() {
@@ -249,20 +256,43 @@ void Reporter::iterateDirectory() {
   this->fileScanner      = &FileScanner;
   this->metaScanner      = &MetaScanner;
 
-  for (fs::recursive_directory_iterator end, file(*directory);
-      file != end; ++file) {
+  printActivity("∞", "Counting files");
+  uint totalFolderCount = 0;
+  fs::recursive_directory_iterator file(*directory), end;
+  while (file != end) {
     if (is_directory(file->status())) {
-      printActivity("Scanning", file->path().filename().string(), true);
-      continue;
+      if (file->path().filename() == "@eaDir") {
+        file.no_push();
+      } else {
+        totalFolderCount++;
+      }
+    }
+    ++file;
+  }
+
+  uint folderCount = 0;
+  file = fs::recursive_directory_iterator(*directory);
+  while (file != end) {
+    if (is_directory(file->status())) {
+      if (file->path().filename() == "@eaDir") {
+        file.no_push();
+      } else {
+        folderCount++;
+        printProgress("Scanning", file->path().filename().string(),
+          100.0*(float)folderCount/(float)totalFolderCount);
+      }
+    } else {
+      if (noMagicType)
+        scanByExtension(file->path());
+      else
+        scanByMagicByte(file->path());
     }
 
-    if (noMagicType)
-      scanByExtension(file->path());
-    else
-      scanByMagicByte(file->path());
+    ++file;
   }
+
   printActivity("Inspecting", "tag information");
   metaScanner->scan();
-  printActivity("☀", "Done");
+  printActivity("✓", "Done");
   cout << endl;
 }

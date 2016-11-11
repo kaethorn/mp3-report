@@ -97,14 +97,32 @@ class Reporter {
      *
      * \param [in] activity Activity description
      * \param [in] message Message detailing the current activity
-     * \param [in] showSpinner Optional flag requesting a spinner being printed
      */
-    void printActivity(const string activity, const string message, bool showSpinner);
+    void printActivity(const string activity, const string message);
 
     /*!
-     * Renders a spinner character.
+     * Outputs \a activity with \a message and \a progress.
+     *
+     * \param [in] activity Activity description
+     * \param [in] message Message detailing the current activity
+     * \param [in] progress Ratio of completeness
      */
-    void printSpinner();
+    void printProgress(const string activity, const string message, const float progress);
+
+    /*!
+     * Retrieves a spinner character.
+     *
+     * \return A string containing the current spinner character.
+     */
+    string getSpinner();
+
+    /*!
+     * Converts a floating point number to a percentage string.
+     *
+     * \param [in] progress A floating point number to convert to a percenatage string.
+     * \return A string containing the percentage representation.
+     */
+    string getProgress(float progress);
 
     /*!
      * The report structure to populate with scan results.
