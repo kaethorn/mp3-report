@@ -152,6 +152,10 @@ run_sample (meta_various_artist_genres
 run_sample (meta_valid_various_artists
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
 
+# Album names can appear twice for different artists
+run_sample (meta_valid_same_album_name
+  "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
+
 # Inconsistent track sequences
 run_sample (meta_incomplete_album
   "\"mp3\",\"somealbum\",\".+testcases/meta_incomplete_album\",incomplete_album")
