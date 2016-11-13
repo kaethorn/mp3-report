@@ -45,10 +45,16 @@ void MetaScanner::reportIndexInconsistencies(AlbumMetaDataMap::iterator album) {
   for (Scanner::Songs::iterator song=album->second.begin();
       song!=album->second.end(); ++song) {
     tracks.push_back(song->track);
-    if (song->disc.size()) {
+
+    // Not albums are part of a collection.
+    if (song->disc.size())
       discs.push_back(song->disc);
-    }
   }
+
+  // Discs span multiple tracks so duplicates can be removed.
+  std::sort(discs.begin(), discs.end());
+  discs.erase(std::unique(discs.begin(), discs.end()), discs.end());
+
   Song song = *album->second.begin();
 
   if (isIncomplete(&tracks)) {

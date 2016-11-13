@@ -138,7 +138,7 @@ run_sample (mp3_perfect
 #
 # Song with truncated title
 run_sample (meta_truncated
-  "\"mp3\",\"somealbum\",\".+testcases/meta_truncated\",truncation_warning" "-w")
+  "\"somealbumartist\",\"somealbum\",\".+testcases/meta_truncated\",truncation_warning" "-w")
 
 # Song with non-truncated titles
 run_sample (meta_non_truncated
@@ -146,7 +146,7 @@ run_sample (meta_non_truncated
 
 # Artists with multiple genres
 run_sample (meta_multiple_artist_genres
-  "\"mp3\",\"somealbum\",\".+testcases/meta_multiple_artist_genres\",multiple_artist_genres")
+  "\"somealbumartist\",\"somealbum\",\".+testcases/meta_multiple_artist_genres\",multiple_artist_genres")
 
 # Various artists with multiple genres
 run_sample (meta_various_artist_genres
@@ -154,6 +154,10 @@ run_sample (meta_various_artist_genres
 
 # Various artists albums should be valid
 run_sample (meta_valid_various_artists
+  "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
+
+# Album names can appear twice for different artists
+run_sample (meta_valid_same_album_name
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
 
 # Inconsistent track sequences

@@ -98,7 +98,7 @@ class Scanner {
     /*!
      * A map of every song grouped by album
      */
-    typedef map<string, Songs> AlbumMetaDataMap;
+    typedef map<pair<string, string>, Songs> AlbumMetaDataMap;
 
     /*!
      * Construct a scanner for \a report. It will add scan results to
