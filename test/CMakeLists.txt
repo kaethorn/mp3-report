@@ -454,6 +454,11 @@ run_sample (ape_invalid_track
 #run_sample (ape_multiple_art
 #  "\"ape\",\"somealbum\",\".+testcases/ape_multiple_art\",multiple_art")
 
+# APE with an invalid album art size
+run_sample (ape_invalid_art_size
+  "\"ape\",\"somealbum\",\".+testcases/ape_invalid_art_size\",invalid_art")
+
+
 # APE without any flaws
 run_sample (ape_perfect
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")

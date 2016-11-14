@@ -71,6 +71,20 @@ void APEScanner::checkAPETags(TagLib::APE::File *fileTag) {
   // Find tracks with missing album art
   if (!APETag->itemListMap().contains("COVER ART (FRONT)")) {
     addToReport(artist, genre, album, directory, "missing_art");
+  } else {
+    uint size = 0;
+    const TagLib::ByteVector nullStringTerminator(1, 0);
+    TagLib::ByteVector albumArt = APETag->itemListMap()["COVER ART (FRONT)"].value();
+    int pos = albumArt.find(nullStringTerminator);
+
+    if (++pos > 0) {
+      const TagLib::ByteVector &bytes = albumArt.mid(pos);
+      size = bytes.size();
+    }
+
+    if (size == 0) {
+      addToReport(artist, genre, album, directory, "invalid_art");
+    }
   }
 
   // Find tracks containing track numbers that are not formatted as <num>/<total>
