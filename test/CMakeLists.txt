@@ -258,6 +258,10 @@ run_sample (mp4_missing_track
 run_sample (mp4_multiple_art
   "\"mp4\",\"somealbum\",\".+testcases/mp4_multiple_art\",multiple_art")
 
+# MP4 with an invalid album art size
+run_sample (mp4_invalid_art_size
+  "\"mp4\",\"somealbum\",\".+testcases/mp4_invalid_art_size\",invalid_art")
+
 # MP4 without any flaws
 run_sample (mp4_perfect
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
