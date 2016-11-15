@@ -45,7 +45,7 @@ void ASFScanner::checkASFTags(TagLib::ASF::File *fileTag) {
   );
 
   // Store meta data
-  addToMetaData(artist, genre, album, directory, MP3, title, albumArtist, track, disc);
+  addToMetaData(artist, genre, album, directory, ASF, title, albumArtist, track, disc);
 
   // Find tracks without an artist tag
   if (artist.size() == 0) {
