@@ -46,7 +46,7 @@ void MetaScanner::reportIndexInconsistencies(AlbumMetaDataMap::iterator album) {
       song!=album->second.end(); ++song) {
     tracks.push_back(song->track);
 
-    // Not albums are part of a collection.
+    // Not all albums are part of a collection.
     if (song->disc.size())
       discs.push_back(song->disc);
   }
@@ -93,6 +93,20 @@ void MetaScanner::reportWhiteSpaces(AlbumMetaDataMap::iterator album) {
   }
 }
 
+void MetaScanner::reportFileTypeInconsistencies(AlbumMetaDataMap::iterator album) {
+  if (album->second.empty())
+    return;
+
+  FileType firstType = album->second.begin()->fileType;
+  for (Scanner::Songs::iterator song=album->second.begin();
+      song!=album->second.end(); ++song) {
+    if (song->fileType != firstType) {
+      addToReport(song->artist, song->genre, song->album, song->directory, "invalid_file_types");
+      return;
+    }
+  }
+}
+
 void MetaScanner::reportTitleTruncation(MetaDataMap::iterator item,
         Scanner::Genres::iterator genre, Scanner::Albums::iterator album,
         Scanner::Directories::iterator directory, Scanner::Songs* songs) {
@@ -115,7 +129,7 @@ void MetaScanner::reportTitleTruncation(MetaDataMap::iterator item,
 
 void MetaScanner::checkReport() {
 
-  if (albumMetaData->empty()) {
+  if (albumMetaData->empty() || metaData->empty()) {
     return;
   }
 
@@ -123,10 +137,7 @@ void MetaScanner::checkReport() {
        album != albumMetaData->end(); ++album) {
     reportIndexInconsistencies(album);
     reportWhiteSpaces(album);
-  }
-
-  if (metaData->empty()) {
-    return;
+    reportFileTypeInconsistencies(album);
   }
 
   for (MetaDataMap::iterator item=metaData->begin();

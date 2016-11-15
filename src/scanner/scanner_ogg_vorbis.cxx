@@ -64,7 +64,7 @@ void OggVorbisScanner::checkOggVorbisTags(TagLib::Ogg::Vorbis::File *fileTag) {
   );
 
   // Store meta data
-  addToMetaData(artist, genre, album, directory, MP3, title, albumArtist, track, disc);
+  addToMetaData(artist, genre, album, directory, OGG, title, albumArtist, track, disc);
 
   // Find tracks without an artist tag
   if (artist.size() == 0) {
