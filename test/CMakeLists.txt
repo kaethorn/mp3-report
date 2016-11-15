@@ -75,7 +75,8 @@ run_sample (mp3_invalid_track
 
 # MP3 with an invalid track number format
 run_sample (mp3_invalid_disc
-  "\"mp3\",\"somealbum\",\".+testcases/mp3_invalid_disc\",invalid_disc")
+  "\"mp3\",\"somealbum\",\".+testcases/mp3_invalid_disc/a\",invalid_disc\\n\
+\"mp3\",\"somealbum\",\".+testcases/mp3_invalid_disc/b\",invalid_disc")
 
 # MP3 with an invalid track number format
 run_sample (mp3_valid_disc

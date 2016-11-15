@@ -1,11 +1,9 @@
-#include <boost/regex.hpp>
 #include <taglib/id3v2tag.h>
 #include <taglib/id3v1tag.h>
 #include <taglib/id3v2frame.h>
 #include <taglib/id3v2header.h>
 #include <taglib/attachedpictureframe.h>
 #include <taglib/textidentificationframe.h>
-
 #include "scanner_mp3.hxx"
 
 MP3Scanner::MP3Scanner(ReportMap* report, MetaDataMap* metaData, AlbumMetaDataMap* albumMetaData)
@@ -127,16 +125,14 @@ void MP3Scanner::checkID3v2Tags(TagLib::MPEG::File *fileTag) {
 
   // Find tracks containing track numbers that are not formatted as <num>/<total>
   if (!ID3v2Tag->frameListMap()["TRCK"].isEmpty()) {
-    static const boost::regex expression("\\d{2}/\\d{2}|\\d{3}/\\d{3}");
-    if (!boost::regex_match(track, expression)) {
+    if (!boost::regex_match(track, trackExpression)) {
       addToReport(artist, genre, album, directory, "invalid_track");
     }
   }
 
   // Find tracks containing disc numbers that are not formatted as <num>/<total>
   if (!ID3v2Tag->frameListMap()["TPOS"].isEmpty()) {
-    static const boost::regex expression("\\d/\\d|\\d{2}/\\d{2}");
-    if (!boost::regex_match(disc, expression)) {
+    if (!boost::regex_match(disc, discExpression)) {
       addToReport(artist, genre, album, directory, "invalid_disc");
     }
   }

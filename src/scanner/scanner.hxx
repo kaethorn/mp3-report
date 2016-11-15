@@ -16,6 +16,7 @@
 #include <set>
 using namespace std;
 #include <boost/filesystem.hpp>
+#include <boost/regex.hpp>
 
 /*! \class Scanner
  * Scanner base class
@@ -195,6 +196,16 @@ class Scanner {
      * A string that holds the directory name of this file.
      */
     string directory;
+
+    /*!
+     * Regular expression used to validate track frames
+     */
+    boost::regex trackExpression;
+
+    /*!
+     * Regular expression used to validate disc frames
+     */
+    boost::regex discExpression;
 };
 
 #endif

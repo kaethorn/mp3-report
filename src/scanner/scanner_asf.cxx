@@ -1,6 +1,4 @@
-#include <boost/regex.hpp>
 #include <taglib/asftag.h>
-
 #include "scanner_asf.hxx"
 
 uint ASFScanner::getPictureSize(TagLib::ASF::Tag* tag) {
@@ -103,16 +101,14 @@ void ASFScanner::checkASFTags(TagLib::ASF::File *fileTag) {
 
   // Find tracks containing track numbers that are not formatted as <num>/<total>
   if (!ASFTag->attributeListMap()["WM/TrackNumber"].isEmpty()) {
-    static const boost::regex expression("\\d{2}/\\d{2}|\\d{3}/\\d{3}");
-    if (!boost::regex_match(track, expression)) {
+    if (!boost::regex_match(track, trackExpression)) {
       addToReport(artist, genre, album, directory, "invalid_track");
     }
   }
 
   // Find tracks containing disc numbers that are not formatted as <num>/<total>
   if (!ASFTag->attributeListMap()["WM/PartOfSet"].isEmpty()) {
-    static const boost::regex expression("\\d/\\d|\\d{2}/\\d{2}");
-    if (!boost::regex_match(disc, expression)) {
+    if (!boost::regex_match(disc, discExpression)) {
       addToReport(artist, genre, album, directory, "invalid_disc");
     }
   }
