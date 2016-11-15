@@ -86,6 +86,13 @@ class MetaScanner: public Scanner {
     void reportWhiteSpaces(AlbumMetaDataMap::iterator album);
 
     /*!
+     * Find albums with more than one file type.
+     *
+     * \param [in] item An iterator of albums.
+     */
+    void reportFileTypeInconsistencies(AlbumMetaDataMap::iterator album);
+
+    /*!
      * Find MP3 track titles that have potentially been truncated during
      * conversion from ID3v1 to ID3v2.
      *
