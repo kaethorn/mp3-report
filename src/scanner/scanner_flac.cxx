@@ -1,6 +1,4 @@
-#include <boost/regex.hpp>
 #include <taglib/vorbisfile.h>
-
 #include "scanner_flac.hxx"
 
 void FLACScanner::scan(boost::filesystem::path file) {
@@ -103,16 +101,14 @@ void FLACScanner::checkFLACTags(TagLib::FLAC::File *fileTag) {
 
   // Find tracks containing track numbers that are not formatted as <num>/<total>
   if (!oggVorbisTag->fieldListMap()["TRACKNUMBER"].isEmpty()) {
-    static const boost::regex expression("\\d{2}/\\d{2}|\\d{3}/\\d{3}");
-    if (!boost::regex_match(track, expression)) {
+    if (!boost::regex_match(track, discExpression)) {
       addToReport(artist, genre, album, directory, "invalid_track");
     }
   }
 
   // Find tracks containing disc numbers that are not formatted as <num>/<total>
   if (!oggVorbisTag->fieldListMap()["DISCNUMBER"].isEmpty()) {
-    static const boost::regex expression("\\d/\\d|\\d{2}/\\d{2}");
-    if (!boost::regex_match(disc, expression)) {
+    if (!boost::regex_match(disc, trackExpression)) {
       addToReport(artist, genre, album, directory, "invalid_disc");
     }
   }

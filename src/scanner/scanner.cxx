@@ -5,9 +5,12 @@ using namespace std;
 #include "scanner.hxx"
 
 Scanner::Scanner(ReportMap* report, MetaDataMap* metaData, AlbumMetaDataMap* albumMetaData) {
-  this->report = report;
-  this->metaData = metaData;
+  this->report        = report;
+  this->metaData      = metaData;
   this->albumMetaData = albumMetaData;
+
+  this->trackRegex = boost::regex("^\\d{2}/\\d{2}|\\d{3}/\\d{3}$");
+  this->discRegex  = boost::regex("^[1-9]/[2-9]|0[1-9]/0[2-9]$");
 }
 
 Scanner::Scanner(ReportMap* report) {
