@@ -48,4 +48,12 @@ class FLACScanner: public Scanner {
      * \param [in] fileTag A pointer to the FLAC file tag object
      */
     void checkFLACTags(TagLib::FLAC::File *fileTag);
+
+    /*!
+     * Determines size effective size of \a picture.
+     *
+     * \param [in] tag A pointer to the FLAC Picture object.
+     * \return The size of the first picture.
+     */
+    uint getPictureSize(const TagLib::FLAC::Picture* picture);
 };

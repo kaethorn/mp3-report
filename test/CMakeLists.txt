@@ -368,6 +368,10 @@ run_sample (flac_invalid_art_type
 run_sample (flac_multiple_art
   "\"flac\",\"somealbum\",\".+testcases/flac_multiple_art\",multiple_art")
 
+# FLAC with an invalid album art size
+run_sample (flac_invalid_art_size
+  "\"flac\",\"somealbum\",\".+testcases/flac_invalid_art_size\",invalid_art")
+
 # FLAC without any flaws
 run_sample (flac_perfect
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")

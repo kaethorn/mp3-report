@@ -67,5 +67,5 @@ class OggVorbisScanner: public Scanner {
      * \param [in] tag A pointer to the FLAC Picture object.
      * \return The size of the first picture.
      */
-    uint getPictureSize(TagLib::FLAC::Picture* picture);
+    uint getPictureSize(const TagLib::FLAC::Picture* picture);
 };

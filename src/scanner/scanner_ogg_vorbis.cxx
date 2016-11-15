@@ -31,7 +31,7 @@ TagLib::ByteVector OggVorbisScanner::decodeCover(const TagLib::Ogg::XiphComment*
   return TagLib::ByteVector(os.str().c_str(), size);
 }
 
-uint OggVorbisScanner::getPictureSize(TagLib::FLAC::Picture* picture) {
+uint OggVorbisScanner::getPictureSize(const TagLib::FLAC::Picture* picture) {
   uint size = 0;
   const TagLib::ByteVector nullStringTerminator(1, 0);
   TagLib::ByteVector albumArt = picture->data();

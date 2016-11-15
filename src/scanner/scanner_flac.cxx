@@ -11,6 +11,20 @@ void FLACScanner::scan(boost::filesystem::path file) {
   checkFLACTags(&fileTag);
 }
 
+uint FLACScanner::getPictureSize(const TagLib::FLAC::Picture* picture) {
+  uint size = 0;
+  const TagLib::ByteVector nullStringTerminator(1, 0);
+  TagLib::ByteVector albumArt = picture->data();
+  int pos = albumArt.find(nullStringTerminator);
+
+  if (++pos > 0) {
+    const TagLib::ByteVector &bytes = albumArt.mid(pos);
+    size = bytes.size();
+  }
+
+  return size;
+}
+
 void FLACScanner::checkFLACTags(TagLib::FLAC::File *fileTag) {
   // Retrieve the generic tag
   TagLib::Tag *tag = fileTag->tag();
@@ -81,7 +95,8 @@ void FLACScanner::checkFLACTags(TagLib::FLAC::File *fileTag) {
   // Find tracks with invalid album art types
   } else {
     const TagLib::FLAC::Picture* albumArt = pictures.front();
-    if (albumArt->type() != TagLib::FLAC::Picture::FrontCover) {
+    if (albumArt->type() != TagLib::FLAC::Picture::FrontCover ||
+        getPictureSize(albumArt) == 0) {;
       addToReport(artist, genre, album, directory, "invalid_art");
     }
   }
