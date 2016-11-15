@@ -46,7 +46,7 @@ void MetaScanner::reportIndexInconsistencies(AlbumMetaDataMap::iterator album) {
       song!=album->second.end(); ++song) {
     tracks.push_back(song->track);
 
-    // Not albums are part of a collection.
+    // Not all albums are part of a collection.
     if (song->disc.size())
       discs.push_back(song->disc);
   }
