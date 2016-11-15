@@ -215,6 +215,10 @@ run_sample (ogg_invalid_art_type
 run_sample (ogg_multiple_art
   "\"ogg\",\"somealbum\",\".+testcases/ogg_multiple_art\",multiple_art")
 
+# Ogg with an invalid album art size
+run_sample (ape_invalid_art_size
+  "\"ogg\",\"somealbum\",\".+testcases/ogg_invalid_art_size\",invalid_art")
+
 # Ogg without any flaws
 run_sample (ogg_perfect
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
