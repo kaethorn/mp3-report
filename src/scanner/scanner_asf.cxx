@@ -3,6 +3,20 @@
 
 #include "scanner_asf.hxx"
 
+uint ASFScanner::getPictureSize(TagLib::ASF::Tag* tag) {
+  uint size = 0;
+  const TagLib::ByteVector nullStringTerminator(1, 0);
+  TagLib::ByteVector albumArt = tag->attributeListMap()["WM/Picture"].front().toByteVector();
+  int pos = albumArt.find(nullStringTerminator);
+
+  if (++pos > 0) {
+    const TagLib::ByteVector &bytes = albumArt.mid(pos);
+    size = bytes.size();
+  }
+
+  return size;
+}
+
 void ASFScanner::scan(boost::filesystem::path file) {
   string fileName(file.string());
   directory = dirname(file);
@@ -77,13 +91,12 @@ void ASFScanner::checkASFTags(TagLib::ASF::File *fileTag) {
   } else if (pictures.size() > 1) {
     addToReport(artist, genre, album, directory, "multiple_art");
 
-  // Find tracks with invalid album art types
+  // Find tracks with invalid album art types or sizes
   } else {
     const TagLib::ASF::Picture& albumArt = pictures.front().toPicture();
-    if (albumArt.type() != TagLib::ASF::Picture::FrontCover) {
-      addToReport(artist, genre, album, directory, "invalid_art");
-    }
-    if (!albumArt.isValid()) {
+    if (albumArt.type() != TagLib::ASF::Picture::FrontCover ||
+        getPictureSize(ASFTag) == 0 ||
+        !albumArt.isValid()) {
       addToReport(artist, genre, album, directory, "invalid_art");
     }
   }

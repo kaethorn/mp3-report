@@ -309,6 +309,10 @@ run_sample (wma_invalid_track
 run_sample (wma_multiple_art
   "\"wma\",\"somealbum\",\".+testcases/wma_multiple_art\",multiple_art")
 
+# WMA with an invalid album art size
+run_sample (ape_invalid_art_size
+  "\"wma\",\"somealbum\",\".+testcases/wma_invalid_art_size\",invalid_art")
+
 # WMA without any flaws
 run_sample (wma_perfect
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
