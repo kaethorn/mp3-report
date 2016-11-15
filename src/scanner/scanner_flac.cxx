@@ -101,14 +101,14 @@ void FLACScanner::checkFLACTags(TagLib::FLAC::File *fileTag) {
 
   // Find tracks containing track numbers that are not formatted as <num>/<total>
   if (!oggVorbisTag->fieldListMap()["TRACKNUMBER"].isEmpty()) {
-    if (!boost::regex_match(track, discExpression)) {
+    if (!boost::regex_match(track, trackExpression)) {
       addToReport(artist, genre, album, directory, "invalid_track");
     }
   }
 
   // Find tracks containing disc numbers that are not formatted as <num>/<total>
   if (!oggVorbisTag->fieldListMap()["DISCNUMBER"].isEmpty()) {
-    if (!boost::regex_match(disc, trackExpression)) {
+    if (!boost::regex_match(disc, discExpression)) {
       addToReport(artist, genre, album, directory, "invalid_disc");
     }
   }

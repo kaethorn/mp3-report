@@ -125,14 +125,14 @@ void MP3Scanner::checkID3v2Tags(TagLib::MPEG::File *fileTag) {
 
   // Find tracks containing track numbers that are not formatted as <num>/<total>
   if (!ID3v2Tag->frameListMap()["TRCK"].isEmpty()) {
-    if (!boost::regex_match(track, discExpression)) {
+    if (!boost::regex_match(track, trackExpression)) {
       addToReport(artist, genre, album, directory, "invalid_track");
     }
   }
 
   // Find tracks containing disc numbers that are not formatted as <num>/<total>
   if (!ID3v2Tag->frameListMap()["TPOS"].isEmpty()) {
-    if (!boost::regex_match(disc, trackExpression)) {
+    if (!boost::regex_match(disc, discExpression)) {
       addToReport(artist, genre, album, directory, "invalid_disc");
     }
   }
