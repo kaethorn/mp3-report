@@ -9,6 +9,7 @@
  */
 
 #include <taglib/vorbisfile.h>
+#include <taglib/flacfile.h>
 #include <boost/archive/iterators/base64_from_binary.hpp>
 #include <boost/archive/iterators/binary_from_base64.hpp>
 #include <boost/archive/iterators/transform_width.hpp>
@@ -59,4 +60,12 @@ class OggVorbisScanner: public Scanner {
      * \return A byte vector of the first cover found
      */
     TagLib::ByteVector decodeCover(const TagLib::Ogg::XiphComment* oggVorbisTag);
+
+    /*!
+     * Determines size effective size of \a picture.
+     *
+     * \param [in] tag A pointer to the FLAC Picture object.
+     * \return The size of the first picture.
+     */
+    uint getPictureSize(const TagLib::FLAC::Picture* picture);
 };

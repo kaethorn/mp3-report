@@ -73,5 +73,14 @@ void MP4Scanner::checkMP4Tags(TagLib::MP4::File *fileTag) {
   // Find tracks with more than one album art
   } else if (MP4Tag->itemListMap()["covr"].toCoverArtList().size() > 1) {
     addToReport(artist, genre, album, directory, "multiple_art");
+  } else {
+    const TagLib::MP4::CoverArt albumArt =
+      TagLib::MP4::CoverArt(
+        MP4Tag->itemListMap()["covr"].toCoverArtList().front()
+      );
+
+    if (albumArt.data().size() == 0) {
+      addToReport(artist, genre, album, directory, "invalid_art");
+    }
   }
 }

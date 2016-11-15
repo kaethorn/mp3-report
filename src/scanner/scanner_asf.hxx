@@ -48,4 +48,12 @@ class ASFScanner: public Scanner {
      * \param [in] fileTag A pointer to the ASF file tag object
      */
     void checkASFTags(TagLib::ASF::File *fileTag);
+
+    /*!
+     * Determines size effective size of the first picture in \a tag.
+     *
+     * \param [in] tag A pointer to the ASF tag object.
+     * \return The size of the first picture.
+     */
+    uint getPictureSize(TagLib::ASF::Tag* tag);
 };

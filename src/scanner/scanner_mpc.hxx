@@ -49,4 +49,12 @@ class MPCScanner: public Scanner {
      * \param [in] fileTag A pointer to the MPC file tag object
      */
     void checkMPCTags(TagLib::MPC::File *fileTag);
+
+    /*!
+     * Determines size effective size of the first picture in \a tag.
+     *
+     * \param [in] tag A pointer to the APE tag object.
+     * \return The size of the first picture.
+     */
+    uint getPictureSize(TagLib::APE::Tag* tag);
 };

@@ -1,5 +1,4 @@
 #include <boost/regex.hpp>
-#include <taglib/flacfile.h>
 #include "scanner_ogg_vorbis.hxx"
 
 void OggVorbisScanner::scan(boost::filesystem::path file) {
@@ -30,6 +29,20 @@ TagLib::ByteVector OggVorbisScanner::decodeCover(const TagLib::Ogg::XiphComment*
             std::ostream_iterator<char>(os));
 
   return TagLib::ByteVector(os.str().c_str(), size);
+}
+
+uint OggVorbisScanner::getPictureSize(const TagLib::FLAC::Picture* picture) {
+  uint size = 0;
+  const TagLib::ByteVector nullStringTerminator(1, 0);
+  TagLib::ByteVector albumArt = picture->data();
+  int pos = albumArt.find(nullStringTerminator);
+
+  if (++pos > 0) {
+    const TagLib::ByteVector &bytes = albumArt.mid(pos);
+    size = bytes.size();
+  }
+
+  return size;
 }
 
 void OggVorbisScanner::checkOggVorbisTags(TagLib::Ogg::Vorbis::File *fileTag) {
@@ -100,7 +113,8 @@ void OggVorbisScanner::checkOggVorbisTags(TagLib::Ogg::Vorbis::File *fileTag) {
   // Find tracks with invalid album art types
   } else {
     TagLib::FLAC::Picture* albumArt = new TagLib::FLAC::Picture(decodeCover(oggVorbisTag));
-    if (albumArt->type() != TagLib::FLAC::Picture::FrontCover) {
+    if (albumArt->type() != TagLib::FLAC::Picture::FrontCover ||
+        getPictureSize(albumArt) == 0) {
       addToReport(artist, genre, album, directory, "invalid_art");
     }
   }

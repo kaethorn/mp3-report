@@ -37,6 +37,10 @@ run_sample (mp3_invalid_encoding
 run_sample (mp3_invalid_art_type
   "\"mp3\",\"somealbum\",\".+testcases/mp3_invalid_art_type\",invalid_art")
 
+# MP3 with an invalid album art size
+run_sample (mp3_invalid_art_size
+  "\"mp3\",\"somealbum\",\".+testcases/mp3_invalid_art_size\",invalid_art")
+
 # MP3 without an album
 run_sample (mp3_missing_album
   "\"mp3\",\"\",\".+testcases/mp3_missing_album\",missing_album")
@@ -211,6 +215,10 @@ run_sample (ogg_invalid_art_type
 run_sample (ogg_multiple_art
   "\"ogg\",\"somealbum\",\".+testcases/ogg_multiple_art\",multiple_art")
 
+# Ogg with an invalid album art size
+run_sample (ape_invalid_art_size
+  "\"ogg\",\"somealbum\",\".+testcases/ogg_invalid_art_size\",invalid_art")
+
 # Ogg without any flaws
 run_sample (ogg_perfect
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
@@ -253,6 +261,10 @@ run_sample (mp4_missing_track
 # MP4 with multiple album art
 run_sample (mp4_multiple_art
   "\"mp4\",\"somealbum\",\".+testcases/mp4_multiple_art\",multiple_art")
+
+# MP4 with an invalid album art size
+run_sample (mp4_invalid_art_size
+  "\"mp4\",\"somealbum\",\".+testcases/mp4_invalid_art_size\",invalid_art")
 
 # MP4 without any flaws
 run_sample (mp4_perfect
@@ -300,6 +312,10 @@ run_sample (wma_invalid_track
 # WMA with multiple album art
 run_sample (wma_multiple_art
   "\"wma\",\"somealbum\",\".+testcases/wma_multiple_art\",multiple_art")
+
+# WMA with an invalid album art size
+run_sample (ape_invalid_art_size
+  "\"wma\",\"somealbum\",\".+testcases/wma_invalid_art_size\",invalid_art")
 
 # WMA without any flaws
 run_sample (wma_perfect
@@ -352,6 +368,10 @@ run_sample (flac_invalid_art_type
 run_sample (flac_multiple_art
   "\"flac\",\"somealbum\",\".+testcases/flac_multiple_art\",multiple_art")
 
+# FLAC with an invalid album art size
+run_sample (flac_invalid_art_size
+  "\"flac\",\"somealbum\",\".+testcases/flac_invalid_art_size\",invalid_art")
+
 # FLAC without any flaws
 run_sample (flac_perfect
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
@@ -399,6 +419,10 @@ run_sample (mpc_invalid_track
 #run_sample (mpc_multiple_art
 #  "\"mpc\",\"somealbum\",\".+testcases/mpc_multiple_art\",multiple_art")
 
+# MPC with an invalid album art size
+run_sample (mpc_invalid_art_size
+  "\"mpc\",\"somealbum\",\".+testcases/mpc_invalid_art_size\",invalid_art")
+
 # MPC without any flaws
 run_sample (mpc_perfect
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
@@ -445,6 +469,11 @@ run_sample (ape_invalid_track
 # APE with multiple album art (not yet implemented)
 #run_sample (ape_multiple_art
 #  "\"ape\",\"somealbum\",\".+testcases/ape_multiple_art\",multiple_art")
+
+# APE with an invalid album art size
+run_sample (ape_invalid_art_size
+  "\"ape\",\"somealbum\",\".+testcases/ape_invalid_art_size\",invalid_art")
+
 
 # APE without any flaws
 run_sample (ape_perfect
