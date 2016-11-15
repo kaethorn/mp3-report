@@ -419,6 +419,10 @@ run_sample (mpc_invalid_track
 #run_sample (mpc_multiple_art
 #  "\"mpc\",\"somealbum\",\".+testcases/mpc_multiple_art\",multiple_art")
 
+# MPC with an invalid album art size
+run_sample (mpc_invalid_art_size
+  "\"mpc\",\"somealbum\",\".+testcases/mpc_invalid_art_size\",invalid_art")
+
 # MPC without any flaws
 run_sample (mpc_perfect
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")

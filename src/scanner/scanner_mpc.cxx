@@ -10,6 +10,20 @@ void MPCScanner::scan(boost::filesystem::path file) {
   checkMPCTags(&fileTag);
 }
 
+uint MPCScanner::getPictureSize(TagLib::APE::Tag* tag) {
+  uint size = 0;
+  const TagLib::ByteVector nullStringTerminator(1, 0);
+  TagLib::ByteVector albumArt = tag->itemListMap()["COVER ART (FRONT)"].value();
+  int pos = albumArt.find(nullStringTerminator);
+
+  if (++pos > 0) {
+    const TagLib::ByteVector &bytes = albumArt.mid(pos);
+    size = bytes.size();
+  }
+
+  return size;
+}
+
 void MPCScanner::checkMPCTags(TagLib::MPC::File *fileTag) {
   // Retrieve the generic and MPC tags
   TagLib::Tag *tag = fileTag->tag();
@@ -67,10 +81,17 @@ void MPCScanner::checkMPCTags(TagLib::MPC::File *fileTag) {
   if (!APETag->itemListMap().contains("ALBUMARTIST") ||
       APETag->itemListMap()["ALBUMARTIST"].isEmpty()) {
     addToReport(artist, genre, album, directory, "missing_album_artist");
+  }
 
   // Find tracks with missing album art
-  } else if (!APETag->itemListMap().contains("COVER ART (FRONT)")) {
+  if (!APETag->itemListMap().contains("COVER ART (FRONT)")) {
     addToReport(artist, genre, album, directory, "missing_art");
+
+  // Find tracks with invalid album art sizes
+  } else {
+    if (getPictureSize(APETag) == 0) {
+      addToReport(artist, genre, album, directory, "invalid_art");
+    }
   }
 
   // Find tracks containing track numbers that are not formatted as <num>/<total>
