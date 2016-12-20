@@ -8,7 +8,11 @@
  * or copy at http://opensource.org/licenses/MIT)
  */
 
-#include <vorbisfile.h>
+#include <taglib/vorbisfile.h>
+#include <taglib/flacfile.h>
+#include <boost/archive/iterators/base64_from_binary.hpp>
+#include <boost/archive/iterators/binary_from_base64.hpp>
+#include <boost/archive/iterators/transform_width.hpp>
 
 #include "scanner.hxx"
 
@@ -27,9 +31,10 @@ class OggVorbisScanner: public Scanner {
      *
      * \param [in,out] report A pointer to the report for scan results.
      * \param [in,out] metaData A pointer to the meta data.
+     * \param [in,out] albumMetaData A pointer to the album meta data.
      */
-    OggVorbisScanner(ReportMap* report, MetaDataMap* metaData)
-      : Scanner(report, metaData) {};
+    OggVorbisScanner(ReportMap* report, MetaDataMap* metaData, AlbumMetaDataMap* albumMetaData)
+      : Scanner(report, metaData, albumMetaData) {};
 
     /*!
      * Invokes private method scanner on the tags \a file.
@@ -42,9 +47,25 @@ class OggVorbisScanner: public Scanner {
   private:
 
     /*!
-     * Scans \a fileTag for tag inconsistencies.
+     * Scans a fileTag for tag inconsistencies.
      *
      * \param [in] fileTag A pointer to the ogg file tag object
      */
     void checkOggVorbisTags(TagLib::Ogg::Vorbis::File *fileTag);
+
+    /*!
+     * Extracts the first cover from the given tag.
+     *
+     * \param [in] oggVorbisTag The vorbis tag containing a cover
+     * \return A byte vector of the first cover found
+     */
+    TagLib::ByteVector decodeCover(const TagLib::Ogg::XiphComment* oggVorbisTag);
+
+    /*!
+     * Determines size effective size of \a picture.
+     *
+     * \param [in] tag A pointer to the FLAC Picture object.
+     * \return The size of the first picture.
+     */
+    uint getPictureSize(const TagLib::FLAC::Picture* picture);
 };

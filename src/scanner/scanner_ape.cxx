@@ -1,5 +1,3 @@
-#include <boost/regex.hpp>
-
 #include "scanner_ape.hxx"
 
 void APEScanner::scan(boost::filesystem::path file) {
@@ -8,6 +6,20 @@ void APEScanner::scan(boost::filesystem::path file) {
   TagLib::APE::File fileTag(fileName.c_str());
 
   checkAPETags(&fileTag);
+}
+
+uint APEScanner::getPictureSize(TagLib::APE::Tag* tag) {
+  uint size = 0;
+  const TagLib::ByteVector nullStringTerminator(1, 0);
+  TagLib::ByteVector albumArt = tag->itemListMap()["COVER ART (FRONT)"].value();
+  int pos = albumArt.find(nullStringTerminator);
+
+  if (++pos > 0) {
+    const TagLib::ByteVector &bytes = albumArt.mid(pos);
+    size = bytes.size();
+  }
+
+  return size;
 }
 
 void APEScanner::checkAPETags(TagLib::APE::File *fileTag) {
@@ -71,20 +83,24 @@ void APEScanner::checkAPETags(TagLib::APE::File *fileTag) {
   // Find tracks with missing album art
   if (!APETag->itemListMap().contains("COVER ART (FRONT)")) {
     addToReport(artist, genre, album, directory, "missing_art");
+
+  // Find tracks with invalid album art sizes
+  } else {
+    if (getPictureSize(APETag) == 0) {
+      addToReport(artist, genre, album, directory, "invalid_art");
+    }
   }
 
   // Find tracks containing track numbers that are not formatted as <num>/<total>
   if (!APETag->itemListMap()["TRACK"].isEmpty()) {
-    static const boost::regex expression("\\d{2}/\\d{2}|\\d{3}/\\d{3}");
-    if (!boost::regex_match(track, expression)) {
+    if (!boost::regex_match(track, trackExpression)) {
       addToReport(artist, genre, album, directory, "invalid_track");
     }
   }
 
   // Find tracks containing disc numbers that are not formatted as <num>/<total>
   if (!APETag->itemListMap()["DISC"].isEmpty()) {
-    static const boost::regex expression("\\d/\\d|\\d{2}/\\d{2}");
-    if (!boost::regex_match(disc, expression)) {
+    if (!boost::regex_match(disc, discExpression)) {
       addToReport(artist, genre, album, directory, "invalid_disc");
     }
   }

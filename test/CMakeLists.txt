@@ -8,7 +8,7 @@ macro (run_sample test_name result)
     list(APPEND params ${param})
   endforeach()
   add_test (MP3Report_${test_name}
-    ${PROJECT_BINARY_DIR}/src/MP3Report -r csv ${params}
+    ${PROJECT_BINARY_DIR}/src/MP3Report -q -r csv ${params}
     ${PROJECT_BINARY_DIR}/test/testcases/${test_name})
   set_tests_properties (MP3Report_${test_name}
     PROPERTIES PASS_REGULAR_EXPRESSION ${result})
@@ -32,6 +32,14 @@ run_sample (mp3_id3v2_obsolete
 # MP3 with an invalid text frame encoding
 run_sample (mp3_invalid_encoding
   "\"mp3\",\"somealbum\",\".+testcases/mp3_invalid_encoding\",invalid_encoding")
+
+# MP3 with an invalid album art type
+run_sample (mp3_invalid_art_type
+  "\"mp3\",\"somealbum\",\".+testcases/mp3_invalid_art_type\",invalid_art")
+
+# MP3 with an invalid album art size
+run_sample (mp3_invalid_art_size
+  "\"mp3\",\"somealbum\",\".+testcases/mp3_invalid_art_size\",invalid_art")
 
 # MP3 without an album
 run_sample (mp3_missing_album
@@ -67,7 +75,8 @@ run_sample (mp3_invalid_track
 
 # MP3 with an invalid track number format
 run_sample (mp3_invalid_disc
-  "\"mp3\",\"somealbum\",\".+testcases/mp3_invalid_disc\",invalid_disc")
+  "\"mp3\",\"somealbum\",\".+testcases/mp3_invalid_disc/a\",invalid_disc\\n\
+\"mp3\",\"somealbum\",\".+testcases/mp3_invalid_disc/b\",invalid_disc")
 
 # MP3 with an invalid track number format
 run_sample (mp3_valid_disc
@@ -81,6 +90,46 @@ run_sample (mp3_valid_track
 run_sample (mp3_multiple_art
   "\"mp3\",\"somealbum\",\".+testcases/mp3_multiple_art\",multiple_art")
 
+# MP3 with an album frame containing invalid white spaces
+run_sample (mp3_spaces_leading_album
+  "\"mp3\",\"an album\\ \",\".+testcases/mp3_spaces_leading_album\",spaces_album")
+run_sample (mp3_spaces_trailing_album
+  "\"mp3\",\"\\ another album\",\".+testcases/mp3_spaces_trailing_album\",spaces_album")
+run_sample (mp3_spaces_multiple_album
+  "\"mp3\",\"spacious\\ \\ album\",\".+testcases/mp3_spaces_multiple_album\",spaces_album")
+run_sample (mp3_spaces_invalid_album
+  "\"mp3\",\"tabbed\\talbum\",\".+testcases/mp3_spaces_invalid_album\",spaces_album")
+
+# MP3 with an artist frame containing invalid white spaces
+run_sample (mp3_spaces_leading_artist
+  "\"\\ some\\ artist\",\"album1\",\".+testcases/mp3_spaces_leading_artist\",spaces_artist")
+run_sample (mp3_spaces_trailing_artist
+  "\"some\\ artist\\ \",\"album2\",\".+testcases/mp3_spaces_trailing_artist\",spaces_artist")
+run_sample (mp3_spaces_multiple_artist
+  "\"some\\ \\ artist\",\"album3\",\".+testcases/mp3_spaces_multiple_artist\",spaces_artist")
+run_sample (mp3_spaces_invalid_artist
+  "\"some\\tartist\",\"album4\",\".+testcases/mp3_spaces_invalid_artist\",spaces_artist")
+
+# MP3 with an album artist frame containing invalid white spaces
+run_sample (mp3_spaces_leading_albumartist
+  "\"mp3\",\"album1\",\".+testcases/mp3_spaces_leading_albumartist\",spaces_albumartist")
+run_sample (mp3_spaces_trailing_albumartist
+  "\"mp3\",\"album2\",\".+testcases/mp3_spaces_trailing_albumartist\",spaces_albumartist")
+run_sample (mp3_spaces_multiple_albumartist
+  "\"mp3\",\"album3\",\".+testcases/mp3_spaces_multiple_albumartist\",spaces_albumartist")
+run_sample (mp3_spaces_invalid_albumartist
+  "\"mp3\",\"album4\",\".+testcases/mp3_spaces_invalid_albumartist\",spaces_albumartist")
+
+# MP3 with a title frame containing invalid white spaces
+run_sample (mp3_spaces_leading_title
+  "\"mp3\",\"album1\",\".+testcases/mp3_spaces_leading_title\",spaces_title")
+run_sample (mp3_spaces_trailing_title
+  "\"mp3\",\"album2\",\".+testcases/mp3_spaces_trailing_title\",spaces_title")
+run_sample (mp3_spaces_multiple_title
+  "\"mp3\",\"album3\",\".+testcases/mp3_spaces_multiple_title\",spaces_title")
+run_sample (mp3_spaces_invalid_title
+  "\"mp3\",\"album4\",\".+testcases/mp3_spaces_invalid_title\",spaces_title")
+
 # MP3 without any flaws
 run_sample (mp3_perfect
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
@@ -90,7 +139,7 @@ run_sample (mp3_perfect
 #
 # Song with truncated title
 run_sample (meta_truncated
-  "\"mp3\",\"somealbum\",\".+testcases/meta_truncated\",truncation_warning" "-w")
+  "\"somealbumartist\",\"somealbum\",\".+testcases/meta_truncated\",truncation_warning" "-w")
 
 # Song with non-truncated titles
 run_sample (meta_non_truncated
@@ -98,10 +147,18 @@ run_sample (meta_non_truncated
 
 # Artists with multiple genres
 run_sample (meta_multiple_artist_genres
-  "\"mp3\",\"somealbum\",\".+testcases/meta_multiple_artist_genres\",multiple_artist_genres")
+  "\"somealbumartist\",\"somealbum\",\".+testcases/meta_multiple_artist_genres\",multiple_artist_genres")
 
 # Various artists with multiple genres
 run_sample (meta_various_artist_genres
+  "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
+
+# Various artists albums should be valid
+run_sample (meta_valid_various_artists
+  "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
+
+# Album names can appear twice for different artists
+run_sample (meta_valid_same_album_name
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
 
 # Inconsistent track sequences
@@ -111,6 +168,10 @@ run_sample (meta_incomplete_album
 # Inconsistent disc sequences
 run_sample (meta_incomplete_collection
   "\"mp3\",\"somealbum\",\".+testcases/meta_incomplete_collection\",incomplete_collection")
+
+# Inconsistent file types for an album
+run_sample (meta_invalid_file_types
+  "\"mixed\",\"somealbum\",\".+testcases/meta_invalid_file_types\",invalid_file_types")
 
 
 ### Ogg samples
@@ -151,9 +212,17 @@ run_sample (ogg_missing_track
 run_sample (ogg_invalid_track
   "\"ogg\",\"somealbum\",\".+testcases/ogg_invalid_track\",invalid_track")
 
+# Ogg with invalid album art
+run_sample (ogg_invalid_art_type
+  "\"ogg\",\"somealbum\",\".+testcases/ogg_invalid_art_type\",invalid_art")
+
 # Ogg with multiple album art
 run_sample (ogg_multiple_art
   "\"ogg\",\"somealbum\",\".+testcases/ogg_multiple_art\",multiple_art")
+
+# Ogg with an invalid album art size
+run_sample (ape_invalid_art_size
+  "\"ogg\",\"somealbum\",\".+testcases/ogg_invalid_art_size\",invalid_art")
 
 # Ogg without any flaws
 run_sample (ogg_perfect
@@ -197,6 +266,10 @@ run_sample (mp4_missing_track
 # MP4 with multiple album art
 run_sample (mp4_multiple_art
   "\"mp4\",\"somealbum\",\".+testcases/mp4_multiple_art\",multiple_art")
+
+# MP4 with an invalid album art size
+run_sample (mp4_invalid_art_size
+  "\"mp4\",\"somealbum\",\".+testcases/mp4_invalid_art_size\",invalid_art")
 
 # MP4 without any flaws
 run_sample (mp4_perfect
@@ -245,6 +318,10 @@ run_sample (wma_invalid_track
 run_sample (wma_multiple_art
   "\"wma\",\"somealbum\",\".+testcases/wma_multiple_art\",multiple_art")
 
+# WMA with an invalid album art size
+run_sample (ape_invalid_art_size
+  "\"wma\",\"somealbum\",\".+testcases/wma_invalid_art_size\",invalid_art")
+
 # WMA without any flaws
 run_sample (wma_perfect
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
@@ -288,9 +365,17 @@ run_sample (flac_missing_track
 run_sample (flac_invalid_track
   "\"flac\",\"somealbum\",\".+testcases/flac_invalid_track\",invalid_track")
 
+# FLAC with invalid album art
+run_sample (flac_invalid_art_type
+  "\"flac\",\"somealbum\",\".+testcases/flac_invalid_art_type\",invalid_art")
+
 # FLAC with multiple album art
 run_sample (flac_multiple_art
   "\"flac\",\"somealbum\",\".+testcases/flac_multiple_art\",multiple_art")
+
+# FLAC with an invalid album art size
+run_sample (flac_invalid_art_size
+  "\"flac\",\"somealbum\",\".+testcases/flac_invalid_art_size\",invalid_art")
 
 # FLAC without any flaws
 run_sample (flac_perfect
@@ -339,6 +424,10 @@ run_sample (mpc_invalid_track
 #run_sample (mpc_multiple_art
 #  "\"mpc\",\"somealbum\",\".+testcases/mpc_multiple_art\",multiple_art")
 
+# MPC with an invalid album art size
+run_sample (mpc_invalid_art_size
+  "\"mpc\",\"somealbum\",\".+testcases/mpc_invalid_art_size\",invalid_art")
+
 # MPC without any flaws
 run_sample (mpc_perfect
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
@@ -385,6 +474,11 @@ run_sample (ape_invalid_track
 # APE with multiple album art (not yet implemented)
 #run_sample (ape_multiple_art
 #  "\"ape\",\"somealbum\",\".+testcases/ape_multiple_art\",multiple_art")
+
+# APE with an invalid album art size
+run_sample (ape_invalid_art_size
+  "\"ape\",\"somealbum\",\".+testcases/ape_invalid_art_size\",invalid_art")
+
 
 # APE without any flaws
 run_sample (ape_perfect

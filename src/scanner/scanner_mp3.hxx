@@ -8,7 +8,7 @@
  * or copy at http://opensource.org/licenses/MIT)
  */
 
-#include <mpegfile.h>
+#include <taglib/mpegfile.h>
 
 #include "scanner.hxx"
 
@@ -27,8 +27,9 @@ class MP3Scanner: public Scanner {
      *
      * \param [in,out] report A pointer to the report for scan results.
      * \param [in,out] metaData A pointer to the meta data.
+     * \param [in,out] albumMetaData A pointer to the meta data.
      */
-    MP3Scanner(ReportMap* report, MetaDataMap* metaData);
+    MP3Scanner(ReportMap* report, MetaDataMap* metaData, AlbumMetaDataMap* albumMetaData);
 
     /*!
      * Invokes private method scanners on the tags of \a file.

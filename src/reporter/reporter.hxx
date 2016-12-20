@@ -13,16 +13,16 @@
 
 #include <fstream>
 
-#include "scanner.hxx"
-#include "scanner_mp3.hxx"
-#include "scanner_ogg_vorbis.hxx"
-#include "scanner_flac.hxx"
-#include "scanner_mpc.hxx"
-#include "scanner_ape.hxx"
-#include "scanner_asf.hxx"
-#include "scanner_mp4.hxx"
-#include "scanner_meta.hxx"
-#include "scanner_file.hxx"
+#include "../scanner/scanner.hxx"
+#include "../scanner/scanner_mp3.hxx"
+#include "../scanner/scanner_ogg_vorbis.hxx"
+#include "../scanner/scanner_flac.hxx"
+#include "../scanner/scanner_mpc.hxx"
+#include "../scanner/scanner_ape.hxx"
+#include "../scanner/scanner_asf.hxx"
+#include "../scanner/scanner_mp4.hxx"
+#include "../scanner/scanner_meta.hxx"
+#include "../scanner/scanner_file.hxx"
 
 
 /*! \class Reporter
@@ -42,10 +42,11 @@ class Reporter {
      * \param [in] noMagicType Flag indicating whether to detect the file type by magic type (false) or by file name (true)
      * \param [in] useLibMagic Flag indicating whether to use xdgmime (false) or libgmagic (true) for file type detection
      * \param [in] showWarnings Flag indicating whether to show warnings as well as errors in the report.
+     * \param [in] beQuiet Flag indicating whether to hide file scanning progress.
      */
     Reporter(const string* directory, const string* reportType,
         const string* outputPath, bool noMagicType, bool useLibMagic,
-        bool showWarnings);
+        bool showWarnings, bool beQuiet);
 
     /*!
      * Destructs the reporter and closes the output file.
@@ -93,6 +94,16 @@ class Reporter {
     bool showWarnings;
 
     /*!
+     * Flag indicating whether to hide progress and warnings.
+     */
+    bool beQuiet;
+
+    /*!
+     * Terminal width
+     */
+    uint terminalWidth;
+
+    /*!
      * The report structure to populate with scan results.
      */
     Scanner::ReportMap report;
@@ -103,6 +114,11 @@ class Reporter {
     Scanner::MetaDataMap metaData;
 
     /*!
+     * The album meta data structure to populate with every title found.
+     */
+    Scanner::AlbumMetaDataMap albumMetaData;
+
+    /*!
      * The output stream associated with either a file or \a cout.
      */
     ostream* output;
@@ -111,6 +127,51 @@ class Reporter {
      * The output file used instead of \a cout.
      */
     ofstream outputFile;
+
+    /*!
+     * Instance of an MP3 scanner.
+     */
+    MP3Scanner *mp3Scanner;
+
+    /*!
+     * Instance of an MP4 scanner.
+     */
+    MP4Scanner *mp4Scanner;
+
+    /*!
+     * Instance of an ogg vorbis scanner.
+     */
+    OggVorbisScanner *oggVorbisScanner;
+
+    /*!
+     * Instance of a FLAC scanner.
+     */
+    FLACScanner *flacScanner;
+
+    /*!
+     * Instance of a MPC scanner.
+     */
+    MPCScanner *mpcScanner;
+
+    /*!
+     * Instance of a APE scanner.
+     */
+    APEScanner *apeScanner;
+
+    /*!
+     * Instance of a ASF scanner.
+     */
+    ASFScanner *asfScanner;
+
+    /*!
+     * Instance of a file scanner.
+     */
+    FileScanner *fileScanner;
+
+    /*!
+     * Instance of a file scanner.
+     */
+    MetaScanner *metaScanner;
 
     /*!
      * Generates a report depending on \a reportType and stores the
@@ -164,7 +225,7 @@ class Reporter {
      * \code
      * Artist: <artist>
      *   Album: <album>
-     *     Directory '<directory>': 
+     *     Directory '<directory>':
      *       * <error>
      *       [* .. ]
      *     [..]
@@ -199,49 +260,48 @@ class Reporter {
     void generateHTMLCollapsible();
 
     /*!
-     * Instance of an MP3 scanner.
+     * Outputs \a activity with \a message to the standard output with proper padding.
+     *
+     * \param [in] activity Activity description
+     * \param [in] message Message detailing the current activity
      */
-    MP3Scanner *mp3Scanner;
+    void printActivity(const string activity, const string message);
 
     /*!
-     * Instance of an MP4 scanner.
+     * Outputs \a activity with \a message and \a progress.
+     *
+     * \param [in] activity Activity description
+     * \param [in] message Message detailing the current activity
+     * \param [in] progress Ratio of completeness
      */
-    MP4Scanner *mp4Scanner;
+    void printProgress(const string activity, const string message, const float progress);
 
     /*!
-     * Instance of an ogg vorbis scanner.
+     * Retrieves a spinner character.
+     *
+     * \return A string containing the current spinner character.
      */
-    OggVorbisScanner *oggVorbisScanner;
+    string getSpinner();
 
     /*!
-     * Instance of a FLAC scanner.
+     * Converts a floating point number to a percentage string.
+     *
+     * \param [in] progress A floating point number to convert to a percenatage string.
+     * \return A string containing the percentage representation.
      */
-    FLACScanner *flacScanner;
+    string getProgress(float progress);
+
+    uint getFolderCount(const string* directory);
 
     /*!
-     * Instance of a MPC scanner.
+     * Instantiates and assigns all scanners.
      */
-    MPCScanner *mpcScanner;
+    void initializeScanners();
 
     /*!
-     * Instance of a APE scanner.
+     * Determines and sets the current terminal width.
      */
-    APEScanner *apeScanner;
-
-    /*!
-     * Instance of a ASF scanner.
-     */
-    ASFScanner *asfScanner;
-
-    /*!
-     * Instance of a file scanner.
-     */
-    FileScanner *fileScanner;
-
-    /*!
-     * Instance of a file scanner.
-     */
-    MetaScanner *metaScanner;
+    void initializeTerminalWidth();
 };
 
 #endif

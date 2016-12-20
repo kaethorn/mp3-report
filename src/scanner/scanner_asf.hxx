@@ -8,7 +8,7 @@
  * or copy at http://opensource.org/licenses/MIT)
  */
 
-#include <asffile.h>
+#include <taglib/asffile.h>
 
 #include "scanner.hxx"
 
@@ -27,9 +27,10 @@ class ASFScanner: public Scanner {
      *
      * \param [in,out] report A pointer to the report for scan results.
      * \param [in,out] metaData A pointer to the meta data.
+     * \param [in,out] albumMetaData A pointer to the album meta data.
      */
-    ASFScanner(ReportMap* report, MetaDataMap* metaData)
-      : Scanner(report, metaData) {};
+    ASFScanner(ReportMap* report, MetaDataMap* metaData, AlbumMetaDataMap* albumMetaData)
+      : Scanner(report, metaData, albumMetaData) {};
 
     /*!
      * Invokes private method scanners on the tags of \a file.
@@ -47,4 +48,12 @@ class ASFScanner: public Scanner {
      * \param [in] fileTag A pointer to the ASF file tag object
      */
     void checkASFTags(TagLib::ASF::File *fileTag);
+
+    /*!
+     * Determines size effective size of the first picture in \a tag.
+     *
+     * \param [in] tag A pointer to the ASF tag object.
+     * \return The size of the first picture.
+     */
+    uint getPictureSize(TagLib::ASF::Tag* tag);
 };

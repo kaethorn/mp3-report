@@ -1,7 +1,19 @@
-#include <boost/regex.hpp>
-#include <asftag.h>
-
+#include <taglib/asftag.h>
 #include "scanner_asf.hxx"
+
+uint ASFScanner::getPictureSize(TagLib::ASF::Tag* tag) {
+  uint size = 0;
+  const TagLib::ByteVector nullStringTerminator(1, 0);
+  TagLib::ByteVector albumArt = tag->attributeListMap()["WM/Picture"].front().toByteVector();
+  int pos = albumArt.find(nullStringTerminator);
+
+  if (++pos > 0) {
+    const TagLib::ByteVector &bytes = albumArt.mid(pos);
+    size = bytes.size();
+  }
+
+  return size;
+}
 
 void ASFScanner::scan(boost::filesystem::path file) {
   string fileName(file.string());
@@ -31,7 +43,7 @@ void ASFScanner::checkASFTags(TagLib::ASF::File *fileTag) {
   );
 
   // Store meta data
-  addToMetaData(artist, genre, album, directory, MP3, title, albumArtist, track, disc);
+  addToMetaData(artist, genre, album, directory, ASF, title, albumArtist, track, disc);
 
   // Find tracks without an artist tag
   if (artist.size() == 0) {
@@ -69,27 +81,34 @@ void ASFScanner::checkASFTags(TagLib::ASF::File *fileTag) {
   }
 
   // Find tracks with missing album art
-  if (ASFTag->attributeListMap()["WM/Picture"].size() < 1) {
+  const TagLib::ASF::AttributeList& pictures = ASFTag->attributeListMap()["WM/Picture"];
+  if (pictures.size() < 1) {
     addToReport(artist, genre, album, directory, "missing_art");
-  }
 
   // Find tracks with more than one album art
-  if (ASFTag->attributeListMap()["WM/Picture"].size() > 1) {
+  } else if (pictures.size() > 1) {
     addToReport(artist, genre, album, directory, "multiple_art");
+
+  // Find tracks with invalid album art types or sizes
+  } else {
+    const TagLib::ASF::Picture& albumArt = pictures.front().toPicture();
+    if (albumArt.type() != TagLib::ASF::Picture::FrontCover ||
+        getPictureSize(ASFTag) == 0 ||
+        !albumArt.isValid()) {
+      addToReport(artist, genre, album, directory, "invalid_art");
+    }
   }
 
   // Find tracks containing track numbers that are not formatted as <num>/<total>
   if (!ASFTag->attributeListMap()["WM/TrackNumber"].isEmpty()) {
-    static const boost::regex expression("\\d{2}/\\d{2}|\\d{3}/\\d{3}");
-    if (!boost::regex_match(track, expression)) {
+    if (!boost::regex_match(track, trackExpression)) {
       addToReport(artist, genre, album, directory, "invalid_track");
     }
   }
 
   // Find tracks containing disc numbers that are not formatted as <num>/<total>
   if (!ASFTag->attributeListMap()["WM/PartOfSet"].isEmpty()) {
-    static const boost::regex expression("\\d/\\d|\\d{2}/\\d{2}");
-    if (!boost::regex_match(disc, expression)) {
+    if (!boost::regex_match(disc, discExpression)) {
       addToReport(artist, genre, album, directory, "invalid_disc");
     }
   }

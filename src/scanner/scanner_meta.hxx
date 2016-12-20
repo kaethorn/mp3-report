@@ -28,10 +28,11 @@ class MetaScanner: public Scanner {
      *
      * \param [in,out] report A pointer to the report to scan and report to.
      * \param [in,out] metaData A pointer to the meta data.
+     * \param [in,out] albumMetaData A pointer to the album meta data.
      * \param [in] showWarnings Flag indicating whether to show warnings as well as errors in the report.
      */
-    MetaScanner(ReportMap* report, MetaDataMap* metaData, bool showWarnings)
-      : Scanner(report, metaData) {
+    MetaScanner(ReportMap* report, MetaDataMap* metaData, AlbumMetaDataMap* albumMetaData, bool showWarnings)
+      : Scanner(report, metaData, albumMetaData) {
         this->showWarnings = showWarnings;
       };
 
@@ -73,15 +74,23 @@ class MetaScanner: public Scanner {
     /*!
      * Find inconsistencies in track- or disc number sequences.
      *
-     * \param [in] item An iterator of meta items.
-     * \param [in] genre An iterator of genres.
-     * \param [in] album An iterator of albums.
-     * \param [in] directory An iterator of directories.
-     * \param [in] songs A pointer to the list of song structures.
+     * \param [in] item An iterator of albums.
      */
-    void reportIndexInconsistencies(MetaDataMap::iterator item,
-        Scanner::Genres::iterator genre, Scanner::Albums::iterator album,
-        Scanner::Directories::iterator directory, Scanner::Songs* songs);
+    void reportIndexInconsistencies(AlbumMetaDataMap::iterator album);
+
+    /*!
+     * Find frames with invalid white spaces.
+     *
+     * \param [in] item An iterator of albums.
+     */
+    void reportWhiteSpaces(AlbumMetaDataMap::iterator album);
+
+    /*!
+     * Find albums with more than one file type.
+     *
+     * \param [in] item An iterator of albums.
+     */
+    void reportFileTypeInconsistencies(AlbumMetaDataMap::iterator album);
 
     /*!
      * Find MP3 track titles that have potentially been truncated during

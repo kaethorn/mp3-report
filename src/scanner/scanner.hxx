@@ -16,6 +16,7 @@
 #include <set>
 using namespace std;
 #include <boost/filesystem.hpp>
+#include <boost/regex.hpp>
 
 /*! \class Scanner
  * Scanner base class
@@ -64,6 +65,10 @@ class Scanner {
       string   albumArtist;
       string   track;
       string   disc;
+      string   directory;
+      string   album;
+      string   genre;
+      string   artist;
     };
 
     /*!
@@ -92,6 +97,11 @@ class Scanner {
     typedef map<string, Genres> MetaDataMap;
 
     /*!
+     * A map of every song grouped by album
+     */
+    typedef map<pair<string, string>, Songs> AlbumMetaDataMap;
+
+    /*!
      * Construct a scanner for \a report. It will add scan results to
      * \a report.
      *
@@ -100,8 +110,9 @@ class Scanner {
      *
      * \param [in,out] report A pointer to the report for scan results.
      * \param [in,out] metaData A pointer to the meta data.
+     * \param [in,out] albumMetaData A pointer to the album meta data.
      */
-    Scanner(ReportMap* report, MetaDataMap* metaData);
+    Scanner(ReportMap* report, MetaDataMap* metaData, AlbumMetaDataMap* albumMetaData);
 
     /*!
      * Construct a scanner for \a report. It will add scan results to
@@ -175,9 +186,26 @@ class Scanner {
     MetaDataMap* metaData;
 
     /*!
+     * A pointer to the album meta data structure.
+     *
+     * \see Scanner::AlbumMetaDataMap
+     */
+    AlbumMetaDataMap* albumMetaData;
+
+    /*!
      * A string that holds the directory name of this file.
      */
     string directory;
+
+    /*!
+     * Regular expression used to validate track frames
+     */
+    boost::regex trackExpression;
+
+    /*!
+     * Regular expression used to validate disc frames
+     */
+    boost::regex discExpression;
 };
 
 #endif

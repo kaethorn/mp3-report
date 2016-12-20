@@ -1,5 +1,4 @@
 #include <boost/filesystem.hpp>
-
 #include "scanner_file.hxx"
 
 void FileScanner::scan(boost::filesystem::path file) {

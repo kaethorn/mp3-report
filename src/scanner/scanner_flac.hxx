@@ -8,7 +8,7 @@
  * or copy at http://opensource.org/licenses/MIT)
  */
 
-#include <flacfile.h>
+#include <taglib/flacfile.h>
 
 #include "scanner.hxx"
 
@@ -27,9 +27,10 @@ class FLACScanner: public Scanner {
      *
      * \param [in,out] report A pointer to the report for scan results.
      * \param [in,out] metaData A pointer to the meta data.
+     * \param [in,out] albumMetaData A pointer to the album meta data.
      */
-    FLACScanner(ReportMap* report, MetaDataMap* metaData)
-      : Scanner(report, metaData) {};
+    FLACScanner(ReportMap* report, MetaDataMap* metaData, AlbumMetaDataMap* albumMetaData)
+      : Scanner(report, metaData, albumMetaData) {};
 
     /*!
      * Invokes private method scanners on the tags of \a file.
@@ -47,4 +48,12 @@ class FLACScanner: public Scanner {
      * \param [in] fileTag A pointer to the FLAC file tag object
      */
     void checkFLACTags(TagLib::FLAC::File *fileTag);
+
+    /*!
+     * Determines size effective size of \a picture.
+     *
+     * \param [in] tag A pointer to the FLAC Picture object.
+     * \return The size of the first picture.
+     */
+    uint getPictureSize(const TagLib::FLAC::Picture* picture);
 };

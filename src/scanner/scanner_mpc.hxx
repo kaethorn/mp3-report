@@ -8,8 +8,8 @@
  * or copy at http://opensource.org/licenses/MIT)
  */
 
-#include <mpcfile.h>
-#include <apetag.h>
+#include <taglib/mpcfile.h>
+#include <taglib/apetag.h>
 
 #include "scanner.hxx"
 
@@ -28,9 +28,10 @@ class MPCScanner: public Scanner {
      *
      * \param [in,out] report A pointer to the report for scan results.
      * \param [in,out] metaData A pointer to the meta data.
+     * \param [in,out] albumMetaData A pointer to the album meta data.
      */
-    MPCScanner(ReportMap* report, MetaDataMap* metaData)
-      : Scanner(report, metaData) {};
+    MPCScanner(ReportMap* report, MetaDataMap* metaData, AlbumMetaDataMap* albumMetaData)
+      : Scanner(report, metaData, albumMetaData) {};
 
     /*!
      * Invokes private method scanners on the tags of \a file.
@@ -48,4 +49,12 @@ class MPCScanner: public Scanner {
      * \param [in] fileTag A pointer to the MPC file tag object
      */
     void checkMPCTags(TagLib::MPC::File *fileTag);
+
+    /*!
+     * Determines size effective size of the first picture in \a tag.
+     *
+     * \param [in] tag A pointer to the APE tag object.
+     * \return The size of the first picture.
+     */
+    uint getPictureSize(TagLib::APE::Tag* tag);
 };

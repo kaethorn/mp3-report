@@ -3,24 +3,29 @@ mp3-report
 
 [![Build Status](https://travis-ci.org/kaethorn/mp3-report.svg?branch=master)](https://travis-ci.org/kaethorn/mp3-report)
 
-Audio file tag consistency reporter.
+Highly opinionated audio file tag consistency reporter.
 
 ## About
 Finds out if there's something wrong with albums in your music collection. It's ready-only and produces a report.
 
 ### Features
-* groups results by artist, album and directory
-* finds tracks with missing album, artist, albumartist, genre, title or track number frames
-* finds tracks without album art
-* finds tracks with ID3v1 tags
-* finds tracks with more than one album art
-* finds tracks with ID3v2 version < ID3v2.4 tags
-* finds tracks that have a text format other than UTF-8
-* finds artists with multiple genres
-* finds ID3v2 tracks with track frames that are not in the format num/total
-* finds ID3v2 title tags with a length of exactly 30 bytes (which would occur when tags are converted from ID3v1 to ID3v2)
-* supports MP3, MP4, FLAC, WMA, MPC, APE and Ogg Vorbis audio formats
-* provides various report formats, see below
+* Groups results by artist, album and directory.
+* Supports MP3, MP4, FLAC, WMA, MPC, APE and Ogg Vorbis audio formats.
+* Displays scan progress.
+* File type detection by name or magic type.
+* Various checks:
+  * Tags with missing album, artist, album artist, genre, title, year or track number frames
+  * Album art that is missing, redudant or has an invalid type or size
+  * MP3 files with ID3 tags version lower than 2.4
+  * MP3 file Frames with an encoding other than UTF-8
+  * Artists with multiple genres
+  * Track index frames that are not in the format num/total
+  * Disc index frames that are not in the format num/total, unless empty
+  * MP3 title frames that got truncated by a conversion from ID3v1 to ID3v2
+  * Albums with mixed file types
+  * Trailing or multiple spaces
+* Gracefully handles `Various Aritst` album artists.
+* Provides various report formats, see below.
 
 ## Setup
 

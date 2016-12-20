@@ -28,7 +28,7 @@ void MP4Scanner::checkMP4Tags(TagLib::MP4::File *fileTag) {
   );
 
   // Store meta data
-  addToMetaData(artist, genre, album, directory, MP3, title, albumArtist, track, disc);
+  addToMetaData(artist, genre, album, directory, MP4, title, albumArtist, track, disc);
 
   // Find tracks without an artist tag
   if (artist.size() == 0) {
@@ -69,10 +69,18 @@ void MP4Scanner::checkMP4Tags(TagLib::MP4::File *fileTag) {
   // Find tracks with missing album art
   if (!MP4Tag->itemListMap().contains("covr")) {
     addToReport(artist, genre, album, directory, "missing_art");
-  } else {
+
   // Find tracks with more than one album art
-    if (MP4Tag->itemListMap()["covr"].toCoverArtList().size() > 1) {
-      addToReport(artist, genre, album, directory, "multiple_art");
+  } else if (MP4Tag->itemListMap()["covr"].toCoverArtList().size() > 1) {
+    addToReport(artist, genre, album, directory, "multiple_art");
+  } else {
+    const TagLib::MP4::CoverArt albumArt =
+      TagLib::MP4::CoverArt(
+        MP4Tag->itemListMap()["covr"].toCoverArtList().front()
+      );
+
+    if (albumArt.data().size() == 0) {
+      addToReport(artist, genre, album, directory, "invalid_art");
     }
   }
 }
