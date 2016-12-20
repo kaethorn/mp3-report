@@ -13,7 +13,7 @@ configure_file (
   "${PROJECT_BINARY_DIR}/src/report_config.hxx"
   )
 
-include(ConfigureChecks.cmake)
+include(cmake/modules/ConfigureChecks.cmake)
 
 add_subdirectory(src)
 
