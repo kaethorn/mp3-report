@@ -9,7 +9,7 @@ include(CheckCXXSourceCompiles)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
 # Detect Taglib
-find_package(TagLib 1.11 REQUIRED)
+find_package(TagLib 1.10 REQUIRED)
 if(NOT TAGLIB_FOUND)
   message(FATAL_ERROR "Taglib could not be found.")
 else()
