@@ -5,4 +5,4 @@ RUN apt-get install -y git build-essential xdg-utils libtag1-dev cmake libmagic-
 RUN git clone https://github.com/kaethorn/mp3-report.git
 RUN cd mp3-report && cmake . && cmake --build .
 RUN cd mp3-report && cmake --build . --target test
-ENTRYPOINT exec /root/mp3-report/src/MP3Report
+ENTRYPOINT [ "/mp3-report/src/MP3Report" ]
