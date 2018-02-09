@@ -6,11 +6,11 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Install build dependencies
-        command: apt-get update && apt-get install -y git build-essential xdg-utils libtag1-dev cmake libmagic-dev libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-regex-dev
+          name: Install build dependencies
+          command: apt-get update && apt-get install -y git build-essential xdg-utils libtag1-dev cmake libmagic-dev libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-regex-dev
       - run:
-        name: Build
-        command: cmake . && cmake --build .
+          name: Build
+          command: cmake . && cmake --build .
       - run:
-        name: Tests
-        command: cmake --build . --target test
+          name: Tests
+          command: cmake --build . --target test
