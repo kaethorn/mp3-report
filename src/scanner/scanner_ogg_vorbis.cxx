@@ -8,28 +8,6 @@ void OggVorbisScanner::scan(boost::filesystem::path file) {
   checkOggVorbisTags(&fileTag);
 }
 
-TagLib::ByteVector OggVorbisScanner::decodeCover(const TagLib::Ogg::XiphComment* oggVorbisTag) {
-  string cover = oggVorbisTag->fieldListMap()["METADATA_BLOCK_PICTURE"].front().to8Bit();
-  std::stringstream os;
-
-  typedef boost::archive::iterators::transform_width<
-    boost::archive::iterators::binary_from_base64<const char *>, 8, 6
-  > base64_dec;
-
-  unsigned int size = cover.size();
-
-  if (size && cover[size - 1] == '=') {
-    --size;
-    if (size && cover[size - 1] == '=') --size;
-  }
-  if (size == 0) return TagLib::ByteVector();
-
-  std::copy(base64_dec(cover.data()), base64_dec(cover.data() + size),
-            std::ostream_iterator<char>(os));
-
-  return TagLib::ByteVector(os.str().c_str(), size);
-}
-
 uint OggVorbisScanner::getPictureSize(const TagLib::FLAC::Picture* picture) {
   uint size = 0;
   const TagLib::ByteVector nullStringTerminator(1, 0);
@@ -102,16 +80,16 @@ void OggVorbisScanner::checkOggVorbisTags(TagLib::Ogg::Vorbis::File *fileTag) {
   }
 
   // Find tracks with missing album art
-  if (oggVorbisTag->fieldListMap()["METADATA_BLOCK_PICTURE"].isEmpty()) {
+  if (oggVorbisTag->pictureList().isEmpty()) {
     addToReport(artist, genre, album, directory, "missing_art");
 
   // Find tracks with more than one album art
-  } else if (oggVorbisTag->fieldListMap()["METADATA_BLOCK_PICTURE"].size() > 1) {
+  } else if (oggVorbisTag->pictureList().size() > 1) {
     addToReport(artist, genre, album, directory, "multiple_art");
 
   // Find tracks with invalid album art types
   } else {
-    TagLib::FLAC::Picture* albumArt = new TagLib::FLAC::Picture(decodeCover(oggVorbisTag));
+    TagLib::FLAC::Picture* albumArt = oggVorbisTag->pictureList().front();
     if (albumArt->type() != TagLib::FLAC::Picture::FrontCover ||
         getPictureSize(albumArt) == 0) {
       addToReport(artist, genre, album, directory, "invalid_art");

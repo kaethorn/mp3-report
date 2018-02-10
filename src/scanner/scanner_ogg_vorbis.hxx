@@ -54,14 +54,6 @@ class OggVorbisScanner: public Scanner {
     void checkOggVorbisTags(TagLib::Ogg::Vorbis::File *fileTag);
 
     /*!
-     * Extracts the first cover from the given tag.
-     *
-     * \param [in] oggVorbisTag The vorbis tag containing a cover
-     * \return A byte vector of the first cover found
-     */
-    TagLib::ByteVector decodeCover(const TagLib::Ogg::XiphComment* oggVorbisTag);
-
-    /*!
      * Determines size effective size of \a picture.
      *
      * \param [in] tag A pointer to the FLAC Picture object.
