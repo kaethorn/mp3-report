@@ -78,6 +78,10 @@ run_sample (mp3_invalid_disc
   "\"mp3\",\"somealbum\",\".+testcases/mp3_invalid_disc/a\",invalid_disc\\n\
 \"mp3\",\"somealbum\",\".+testcases/mp3_invalid_disc/b\",invalid_disc")
 
+# MP3 with an invalid track number padding
+run_sample (mp3_invalid_disc_padding
+  "\"mp3\",\"somealbum\",\".+/testcases/mp3_invalid_disc_padding\",invalid_disc")
+
 # MP3 with an invalid track number format
 run_sample (mp3_valid_disc
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
@@ -168,6 +172,18 @@ run_sample (meta_incomplete_album
 # Inconsistent disc sequences
 run_sample (meta_incomplete_collection
   "\"mp3\",\"somealbum\",\".+testcases/meta_incomplete_collection\",incomplete_collection")
+
+# Valid large disc sequences
+run_sample (meta_valid_large_collection
+  "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
+
+# Inconsistent large collection disc sequences
+run_sample (meta_incomplete_large_collection
+  "\"mp3\",\"somealbum\",\".+testcases/meta_incomplete_large_collection\",incomplete_collection")
+
+# Inconsistent large collection disc sequences with a gap
+run_sample (meta_incomplete_large_collection_gap
+  "\"mp3\",\"somealbum\",\".+testcases/meta_incomplete_large_collection_gap\",incomplete_collection")
 
 # Inconsistent file types for an album
 run_sample (meta_invalid_file_types
