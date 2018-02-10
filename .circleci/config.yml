@@ -2,12 +2,12 @@ version: 2
 jobs:
   build:
     docker:
-      - image: debian:jessie
+      - image: debian:stretch
     steps:
       - checkout
       - run:
           name: Install build dependencies
-          command: apt-get update && apt-get install -y git build-essential xdg-utils libtag1-dev cmake libmagic-dev libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-regex-dev
+          command: apt-get update && apt-get install -y build-essential xdg-utils libtag1-dev cmake libmagic-dev libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-regex-dev
       - run:
           name: Build
           command: cmake . && cmake --build .
