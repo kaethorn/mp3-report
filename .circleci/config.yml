@@ -1,0 +1,16 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: debian:jessie
+    steps:
+      - checkout
+      - run:
+          name: Install build dependencies
+          command: apt-get update && apt-get install -y git build-essential xdg-utils libtag1-dev cmake libmagic-dev libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-regex-dev
+      - run:
+          name: Build
+          command: cmake . && cmake --build .
+      - run:
+          name: Tests
+          command: cmake --build . --target test
