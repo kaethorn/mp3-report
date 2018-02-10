@@ -181,6 +181,10 @@ run_sample (meta_valid_large_collection
 run_sample (meta_incomplete_large_collection
   "\"mp3\",\"somealbum\",\".+testcases/meta_incomplete_large_collection\",incomplete_collection")
 
+# Inconsistent large collection disc sequences with a gap
+run_sample (meta_incomplete_large_collection_gap
+  "\"mp3\",\"somealbum\",\".+testcases/meta_incomplete_large_collection_gap\",incomplete_collection")
+
 # Inconsistent file types for an album
 run_sample (meta_invalid_file_types
   "\"mixed\",\"somealbum\",\".+testcases/meta_invalid_file_types\",invalid_file_types")
