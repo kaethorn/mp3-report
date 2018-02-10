@@ -1,7 +1,9 @@
 mp3-report
 ==========
 
-[![CircleCI](https://circleci.com/gh/kaethorn/mp3-report.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/kaethorn/mp3-report)
+[![CircleCI](https://circleci.com/gh/kaethorn/mp3-report.svg?style=shield)](https://circleci.com/gh/kaethorn/mp3-report)
+[![Build Status](https://travis-ci.org/kaethorn/mp3-report.svg?branch=master)](https://travis-ci.org/kaethorn/mp3-report)
+
 Highly opinionated audio file tag consistency reporter.
 
 ## About
