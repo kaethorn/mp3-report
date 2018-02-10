@@ -1,6 +1,8 @@
 # Application runs with the required parameters
 add_test (MP3Report_runs ${PROJECT_BINARY_DIR}/src/MP3Report .)
 
+add_subdirectory(unit)
+
 # Macro to facilitate running MP3Report with different sample data
 macro (run_sample test_name result)
   set(params "")
