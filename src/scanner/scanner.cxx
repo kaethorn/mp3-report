@@ -10,7 +10,7 @@ Scanner::Scanner(ReportMap* report, MetaDataMap* metaData, AlbumMetaDataMap* alb
   this->albumMetaData = albumMetaData;
 
   this->trackExpression = boost::regex("^\\d{2}/\\d{2}|\\d{3}/\\d{3}$");
-  this->discExpression  = boost::regex("^[1-9]/[2-9]|0[1-9]/0[2-9]$");
+  this->discExpression  = boost::regex("^[1-9]/[2-9]|\\d{2}/[1-9]\\d$");
 }
 
 Scanner::Scanner(ReportMap* report) {
