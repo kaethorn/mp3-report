@@ -177,6 +177,10 @@ run_sample (meta_incomplete_collection
 run_sample (meta_valid_large_collection
   "^Artist,Album,Directory,Error\\\\(s\\\\)\\n\\n$")
 
+# Inconsistent large collection disc sequences
+run_sample (meta_incomplete_large_collection
+  "\"mp3\",\"somealbum\",\".+testcases/meta_incomplete_large_collection\",incomplete_collection")
+
 # Inconsistent file types for an album
 run_sample (meta_invalid_file_types
   "\"mixed\",\"somealbum\",\".+testcases/meta_invalid_file_types\",invalid_file_types")
