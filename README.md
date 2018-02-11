@@ -39,6 +39,12 @@ On Debian/Ubuntu:
 
 `make`
 
+## Setup xdg-mime (optional)
+
+In order to properly detect file types, it's recommended to install xdg-mime:
+
+`apt-get install xdg-utils`
+
 ## Usage
 
 `./src/MP3Report -h`
