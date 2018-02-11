@@ -34,7 +34,7 @@ int main (int argc, char *argv[]) {
     ("use-libmagic,m", po::value<bool>(&useLibMagic)->zero_tokens()->default_value(false),
      "Use libmagic when detecting file type by magic type (instead of xdgmime which is the default)")
     ("report-type,r", po::value<string>(&reportType)->default_value("plain"),
-     "Report type (html_list, html_collapsible, csv, plain)")
+     "Report type (csv, plain)")
     ("show-warnings,w", po::value<bool>(&showWarnings)->zero_tokens()->default_value(false),
      "Show inconsistencies in the report that are considered warnings. Errors will always be reported.")
     ("output-path,o", po::value<string>(&outputPath),
